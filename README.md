@@ -41,9 +41,8 @@ This repository contains Python code for visualizing the distribution of vaccine
 Users aim to:
 
 - Understand the overall distribution of vaccines in Europe.
-- Understand the overall trend of COVID-19 cases in Europe.
+- Understand the overall trend of COVID-19 cases and vaccine distribution in various countries in Europe.
 - Compare the total cases and vaccine distribution across different countries or regions.
-- Identify patterns and variations in the spread of the virus over the selected timeframe.
 - compare the distributed vaccines to the total people fully vacinated.
 - To identify or rather, calculate how the next distribution would be done.
 
