@@ -1,4 +1,4 @@
-### The Vaccine Distribution, Efficacy and trend of COVID-19 cases in Europe between 2020-2023
+### The Vaccine Distribution and trend of COVID-19 cases in Europe between 2020-2023
 
 
 ### Description:
