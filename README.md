@@ -13,7 +13,7 @@ This repository contains Python code for visualizing the distribution of vaccine
 ## Key User Group
 
 
-**Policymakers:** My key user for this project are the European policymakers can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easy for these European policymakers to identify the following: 
+**European Policymakers:** My key user for this project are the European policymakers, they can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easy for these European policymakers to identify the following: 
     countries
     date
     total_cases
