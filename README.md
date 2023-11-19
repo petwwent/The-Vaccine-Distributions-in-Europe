@@ -14,16 +14,16 @@ This repository contains Python code for visualizing the distribution of vaccine
 
 
 **European Policymakers:** My key user for this project are the European policymakers, they can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for these European policymakers to identify the following: 
-    countries
-    date
-    total_cases
-    population
-    total_vaccinations
-    people_vaccinated
-    people_fully_vaccinated
-    total_vaccinations_per_hundred
-    people_vaccinated_per_hundred
-    people_fully_vaccinated_per_hundred
+    countries,
+    date,
+    total_cases,
+    population,
+    total_vaccinations,
+    people_vaccinated,
+    people_fully_vaccinated,
+    total_vaccinations_per_hundred,
+    people_vaccinated_per_hundred,
+    people_fully_vaccinated_per_hundred.
 
 | iso_code | continent | location |       date      | total_cases | population | total_vaccinations | people_vaccinated | fully_vaccinated | Total_v_per_100 | vaccinated_per_100 | fully_vaccinated_per100|
 |----------|-----------|----------|-----------------|--------------|------------|---------------------|-------------------|-------------------|-----------------|--------------------|---------------------|
