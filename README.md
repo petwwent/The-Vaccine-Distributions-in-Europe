@@ -22,8 +22,8 @@ This repository contains Python code for visualizing the distribution of vaccine
     people_vaccinated,
     people_fully_vaccinated,
     total_vaccinations_per_hundred,
-    people_vaccinated_per_hundred,
-    people_fully_vaccinated_per_hundred.
+    people_vaccinated_per_hundred, and
+    people_fully_vaccinated_per_hundred for each and every European countries.
 
 | iso_code | continent | location |       date      | total_cases | population | total_vaccinations | people_vaccinated | fully_vaccinated | Total_v_per_100 | vaccinated_per_100 | fully_vaccinated_per100|
 |----------|-----------|----------|-----------------|--------------|------------|---------------------|-------------------|-------------------|-----------------|--------------------|---------------------|
