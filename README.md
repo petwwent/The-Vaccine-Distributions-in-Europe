@@ -5,7 +5,9 @@
 
 This repository contains Python code for visualizing the total COVID-19 cases in Europe from 2020 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format using the pandas library specifically, then select the columns that would be relevant to my visualization also with the pandas library and handled missing data using pandas functions to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a choropleth map created with Plotly Express, providing an interactive and dynamic representation of the pandemic's spread, i also implemented a heatmap to show the distribution and intensity of cases across countries and over time.
 
-![project_image](https://github.com/PrincepaulIzuogu/The-trend-of-COVID-19-cases-in-Europe-over-time/assets/123191250/7f040bfd-8eea-4c6a-bb4d-0e45d7c7ab32)
+![pimage_1](https://github.com/PrincepaulIzuogu/The-trend-of-COVID-19-cases-in-Europe-over-time/assets/123191250/e96ce307-d12e-4892-bdd3-91abcb4fc6e5)
+![pimage_2](https://github.com/PrincepaulIzuogu/The-trend-of-COVID-19-cases-in-Europe-over-time/assets/123191250/bb38339e-b67c-4d2e-b79b-759649d8dddf)
+
 
 
 ## Key User Group
