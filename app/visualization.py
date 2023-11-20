@@ -5,14 +5,9 @@ import plotly.graph_objects as go
 import os
 
 def construct_choropleth():
-    # Get the absolute path of the 'data' directory
-    data_dir = os.path.abspath('data')
+    json_file_path = 'data/json-Europe-SelectedColumns.json'
 
-    # Join the path to the JSON file
-    json_file_path = os.path.join(data_dir, 'json-Europe-SelectedColumns.json')
-
-    # Check if the file exists
-    if os.path.exists(json_file_path):
+    try:
         # Load your Europe data
         europe_df = pd.read_json(json_file_path, lines=True)
 
@@ -60,6 +55,8 @@ def construct_choropleth():
             scope="europe",
         )
 
-        return fig
-    else:
+        return fig  # Return your Plotly figure object
+    except FileNotFoundError:
+        print(f"File '{json_file_path}' not found. Check if the file path is correct.")
         return None
+
