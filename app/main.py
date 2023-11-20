@@ -1,4 +1,3 @@
-# main.py
 from flask import Flask, render_template
 import pandas as pd
 import json
@@ -8,10 +7,12 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # Load the data for visualization
-    with open('data/json-Europe-SelectedColumns.json') as f:
-        data = json.load(f)
+    data = pd.read_json('data/json-Europe-SelectedColumns.json', lines=True)
 
-    return render_template('index.html', data=json.dumps(data))
+    # Convert DataFrame to JSON string
+    json_data = data.to_json(orient='records')
+
+    return render_template('index.html', data=json_data)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)  # Specify the port to run the application
+    app.run(debug=True, port=5000)
