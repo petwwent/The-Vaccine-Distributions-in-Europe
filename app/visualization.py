@@ -4,9 +4,9 @@ import pandas as pd
 import plotly.graph_objects as go
 
 
-
+def construct_choropleth():
 # Load your Europe data
-europe_df = pd.read_json('json-Europe-SelectedColumns.json', lines=True)
+europe_df = pd.read_json('data/json-Europe-SelectedColumns.json', lines=True)
 
 # Replace 'date', 'total_vaccinations', and 'location' with your actual column names
 # Convert the 'date' column to datetime if it's not already
@@ -54,5 +54,5 @@ fig.update_geos(
 
 
 # Show the plot
-fig.show()
+return fig
 
