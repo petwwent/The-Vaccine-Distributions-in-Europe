@@ -4,7 +4,7 @@ import json
 app = Flask(__name__)
 
 # Load data from data.json
-with open('../data/data.json', 'r') as file:
+with open('../data/json-Europe-SelectedColumns.json', 'r') as file:
     data = json.load(file)
 
 # Define API endpoints
