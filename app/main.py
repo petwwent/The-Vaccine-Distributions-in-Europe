@@ -1,18 +1,26 @@
 from flask import Flask, render_template
-import pandas as pd
 import json
+import os
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # Load the data for visualization
-    data = pd.read_json('data/json-Europe-SelectedColumns.json', lines=True)
+    # Get the absolute path of the 'data' directory
+    data_dir = os.path.abspath('data')
 
-    # Convert DataFrame to JSON string
-    json_data = data.to_json(orient='records')
+    # Join the path to the JSON file
+    json_file_path = os.path.join(data_dir, 'json-Europe-SelectedColumns.json')
 
-    return render_template('index.html', data=json_data)
+    # Check if the file exists
+    if os.path.exists(json_file_path):
+        # Load the data for visualization
+        with open(json_file_path) as f:
+            data = json.load(f)
+
+        return render_template('index.html', data=json.dumps(data))
+    else:
+        return 'File not found'
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
