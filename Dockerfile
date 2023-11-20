@@ -4,17 +4,17 @@ FROM python:3.9-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the main.py file from its directory to the working directory
-COPY main.py /app
+# Copy the requirements file into the container at /app
+COPY requirements.txt .
 
-# Create a directory named 'data' in the working directory and copy data.json into it
-COPY json-Europe-SelectedColumns.json /data
+# Install required dependencies
+RUN pip install -r requirements.txt
 
-# Install any necessary dependencies
-RUN pip install flask  #  API is built using Flask
+# Copy all files from the current directory to the container at /app
+COPY . .
 
-# Expose the port your API will run on
+# Expose the port that the Flask app runs on
 EXPOSE 5000
 
-# Define the command to run your application (API)
+# Command to run the Flask application
 CMD ["python", "main.py"]
