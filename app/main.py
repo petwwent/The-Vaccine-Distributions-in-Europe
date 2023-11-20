@@ -1,17 +1,17 @@
-from flask import Flask, jsonify
+# main.py
+from flask import Flask, render_template
+import pandas as pd
 import json
 
 app = Flask(__name__)
 
-# Load data from data.json
-with open('../data/json-Europe-SelectedColumns.json', 'r') as file:
-    data = json.load(file)
+@app.route('/')
+def index():
+    # Load the data for visualization
+    with open('data/json-Europe-SelectedColumns.json') as f:
+        data = json.load(f)
 
-# Define API endpoints
-@app.route('/api/data')
-def get_data():
-    return jsonify(data)
+    return render_template('index.html', data=json.dumps(data))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-
+    app.run(debug=True, port=5000)  # Specify the port to run the application
