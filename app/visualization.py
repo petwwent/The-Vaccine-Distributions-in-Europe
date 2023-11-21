@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 def construct_choropleth():
 # Load your Europe data
-df = pd.read_json('data/converted_data.json')
+df = pd.read_json('data/json-Europe-SelectedColumns.json')
 
 # Convert the 'date' column to datetime if it's not already
 df['date'] = pd.to_datetime(df['date'])
