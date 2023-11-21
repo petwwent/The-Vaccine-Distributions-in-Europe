@@ -1,7 +1,5 @@
 import plotly.express as px
-import json
 import pandas as pd
-import plotly.graph_objects as go
 
 
 def construct_choropleth():
