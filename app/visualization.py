@@ -1,5 +1,7 @@
-import pandas as pd
 import plotly.express as px
+import json
+import pandas as pd
+import plotly.graph_objects as go
 
 # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
 df = pd.read_json('converted_data.json')
