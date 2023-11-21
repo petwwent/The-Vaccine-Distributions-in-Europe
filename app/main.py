@@ -1,7 +1,6 @@
 from flask import Flask, render_template
-import pandas as pd
-import json
 import os
+from visualization import construct_choropleth  # Import the function
 
 app = Flask(__name__)
 
@@ -13,13 +12,13 @@ app = Flask(__name__, template_folder=template_dir)
 
 @app.route('/')
 def index():
-    # Load the data for visualization
-    with open('data/converted_data.json') as f:
-        data = json.load(f)
+    # Call the function to generate the choropleth figure
+    fig = construct_choropleth()
 
-    return render_template('index.html', data=json.dumps(data))
+    # Convert the figure to JSON
+    graphJSON = fig.to_json()
+
+    return render_template('index.html', graphJSON=graphJSON)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
-        
