@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # Load the data for visualization
-    with open('data/converted_data.json') as f:
+    with open('data/json-Europe-SelectedColumns.json') as f:
         data = json.load(f)
 
     return render_template('index.html', data=json.dumps(data))
