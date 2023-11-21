@@ -1,10 +1,8 @@
-import plotly.express as px
-import json
 import pandas as pd
-import plotly.graph_objects as go
+import plotly.express as px
 
 # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
-df = pd.read_json('json-Europe-SelectedColumns.json')
+df = pd.read_json('json-Europe-SelectedColumns.json', lines=True)
 
 # Convert the 'date' column to datetime if it's not already
 df['date'] = pd.to_datetime(df['date'])
@@ -49,4 +47,5 @@ fig.update_geos(
     center=dict(lon=10, lat=50),
     scope="europe"
 )
+
 return fig
