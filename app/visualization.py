@@ -47,5 +47,4 @@ fig.update_geos(
     center=dict(lon=10, lat=50),
     scope="europe"
 )
-
-return fig  # Return the Plotly figure object
+return fig
