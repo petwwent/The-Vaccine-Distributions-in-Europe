@@ -1,12 +1,8 @@
-import plotly.express as px
-import json
 import pandas as pd
-import plotly.graph_objects as go
+import plotly.express as px
 
-
-def construct_choropleth():
-# Load your Europe data
-df = pd.read_json('data/converted_data.json')
+# Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
+df = pd.read_json('converted_data.json')
 
 # Convert the 'date' column to datetime if it's not already
 df['date'] = pd.to_datetime(df['date'])
@@ -53,5 +49,4 @@ fig.update_geos(
 )
 
 
-# Show the plot
 return fig
