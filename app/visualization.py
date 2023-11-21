@@ -48,5 +48,4 @@ fig.update_geos(
     scope="europe"
 )
 
-
-return fig
+return fig  # Return the Plotly figure object
