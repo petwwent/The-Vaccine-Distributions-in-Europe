@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import json
 
 def construct_choropleth():
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
@@ -49,4 +50,4 @@ def construct_choropleth():
         scope="europe"
     )
 
-    return fig  # Return the figure object
+    return fig.to_json()
