@@ -1,9 +1,0 @@
-{
-  "name": "Python Flask Development",
-  "image": "python:3.9-alpine",
-  "forwardPorts": [5000],
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/sh"
-  },
-  "extensions": []
-}
