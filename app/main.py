@@ -12,13 +12,12 @@ app = Flask(__name__, template_folder=template_dir)
 
 @app.route('/')
 def index():
-    # Call the function to generate the choropleth figure
-    fig = construct_choropleth()
+    return render_template('index.html')
 
-    # Convert the figure to JSON
-    graphJSON = fig.to_json()
-
-    return render_template('index.html', graphJSON=graphJSON)
+@app.route('/get-choropleth-data')
+def get_choropleth_data():
+    choropleth_data = construct_choropleth()
+    return jsonify(choropleth_data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
