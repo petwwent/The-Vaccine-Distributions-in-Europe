@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body {
+    font-family: 'Lato', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+ul#repolist {
+    max-width: 1800px;
+    margin: auto;
+}
+
+ul#repolist > li {
+    display: block;
+    float: left;
+    width: 320px;
+    height: 160px;
+    background: lightcoral;
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 5px solid yellowgreen;
+    border-bottom: 0;
+} 
+
+ul#repolist div.stats {
+    height: 120px;
+    overflow: hidden;
+}
+
+
+
+
+
+ul#repolist div.histogram {
+    position: relative;
+    height: 200px;
+    top: -25px;
+    overflow: hidden;
+    z-index: 10;
+    opacity: 0.9;
+}
+
+ul#repolist div.histogram svg {
+    position: relative;
+    top: 5px;
+}
+
+ul#repolist ul.images,
+ul#repolist ul.images li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul#repolist ul.images img {
+    width: 320px;
+    position:relative;
+    top: -250px;
+    z-index: 0;
+}
+
+
+ul#repolist div.commit_count {
+    font-size: 1.2em;
+    color: white;
+    font-weight:900;
+    padding: 5px 5px 0 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: yellowgreen;
+    display: block;
+    position: relative;
+    left: 284px;
+    z-index: 20;
+    text-align: center;
+}
+
+ul#repolist div.user {
+    background-color: yellowgreen;
+    z-index: 100;
+    width: 330px;
+    height: 40px;
+    position: relative;
+    padding-left: 15px;
+}
+
+ul#repolist div.user a {
+    color: white;
+    font-weight: 900;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+ul#repolist div.user img {
+    height: 40px; 
+    position: relative;
+    margin-right: 10px;
+    z-index: 0;
+}
