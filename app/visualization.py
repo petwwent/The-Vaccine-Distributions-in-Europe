@@ -3,7 +3,7 @@ import plotly.express as px
 
 def construct_choropleth():
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
-    df = pd.read_json('json-Europe-SelectedColumns.json', lines=True)
+    df = pd.read_json('data/json-Europe-SelectedColumns.json', lines=True)
 
     # Convert the 'date' column to datetime if it's not already
     df['date'] = pd.to_datetime(df['date'])
