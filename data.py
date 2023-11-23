@@ -18,11 +18,11 @@ def construct_choropleth():
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
     df = pd.read_json('data.json', lines=True)
 
-    # Convert the 'date' column to datetime if it's not already
-    df['date'] = pd.to_datetime(df['date'])
+   df['date'] = pd.to_datetime(df['date'], unit='ms')  # Assuming the date is in milliseconds
 
     # Extract year and month from the date
     df['year_month'] = df['date'].dt.to_period('M').astype(str)
+
 
     # Group by location and year_month, aggregating total vaccinations
     grouped_df = df.groupby(['location', 'year_month'], as_index=False).agg({
