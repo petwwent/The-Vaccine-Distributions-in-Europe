@@ -1,5 +1,6 @@
 {
   "name": "devcontainer-project",
+  "image": "python:3.10.10",
   "dockerFile": "Dockerfile",
   "context": "${localWorkspaceFolder}",
   "build": {
@@ -42,7 +43,7 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [5000],
   "portsAttributes": {
-    "8000": {
+    "5000": {
       "label": "Application",
       "onAutoForward": "openBrowser"
     }
