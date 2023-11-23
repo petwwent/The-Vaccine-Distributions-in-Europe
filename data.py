@@ -18,7 +18,7 @@ def construct_choropleth():
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
     df = pd.read_json('data.json', lines=True)
 
-   df['date'] = pd.to_datetime(df['date'], unit='ms')  # Assuming the date is in milliseconds
+    df['date'] = pd.to_datetime(df['date'], unit='ms')  # Assuming the date is in milliseconds
 
     # Extract year and month from the date
     df['year_month'] = df['date'].dt.to_period('M').astype(str)
