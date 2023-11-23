@@ -3,8 +3,8 @@ FROM ghcr.io/xtruder/nix-devcontainer:v1
 # # Use a specific version of Alpine Linux as the base image
  FROM alpine:3.15.3
 #
-# # Use Python 3.11.5
- ENV PYTHON_VERSION=3.11.5
+# # Use Python 3.11.6
+ ENV PYTHON_VERSION=3.11.6
 #
 # # Install necessary system dependencies
  RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
