@@ -3,52 +3,31 @@
 
 <head>
     <link rel="stylesheet" href="/static/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.6.1/dist/htmx.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" charset="utf-8"></script>
-    <script>
-        function displayChoropleth() {
-            fetch('/get_choropleth_data') // Endpoint to fetch the choropleth data
-                .then(response => response.json())
-                .then(data => {
-                    const mapContainer = document.getElementById('choropleth-map');
-
-                    // Replace the content of the div with ID 'choropleth-map' with the choropleth
-                    mapContainer.innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error fetching choropleth data:', error);
-                });
-        }
-    </script>
+    <!-- Add any scripts or stylesheets needed -->
 </head>
 
-<body onload="displayChoropleth()">
+<body>
 
-    <ul id="repolist">
-        <!-- Placeholder for repository data -->
-        <!-- You can replace this section with your repository data rendering logic -->
-        {% for repo in repos %}
+    <ul id="dataList">
+        <!-- Iterate through the processed data and display attributes -->
+        {% for entry in data %}
         <li>
-
-            <div class="stats">
-                <div class="commit_count">{{repo.commit_count}}</div>
-                <!-- Placeholder for choropleth map -->
-                <div class="choropleth" id="choropleth-map"></div>
-                <ul class="images">
-                    {% for imageurl in repo.images %}
-                    <li><img src="{{imageurl}}" alt="{{repo.description}}" /></li>
-                    {% endfor %}
-                </ul>
+            <div class="data-entry">
+                <h3>Date: {{ entry.date }}</h3>
+                <p>Total Cases: {{ entry.total_cases }}</p>
+                <p>Population: {{ entry.population }}</p>
+                <p>Total Vaccinations: {{ entry.total_vaccinations }}</p>
+                <p>People Vaccinated: {{ entry.people_vaccinated }}</p>
+                <p>People Fully Vaccinated: {{ entry.people_fully_vaccinated }}</p>
+                <p>Total Vaccinations per Hundred: {{ entry.total_vaccinations_per_hundred }}</p>
+                <p>People Vaccinated per Hundred: {{ entry.people_vaccinated_per_hundred }}</p>
+                <p>People Fully Vaccinated per Hundred: {{ entry.people_fully_vaccinated_per_hundred }}</p>
             </div>
-
-            <div class="user">
-                <a href="{{repo.repo.html_url}}"><img src="{{repo.avatar}}" alt="{{repo.repo.name}}" /></a>
-                <a href="{{repo.repo.html_url}}" class="username">{{repo.user}}</a>
-            </div>
-
         </li>
         {% endfor %}
     </ul>
+
+    <!-- Any other HTML content or scripts needed -->
 
 </body>
 
