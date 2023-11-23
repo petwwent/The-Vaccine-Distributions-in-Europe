@@ -1,5 +1,8 @@
 # Use a specific version of Alpine Linux as the base image
-FROM python:3.9-alpine
+FROM alpine:3.15.3
+
+# Use Python 3.11.5
+ENV PYTHON_VERSION=3.11.5
 
 # Install necessary system dependencies
 RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
