@@ -1,6 +1,6 @@
 {
   "name": "devcontainer-project",
-  "dockerFile": "Dockerfile",
+  "dockerFile": "DOCKERFILE",
   "context": "${localWorkspaceFolder}",
   "build": {
     "args": {
