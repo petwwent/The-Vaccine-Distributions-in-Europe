@@ -1,7 +1,7 @@
 {
   "name": "Python Codespace",
-  "dockerFile": "Dockerfile", // Path to your Dockerfile
-  "context": ".", // Context for building the Dockerfile
+  "dockerFile": "Dockerfile",
+  "context": ".",
   "customizations": {
     "vscode": {
       "settings": {
@@ -13,5 +13,6 @@
         // Add other extensions if needed
       ]
     }
-  }
+  },
+  "forwardPorts": [5000]
 }
