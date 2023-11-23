@@ -1,54 +1,10 @@
 {
-  "name": "devcontainer-project",
-  "image": "python:3.10.10",
+  "name": "FastAPI-Project",
   "dockerFile": "Dockerfile",
-  "context": "${localWorkspaceFolder}",
-  "build": {
-    "args": {
-      "USER_UID": "${localEnv:USER_UID}",
-      "USER_GID": "${localEnv:USER_GID}"
-    }
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
   },
-
-  // run arguments passed to docker
-  "runArgs": [
-    "--security-opt", "label=disable"
-  ],
-
-  "containerEnv": {
-     // extensions to preload before other extensions
-    "PRELOAD_EXTENSIONS": "arrterian.nix-env-selector"
-  },
-
-   // disable command overriding and updating remote user ID
-  "overrideCommand": false,
-  "userEnvProbe": "loginShell",
-  "updateRemoteUserUID": false,
-
-  // build development environment on creation, make sure you already have shell.nix
-  "onCreateCommand": "nix-shell --command 'echo done building nix dev environment'",
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "arrterian.nix-env-selector",
-        "fsevenm.run-it-on",
-        "jnoortheen.nix-ide",
-        "ms-python.python"
-      ]
-    }
-  },
-
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "extensions": ["ms-python.python", "jnoortheen.nix-ide"],
   "forwardPorts": [5000],
-  "portsAttributes": {
-    "5000": {
-      "label": "Application",
-      "onAutoForward": "openBrowser"
-    }
-  },
-
-  // Use 'postCreateCommand' to run commands after the container is created.
- "postCreateCommand": "nix-shell --run 'pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000'"
+  "postCreateCommand": "nix-shell --run 'pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000'"
 }
