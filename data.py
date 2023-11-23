@@ -65,4 +65,4 @@ def construct_choropleth():
     # Encode the choropleth map (fig) into base64
     encoded_choropleth = encode_fig_to_base64(fig)
 
-    return encoded_choropleth
+    return grouped_df.to_dict('records')
