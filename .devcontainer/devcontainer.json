@@ -1,10 +1,39 @@
 {
-  "name": "FastAPI-Project",
+  "name": "devcontainer-project",
   "dockerFile": "Dockerfile",
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash"
+  "context": "${localWorkspaceFolder}",
+  "build": {
+    "args": {
+      "USER_UID": "${localEnv:USER_UID}",
+      "USER_GID": "${localEnv:USER_GID}"
+    }
   },
-  "extensions": ["ms-python.python", "jnoortheen.nix-ide"],
+  "runArgs": [
+    "--security-opt", "label=disable"
+  ],
+  "containerEnv": {
+    "PRELOAD_EXTENSIONS": "arrterian.nix-env-selector"
+  },
+  "overrideCommand": false,
+  "userEnvProbe": "loginShell",
+  "updateRemoteUserUID": false,
+  "onCreateCommand": "nix-shell --command 'echo done building nix dev environment'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "arrterian.nix-env-selector",
+        "fsevenm.run-it-on",
+        "jnoortheen.nix-ide",
+        "ms-python.python"
+      ]
+    }
+  },
   "forwardPorts": [5000],
-  "postCreateCommand": "nix-shell --run 'pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000'"
+  "portsAttributes": {
+    "5000": {
+      "label": "Application",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "nix-shell --run 'uvicorn main:app --host 0.0.0.0 --port 5000'"
 }
