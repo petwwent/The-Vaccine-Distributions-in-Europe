@@ -1,19 +1,30 @@
-from flask import Flask, Response
-from plotly.offline import plot
+import json
 
-# Import the function to generate the choropleth map from data.py
-from data import construct_choropleth
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
-app = Flask(__name__)
+import data as d
 
-# Endpoint to get the base64-encoded choropleth map
-@app.route("/get_choropleth")
-def get_choropleth():
-    # Generate the choropleth map
-    encoded_choropleth = construct_choropleth()
+app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
-    # Display the base64-encoded choropleth map in HTML using Plotly's offline plot
-    plot_div = plot({'data': []}, output_type='div', include_plotlyjs=False)
-    html_content = f"<img src='data:image/png;base64,{encoded_choropleth}'/> {plot_div}"
 
-    return Response(html_content, mimetype='text/html')
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    with open("data.json") as f:
+        repos = json.load(f)
+    return templates.TemplateResponse('index.html', {'request': request, 'repos': repos})
+
+@app.get("/repos")
+async def repos(update: bool = False):
+    if update:
+        data = d.get_data()
+    else:
+        with open("data.json") as file:
+            data = json.load(file)
+       
+    
+    return data
