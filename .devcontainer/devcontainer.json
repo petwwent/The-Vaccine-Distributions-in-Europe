@@ -1,6 +1,6 @@
 {
   "name": "Python Codespace",
-  "dockerFile": "Dockerfile",
+  "dockerFile": "../Dockerfile",
   "context": ".",
   "customizations": {
     "vscode": {
