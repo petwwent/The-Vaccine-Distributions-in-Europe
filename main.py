@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import os
 import uvicorn
-from visualization import construct_choropleth  # Import the function
+from data import construct_choropleth  # Import the function
 
 app = Flask(__name__)
 
