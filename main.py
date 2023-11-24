@@ -1,19 +1,13 @@
-import json
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from flask import Flask, render_template
 from data import construct_choropleth
+import uvicorn
 
-app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app = Flask(__name__)
 
-@app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    # Use the processed data returned by construct_choropleth() from data.py
-    processed_data = construct_choropleth()
-    return templates.TemplateResponse('index.html', {'request': request, 'data': processed_data})
+@app.route('/')
+def index():
+    encoded_choropleth = construct_choropleth()
+    return render_template('index.html', encoded_choropleth=encoded_choropleth)
 
-    
-    return data
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=5000)
