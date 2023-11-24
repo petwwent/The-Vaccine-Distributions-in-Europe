@@ -1,26 +1,15 @@
 import pandas as pd
 import plotly.express as px
 import json
-import base64
-import io
-
-def encode_fig_to_base64(fig):
-    # Save the figure as an image in memory (BytesIO)
-    img = io.BytesIO()
-    fig.write_image(img, format='png')  # Change the format if needed (e.g., 'jpeg', 'svg', etc.)
-    img.seek(0)  # Move the cursor to the beginning of the BytesIO object
-
-    # Encode the image to base64
-    encoded_image = base64.b64encode(img.read()).decode("utf-8")
-    return encoded_image
 
 def construct_choropleth():
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
-    df = pd.read_json('data.json')
-# Convert the 'date' column to datetime if it's not already
+    df = pd.read_json('data/json-Europe-SelectedColumns.json', lines=True)
+
+    # Convert the 'date' column to datetime if it's not already
     df['date'] = pd.to_datetime(df['date'])
 
-# Extract year and month from the date
+    # Extract year and month from the date
     df['year_month'] = df['date'].dt.to_period('M').astype(str)
 
     # Group by location and year_month, aggregating total vaccinations
@@ -61,7 +50,4 @@ def construct_choropleth():
         scope="europe"
     )
 
-    # Encode the choropleth map (fig) into base64
-    encoded_choropleth = encode_fig_to_base64(fig)
-
-    return grouped_df.to_dict('records')
+    return fig.to_json()
