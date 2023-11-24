@@ -1,25 +1,24 @@
-from flask import Flask, render_template
-import os
-import uvicorn
+from fastapi import FastAPI, Response
 from visualization import construct_choropleth  # Import the function
+import os
 
-app = Flask(__name__)
+app = FastAPI()
 
-# Get the absolute path to the templates directory
-template_dir = os.path.abspath('templates')
+# Get the path to the current file directory
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# Set the template folder for Flask explicitly
-app = Flask(__name__, template_folder=template_dir)
+@app.get("/", response_class=Response)
+async def index():
+    # Assuming you have an index.html file in the 'templates' directory
+    with open(os.path.join(dir_path, "templates/index.html"), "r") as file:
+        return Response(content=file.read(), media_type="text/html")
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/get-choropleth-data')
-def get_choropleth_data():
+@app.get("/get-choropleth-data")
+async def get_choropleth_data():
     choropleth_data = construct_choropleth()
-    return jsonify(choropleth_data)
-
+    return choropleth_data
 
 if __name__ == "__main__":
+    import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=5000)
