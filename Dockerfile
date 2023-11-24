@@ -7,9 +7,6 @@ ENV PYTHON_VERSION=3.11.6
 # Install necessary system dependencies
 RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
 
-# Install a specific version of pip (example: 21.3.1)
-RUN pip3 install --no-cache-dir 'pip==21.3.1'
-
 # Set the working directory in the container
 WORKDIR /app
 
@@ -19,7 +16,7 @@ COPY requirements.txt .
 # Install necessary Python packages
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy the FastAPI app code into the container
+# Copy the rest of the files into the container
 COPY . .
 
 # Expose the port that the FastAPI app will run on
