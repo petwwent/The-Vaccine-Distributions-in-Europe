@@ -8,70 +8,76 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
-    <!-- Include Plotly JavaScript library -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
 </head>
 
-<header>
-    <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">The-Vaccine-Distributions-in-Europe From 2021-2023</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="aboutus.html">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="aboutapp.html">About App</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <!-- Navigation menu, as before -->
-    </nav>
-    <div class="Us-container">
-        <h1>About Us</h1>
-        <p>Key User Group</p>
-        <p>The Director of European Centre for Disease Prevention and Control: The Director of ECDC is responsible for leading the ECDC’s work in strengthening Europe’s defence against infectious disease.</p>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">The-Vaccine-Distributions-in-Europe From 2021-2023</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aboutus.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aboutapp.html">About App</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-        <p>A Problem the The Director of ECDC Encouters</p>
-        <p>The Director of ECDC would want an easy understanding overview in the disparities in vaccine distribution among various European countries comparing the total vaccinations in each European country to the poplation and total covid cases between the past two years (2021-2023) without going through the database or raw data.</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>About Us</h1>
+                <h3>Key User Group</h3>
+                <p>The Director of European Centre for Disease Prevention and Control: The Director of ECDC is responsible for leading the ECDC’s work in strengthening Europe’s defence against infectious disease.</p>
 
-        <p>My Solution</p>
-        <p>This project is the solution to this problem, The Director of ECDC can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for the Director of ECDC to identify the following: countries, date, total_cases, population, total_vaccinations, people_vaccinated, people_fully_vaccinated, total_vaccinations_per_hundred, people_vaccinated_per_hundred, and people_fully_vaccinated_per_hundred for each and every European countries.</p>
+                <h3>Problem Faced by the Director of ECDC</h3>
+                <p>The Director of ECDC would want an easy understanding overview in the disparities in vaccine distribution among various European countries comparing the total vaccinations in each European country to the poplation and total covid cases between the past two years (2021-2023) without going through the database or raw data.</p>
 
-        <p>iso_code	continent	location	date	total_cases	population	total_vaccinations	people_vaccinated	fully_vaccinated	Total_v_per_100	vaccinated_per_100	fully_vaccinated_per100</p>
-        <p>ALB	Europe	Albania	1578009600000	NaN	2842318	NaN	NaN	NaN	NaN	NaN	NaN</p>
-        <p>ALB	Europe	Albania	1578096000000	NaN	2842318	NaN	NaN	NaN	NaN	NaN	NaN</p>
-        <p>ALB	Europe	Albania	1578182400000	NaN	2842318	NaN	NaN	NaN	NaN	NaN	NaN</p>
-        <p>ALB	Europe	Albania	1578268800000	NaN	2842318	NaN	NaN	NaN	NaN	NaN	NaN</p>
-        <p>ALB	Europe	Albania	1578355200000	NaN	2842318	NaN	NaN	NaN	NaN	NaN	NaN</p>
-        <p>User Objectives</p>
-        <p>Users aim to:</p>
+                <h3>Solution - Choropleth Map</h3>
+                <p>This project is the solution to this problem, The Director of ECDC can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for the Director of ECDC to identify the following: countries, date, total_cases, population, total_vaccinations, people_vaccinated, people_fully_vaccinated, total_vaccinations_per_hundred, people_vaccinated_per_hundred, and people_fully_vaccinated_per_hundred for each and every European countries.</p>
 
-        <p>Understand the overall distribution of vaccines in Europe.</p>
-        <p>Compare the total cases and vaccine distribution across different countries or regions.</p>
-        <p>compare the distributed vaccines to the total people fully vacinated.</p>
-        <p>To identify or rather, calculate how the next distribution would be done.</p>
-        <p>Visualization Strategy and how it help users achieve task effectively and efficiently</p>
-        <p>I use a choropleth map for the visualization and then heatmap for the colors, i think this visualization pattern i chose is the best because:</p>
+                <h3>Data Used</h3>
+                <p>This repository contains Python code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format using the pandas library specifically, select the continent relevant to my project which is Europe and save it in a different json file, then select the columns that would be relevant to my visualization also with the pandas library and handled missing data using pandas functions to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a choropleth map created with Plotly Express, providing an interactive and dynamic representation of the pandemic's spread, i also implemented a heatmap to show the distribution and intensity of cases across countries and over time.</p>
+                <h3>User objectives and what they aim to achieve:</h3>
+                <ul>
+                    <li>Understand the overall distribution of vaccines in Europe.</li>
+                    <li>Compare the total cases and vaccine distribution across different countries or regions.</li>
+                    <li>Compare the distributed vaccines to the total people fully vaccinated.</li>
+                    <li>Identify or calculate how the next distribution would be done.</li>
+                </ul>
 
-        <p>It provides a geographical representation of total cases.</p>
-        <p>The animation feature allows for the observation of temporal changes.</p>
-        <p>Users can interactively explore data for specific timeframes.</p>
-        <p>Additional Features</p>
-        <p>Filtering Options: Users can customize the timeframe for a more focused view.</p>
-        <p>Hover Information: Interactive tooltips provide detailed information about each country's total cases.</p>
-     </div>
-     
+                
+                <h3>Visualization pattern chosen and its benefits:</h3>
+                <ul>
+                    <li>Provides a geographical representation of total cases.</li>
+                    <li>Utilizes animation feature for observing temporal changes.</li>
+                    <li>Allows users to interactively explore data for specific timeframes.</li>
+                </ul>
+
+                <h3>Additional Features</h3>
+                <ul>
+                    <li>Filtering Options: Users can customize the timeframe for a more focused view.</li>
+                    <li>Hover Information: Interactive tooltips provide detailed information about each country's total cases.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add JavaScript logic here if needed
+    </script>
 </body>
+
 </html>
