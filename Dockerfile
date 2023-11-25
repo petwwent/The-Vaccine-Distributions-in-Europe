@@ -10,11 +10,11 @@ RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements directory into the container at /app/requirements
-COPY requirements /app/requirements
+# Copy the requirements file into the container at /app
+COPY requirements.txt /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the files into the container
 COPY . .
