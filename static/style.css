@@ -1,100 +1,124 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
+/* Global Styles */
 body {
-    font-family: 'Lato', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-
-ul#repolist {
-    max-width: 1800px;
-    margin: auto;
-}
-
-ul#repolist > li {
-    display: block;
-    float: left;
-    width: 320px;
-    height: 160px;
-    background: lightcoral;
-    margin: 10px;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 5px solid yellowgreen;
-    border-bottom: 0;
-} 
-
-ul#repolist div.stats {
-    height: 120px;
-    overflow: hidden;
-}
-
-
-
-
-
-ul#repolist div.histogram {
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    height: 100%;
     position: relative;
-    height: 200px;
-    top: -25px;
-    overflow: hidden;
-    z-index: 10;
-    opacity: 0.9;
-}
-
-ul#repolist div.histogram svg {
-    position: relative;
-    top: 5px;
-}
-
-ul#repolist ul.images,
-ul#repolist ul.images li {
     margin: 0;
     padding: 0;
-    list-style-type: none;
+    height: 100%;
 }
 
-ul#repolist ul.images img {
-    width: 320px;
-    position:relative;
-    top: -250px;
-    z-index: 0;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    width: 1000px !important;
 }
 
 
-ul#repolist div.commit_count {
-    font-size: 1.2em;
+p {
+    font-size: 18px; /* Adjust the font size as needed */
     color: white;
-    font-weight:900;
-    padding: 5px 5px 0 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: yellowgreen;
-    display: block;
-    position: relative;
-    left: 284px;
-    z-index: 20;
-    text-align: center;
 }
 
-ul#repolist div.user {
-    background-color: yellowgreen;
-    z-index: 100;
-    width: 330px;
-    height: 40px;
-    position: relative;
-    padding-left: 15px;
+
+.note {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 16px; /* Adjust the font size as needed */
 }
 
-ul#repolist div.user a {
+.note i {
+    margin-right: 10px; /* Add spacing between the icon and text */
+    margin-top: -15px;
+    color: red;
+}
+
+.note-text {
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* Adjust the font size as needed */
+}
+
+.note-text i {
+    margin-right: 10px; /* Add spacing between the icon and text */
+}
+
+
+
+/* Navbar Styles */
+.navbar {
+    background-color: transparent; /* Set the background to transparent */
+    box-shadow: none; /* Remove any box shadow */
+}
+
+.navbar-brand {
+    font-size: 2em;
+    color: rgb(106, 168, 248);
+}
+
+.nav-link {
+    position: relative;
+    font-size: 1.1em;
     color: white;
-    font-weight: 900;
     text-decoration: none;
-    vertical-align: middle;
+    font-weight: 500;
+    margin-left: 80px;
 }
 
-ul#repolist div.user img {
-    height: 40px; 
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .2s;
+}
+.nav-link:hover::after {
+    transform-origin: left;
+    transform: scaleX(1);
+}
+
+.custom-link {
+    color: #f3f7ea; /* Change this color to the one you prefer */
+    text-decoration: none; /* Remove underline */
+    margin-top: 15px;
+}
+
+.fas {
+    color: #007BFF;
+}
+
+
+
+
+/* Page Header Styles */
+h1 {
+    color: #e4ecec;
+    font-size: 40px;
     position: relative;
-    margin-right: 10px;
-    z-index: 0;
+    margin-top: 100px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 30px;
+    align-items: center;
+    
+}
+
+.Us-container {
+    margin-left: 50px;
+    margin-right: 50px;
 }
