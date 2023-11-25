@@ -1,19 +1,28 @@
-### The Distribution of Vaccines Across Countries in Europe between 2020-2023
+### The Distribution of Vaccines Across Countries in Europe between 2021-2023
 
 
 ### Description:
 
 This repository contains Python code for visualizing the distribution of vaccines across all the countries in Europe from 2020 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format using the pandas library specifically, select the continent relevant to my project which is Europe and save it in a different json file, then select the columns that would be relevant to my visualization also with the pandas library and handled missing data using pandas functions to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a choropleth map created with Plotly Express, providing an interactive and dynamic representation of the pandemic's spread, i also implemented a heatmap to show the distribution and intensity of cases across countries and over time.
 ![Screenshot 2023-11-19 203714](https://github.com/PrincepaulIzuogu/The-trend-of-COVID-19-cases-in-Europe-over-time/assets/123191250/71723f59-186c-4c2a-9139-bc5ed0f76fee)
-![Screenshot 2023-11-19 204529](https://github.com/PrincepaulIzuogu/The-trend-of-COVID-19-cases-in-Europe-over-time/assets/123191250/2ff91535-d9a1-42f3-ab43-8c25c038bc15)
-![Screenshot 2023-11-19 204655](https://github.com/PrincepaulIzuogu/The-trend-of-COVID-19-cases-in-Europe-over-time/assets/123191250/39cf2ea1-50de-4a83-85a9-ae8f15d9f47f)
+![Screenshot 2023-11-25 185255](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/08883f79-1bc4-4b52-a9fc-f01b89a51715)
+![Screenshot 2023-11-25 185337](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/800afbda-5050-4a05-b7ba-be1947eddf9d)
+
 
 
 
 ## Key User Group
 
 
-**European Policymakers:** My key user for this project are the European policymakers, they can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for these European policymakers to identify the following: 
+**The Director of European Centre for Disease Prevention and Control:** The Director of ECDC is responsible for leading the ECDC’s work in strengthening Europe’s defence against infectious disease.
+
+## A Problem the The Director of ECDC Encouters
+
+The Director of ECDC would want an easy understanding overview in the disparities in vaccine distribution among various European countries comparing the total vaccinations in each European country to the poplation and total covid cases between the past two years (2021-2023) without going through the database or raw data.
+
+## My Solution
+
+This project is the solution to this problem, The Director of ECDC can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for the Director of ECDC to identify the following: 
     countries,
     date,
     total_cases,
@@ -41,7 +50,6 @@ This repository contains Python code for visualizing the distribution of vaccine
 Users aim to:
 
 - Understand the overall distribution of vaccines in Europe.
-- Understand the overall trend of COVID-19 cases and vaccine distribution in various countries in Europe.
 - Compare the total cases and vaccine distribution across different countries or regions.
 - compare the distributed vaccines to the total people fully vacinated.
 - To identify or rather, calculate how the next distribution would be done.
@@ -62,5 +70,6 @@ I use a choropleth map for the visualization and then heatmap for the colors, i 
 ## How to Use
 
 1. Clone the repository.
-2. Run the Python script (`covid19_visualization.py`) in a Jupyter Notebook or any Python environment.
-3. Explore the interactive choropleth map and customize it as needed.
+2. Install the requirements
+3. Run the uvicorn on Python environment or run in github codespaces
+4. Explore the interactive choropleth map and customize it as needed.
