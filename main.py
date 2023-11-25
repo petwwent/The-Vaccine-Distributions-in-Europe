@@ -17,13 +17,13 @@ async def get_choropleth_data():
     choropleth_data = construct_choropleth()
     return choropleth_data
 
-@app.get("/about-us", response_class=FileResponse)
-async def about_us():
-    return FileResponse(os.path.join(dir_path, "templates/about us.html"))
+@app.get("/aboutus", response_class=FileResponse)
+async def aboutus():
+    return FileResponse(os.path.join(dir_path, "templates/aboutus.html"))
 
-@app.get("/about-app", response_class=FileResponse)
-async def about_app():
-    return FileResponse(os.path.join(dir_path, "templates/about App.html"))
+@app.get("/aboutapp", response_class=FileResponse)
+async def aboutapp():
+    return FileResponse(os.path.join(dir_path, "templates/aboutapp.html"))
 
 @app.get("/static/{file_path:path}")
 async def serve_static(file_path: str):
