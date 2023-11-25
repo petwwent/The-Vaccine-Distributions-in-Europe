@@ -18,6 +18,20 @@ async def get_choropleth_data():
     choropleth_data = construct_choropleth()
     return choropleth_data
 
+@app.get("/about-us", response_class=FileResponse)
+async def about_us():
+    return FileResponse(os.path.join(dir_path, "templates/about us.html"))
+
+@app.get("/about-app", response_class=FileResponse)
+async def about_app():
+    return FileResponse(os.path.join(dir_path, "templates/about App.html"))
+
+@app.get("/static/{file_path:path}")
+async def serve_static(file_path: str):
+    static_file_path = os.path.join(dir_path, "static", file_path)
+    if os.path.exists(static_file_path):
+        return FileResponse(static_file_path)
+
 if __name__ == "__main__":
     import uvicorn
 
