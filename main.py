@@ -11,7 +11,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 @app.get("/", response_class=FileResponse)
 async def index():
     # Assuming you have an index.html file in the 'templates' directory
-    return FileResponse(os.path.join(dir_path, "templates/index.html"))
+    return FileResponse(os.path.join(dir_path, "templates/index.php"))
 
 @app.get("/get-choropleth-data")
 async def get_choropleth_data():
