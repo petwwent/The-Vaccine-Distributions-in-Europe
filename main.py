@@ -18,11 +18,11 @@ async def get_choropleth_data():
     choropleth_data = construct_choropleth()
     return choropleth_data
 
-@app.get("/about-us", response_class=FileResponse)
+@app.get("/", response_class=FileResponse)
 async def about_us():
     return FileResponse(os.path.join(dir_path, "templates/about us.html"))
 
-@app.get("/about-app", response_class=FileResponse)
+@app.get("/", response_class=FileResponse)
 async def about_app():
     return FileResponse(os.path.join(dir_path, "templates/about App.html"))
 
