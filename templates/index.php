@@ -27,7 +27,7 @@
                     <a class="nav-link" href="about us.php">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="about App.php">About EHR</a>
+                    <a class="nav-link" href="about App.php">About App</a>
                 </li>
             </ul>
         </div>
