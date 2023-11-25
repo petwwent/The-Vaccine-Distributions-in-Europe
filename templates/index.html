@@ -3,32 +3,24 @@
 
 <head>
     <link rel="stylesheet" href="/static/style.css">
-    <!-- Add any scripts or stylesheets needed -->
+    <!-- Include Plotly JavaScript library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
+    <div id="choropleth-container"></div>
 
-    <ul id="dataList">
-        <!-- Iterate through the processed data and display attributes -->
-        {% for entry in data %}
-        <li>
-            <div class="data-entry">
-                <h3>Date: {{ entry.date }}</h3>
-                <p>Total Cases: {{ entry.total_cases }}</p>
-                <p>Population: {{ entry.population }}</p>
-                <p>Total Vaccinations: {{ entry.total_vaccinations }}</p>
-                <p>People Vaccinated: {{ entry.people_vaccinated }}</p>
-                <p>People Fully Vaccinated: {{ entry.people_fully_vaccinated }}</p>
-                <p>Total Vaccinations per Hundred: {{ entry.total_vaccinations_per_hundred }}</p>
-                <p>People Vaccinated per Hundred: {{ entry.people_vaccinated_per_hundred }}</p>
-                <p>People Fully Vaccinated per Hundred: {{ entry.people_fully_vaccinated_per_hundred }}</p>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
-
-    <!-- Any other HTML content or scripts needed -->
-
+    <script>
+        // Fetch choropleth data from the backend
+        fetch('/get-choropleth-data')
+            .then(response => response.json())
+            .then(data => {
+                // Create and render the choropleth map using Plotly
+                const container = document.getElementById('choropleth-container');
+                Plotly.newPlot(container, JSON.parse(data), {});
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
 </body>
 
 </html>
