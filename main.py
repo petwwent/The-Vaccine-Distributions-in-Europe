@@ -10,7 +10,6 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 @app.get("/", response_class=FileResponse)
 async def index():
-    # Assuming you have an index.html file in the 'templates' directory
     return FileResponse(os.path.join(dir_path, "templates/index.html"))
 
 @app.get("/get-choropleth-data")
@@ -18,11 +17,11 @@ async def get_choropleth_data():
     choropleth_data = construct_choropleth()
     return choropleth_data
 
-@app.get("/", response_class=FileResponse)
+@app.get("/about-us", response_class=FileResponse)
 async def about_us():
     return FileResponse(os.path.join(dir_path, "templates/about us.html"))
 
-@app.get("/", response_class=FileResponse)
+@app.get("/about-app", response_class=FileResponse)
 async def about_app():
     return FileResponse(os.path.join(dir_path, "templates/about App.html"))
 
