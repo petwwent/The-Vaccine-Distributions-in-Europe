@@ -1,4 +1,5 @@
-from fastapi import FastAPI, FileResponse
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from visualization import construct_choropleth  # Import the function
 import os
 
