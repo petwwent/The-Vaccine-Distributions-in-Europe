@@ -97,8 +97,9 @@ async def index():
 
 @app.get("/get-choropleth-data")
 async def get_choropleth_data(location: Optional[str] = Query(None), year_month: Optional[str] = Query(None)):
-    choropleth_data = construct_choropleth(location=location, year_month=year_month)
+    choropleth_data = await construct_choropleth(location=location, year_month=year_month)  # Await here
     return JSONResponse(content=choropleth_data)
+
 
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
