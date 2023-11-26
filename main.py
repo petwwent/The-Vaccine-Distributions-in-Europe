@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 from visualization import construct_choropleth  # Import the function
 import os
 from datetime import datetime
+from typing import Optional
 import json
 import uvicorn
 
@@ -38,32 +39,31 @@ async def serve_static(file_path: str):
         return FileResponse(static_file_path)
 
 @app.get("/get-search-data")
-async def get_search_data(location: str = Query(None), date: str = Query(None)):
+async def get_search_data(location: Optional[str] = Query(None), date: Optional[str] = Query(None)):
     if location is None or date is None:
         return {"error": "Please provide both location and date parameters."}
 
     try:
         date_obj = datetime.strptime(date, "%Y-%m")
-        month_year = date_obj.strftime("%B %Y")
+        year_month = date_obj.strftime("%Y-%m")
 
-        with open(data_file_path, "r") as file:
-            data = json.load(file)
-            search_result = [
-                item for item in data 
-                if item.get("location") == location and item.get("date", "").startswith(month_year)
-            ]
+        if os.path.exists(data_file_path):
+            with open(data_file_path, "r") as file:
+                data = json.load(file)
+                search_result = [
+                    item for item in data 
+                    if item.get("location") == location and item.get("date", "").startswith(year_month)
+                ]
 
-        if not search_result:
-            return {"message": f"No data found for {location} in {month_year}."}
+            if not search_result:
+                return {"message": f"No data found for {location} in {year_month}."}
 
-        return search_result
+            return search_result
+        else:
+            return {"error": "Data file not found."}
 
-    except FileNotFoundError:
-        return {"error": "Data file not found."}
-    except json.JSONDecodeError:
-        return {"error": "Error decoding JSON."}
-    except ValueError:
-        return {"error": "Error parsing date."}
+    except (json.JSONDecodeError, ValueError):
+        return {"error": "Error decoding JSON or parsing date."}
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
 if __name__ == "__main__":
