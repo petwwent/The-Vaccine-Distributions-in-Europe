@@ -34,6 +34,9 @@
             </div>
         </nav>
     </header> 
+    <nav class="navbar navbar-expand-lg">
+        <!-- Your Navbar content -->
+    </nav>
 
     <div>
         <label for="location">Location:</label>
@@ -46,7 +49,6 @@
     </div>
 
     <div id="choroplethMap"></div>
-    <div id="dataDisplay"></div>
 
     <script>
         function updateChoropleth() {
@@ -59,9 +61,6 @@
                 .then(data => {
                     // Update or redraw the choropleth map using the retrieved data
                     Plotly.newPlot('choroplethMap', JSON.parse(data.mapData));
-
-                    // Display the retrieved data
-                    document.getElementById("dataDisplay").innerHTML = JSON.stringify(data.filteredData, null, 2);
                 })
                 .catch(error => console.error('Error:', error));
         }
