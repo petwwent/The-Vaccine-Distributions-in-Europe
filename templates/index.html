@@ -31,6 +31,35 @@
             </ul>
         </div>
     </nav>
+
+
+    <div class="container">
+        
+        <div class="search-container">
+            <input type="text" id="location" placeholder="Enter location">
+            <input type="date" id="date" placeholder="Enter date">
+            <button onclick="searchData()">Search</button>
+        </div>
+
+        <div id="search-results">
+            <!-- Display search results here -->
+        </div>
+    </div>
+
+    <script>
+        async function searchData() {
+            const location = document.getElementById('location').value;
+            const date = document.getElementById('date').value;
+
+            // Make a request to retrieve data from data.json using Fetch API
+            const response = await fetch('/get-search-data?location=' + location + '&date=' + date);
+            const data = await response.json();
+
+            // Display search results
+            const searchResultsDiv = document.getElementById('search-results');
+            searchResultsDiv.innerHTML = JSON.stringify(data, null, 2);
+        }
+    </script>    
     <div id="choropleth-container"></div>
 
     <script>
