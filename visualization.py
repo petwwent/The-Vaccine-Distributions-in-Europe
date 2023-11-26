@@ -2,7 +2,14 @@ import pandas as pd
 import plotly.express as px
 import json
 
-def construct_choropleth(location=None, year_month=None):
+from fastapi import FastAPI, Query
+from fastapi.responses import JSONResponse, FileResponse
+from typing import Optional
+from visualization import construct_choropleth  # Import the function
+import os
+import uvicorn
+
+def construct_choropleth(location=None, year_month=None, output_file=None):
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
     df = pd.read_json('data.json')
 
@@ -13,9 +20,14 @@ def construct_choropleth(location=None, year_month=None):
     df['year_month'] = df['date'].dt.to_period('M').astype(str)
 
     # Filter data based on the provided location or year_month
-    if location:
+    if location and year_month:
+        # Return data for the specified location on the specified date
+        df = df[(df['location'] == location) & (df['year_month'] == year_month)]
+    elif location:
+        # Return all data for the specified location across different dates
         df = df[df['location'] == location]
-    if year_month:
+    elif year_month:
+        # Return data only for the specified date, irrespective of the location
         df = df[df['year_month'] == year_month]
 
     # Group by location and year_month, aggregating total vaccinations
@@ -56,5 +68,12 @@ def construct_choropleth(location=None, year_month=None):
         scope="europe"
     )
 
-    return fig.to_json()
+    # Convert the filtered data to JSON
+    choropleth_json = fig.to_json()
 
+    # If an output file path is provided, write the filtered data to a JSON file
+    if output_file:
+        with open(output_file, 'w') as file:
+            file.write(choropleth_json)
+
+    return choropleth_json
