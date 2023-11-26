@@ -7,23 +7,23 @@ ENV PYTHON_VERSION=3.11.6
 # Install necessary system dependencies
 RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
 
+# Install a specific version of pip (example: 21.3.1)
+RUN pip3 install --no-cache-dir 'pip==21.3.1'
+
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy just the requirements file into the container at /app
-COPY ./app/requirements.txt /app/requirements.txt
+# Copy just the requirements file into the container
+COPY requirements.txt .
 
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+# Install necessary Python packages
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy the entire app directory into the container at /app
-COPY ./app /app
+# Copy the FastAPI app code into the container
+COPY . .
 
-# Set the working directory to /app in the container
-WORKDIR /app
-
-# Expose the port the app runs on
+# Expose the port that the FastAPI app will run on
 EXPOSE 5000
 
 # Command to run the FastAPI app using uvicorn
-CMD ["python3", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["python3", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
