@@ -43,16 +43,14 @@ async def get_search_data(location: str = Query(None), date: str = Query(None)):
         return {"error": "Please provide both location and date parameters."}
 
     try:
-        # Extract month and year from the provided date
         date_obj = datetime.strptime(date, "%Y-%m-%d")
         month_year = date_obj.strftime("%B %Y")
 
-        # Read data from data.json based on provided location and month-year
         with open(data_file_path, "r") as file:
             data = json.load(file)
             search_result = [
                 item for item in data 
-                if item["location"] == location and item["date"].startswith(month_year)
+                if item.get("location") == location and item.get("date", "").startswith(month_year)
             ]
 
         if not search_result:
@@ -64,6 +62,8 @@ async def get_search_data(location: str = Query(None), date: str = Query(None)):
         return {"error": "Data file not found."}
     except (json.JSONDecodeError, ValueError):
         return {"error": "Error decoding JSON or parsing date."}
+    except Exception as e:
+        return {"error": f"An error occurred: {str(e)}"}
 
 if __name__ == "__main__":
 
