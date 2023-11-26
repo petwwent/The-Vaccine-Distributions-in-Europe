@@ -2,12 +2,6 @@ import pandas as pd
 import plotly.express as px
 import json
 
-from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse, FileResponse
-from typing import Optional
-from visualization import construct_choropleth  # Import the function
-import os
-import uvicorn
 
 def construct_choropleth(location=None, year_month=None, output_file=None):
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
