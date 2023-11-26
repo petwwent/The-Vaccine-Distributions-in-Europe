@@ -10,6 +10,9 @@ app = FastAPI()
 # Get the path to the current file directory
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+# Define the path to your data file
+data_file_path = os.path.join(dir_path, "data.json")
+
 @app.get("/", response_class=FileResponse)
 async def index():
     return FileResponse(os.path.join(dir_path, "templates/index.html"))
@@ -35,11 +38,25 @@ async def serve_static(file_path: str):
 
 @app.get("/get-search-data")
 async def get_search_data(location: str = Query(None), date: str = Query(None)):
+    if location is None or date is None:
+        return {"error": "Please provide both location and date parameters."}
+
     # Read data from data.json based on provided location and date
-    with open(os.path.join(dir_path, "data.json")) as json_file:
-        data = json.load(json_file)
-        search_result = [item for item in data if item["location"] == location and item["date"] == date]
-    return search_result
+    try:
+        with open(data_file_path, "r") as file:
+            data = file.read()
+            data_json = json.loads(data)
+            search_result = [item for item in data_json if item["location"] == location and item["date"] == date]
+
+        if not search_result:
+            return {"message": "No data found for the provided location and date."}
+
+        return search_result
+
+    except FileNotFoundError:
+        return {"error": "Data file not found."}
+    except json.JSONDecodeError:
+        return {"error": "Error decoding JSON."}
 
 if __name__ == "__main__":
 
