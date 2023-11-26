@@ -11,15 +11,15 @@ RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
 WORKDIR /app
 
 # Copy the requirements file into the container at /app
-COPY requirements.txt /app
+COPY ./app/requirements.txt /app/requirements.txt
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Copy the rest of the files into the container
-COPY . .
+# Copy the entire app directory into the container at /app
+COPY ./app /app
 
-# Expose the port that the FastAPI app will run on
+# Expose the port the app runs on
 EXPOSE 5000
 
 # Command to run the FastAPI app using uvicorn
