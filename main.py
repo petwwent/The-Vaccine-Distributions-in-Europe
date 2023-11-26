@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse, FileResponse
+from typing import Optional
 from visualization import construct_choropleth  # Import the function
 import os
 import uvicorn
