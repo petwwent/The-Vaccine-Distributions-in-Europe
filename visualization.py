@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import json
 
-def construct_choropleth():
+def construct_choropleth(location=None, year_month=None):
     # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
     df = pd.read_json('data.json')
 
@@ -11,6 +11,12 @@ def construct_choropleth():
 
     # Extract year and month from the date
     df['year_month'] = df['date'].dt.to_period('M').astype(str)
+
+    # Filter data based on the provided location or year_month
+    if location:
+        df = df[df['location'] == location]
+    if year_month:
+        df = df[df['year_month'] == year_month]
 
     # Group by location and year_month, aggregating total vaccinations
     grouped_df = df.groupby(['location', 'year_month'], as_index=False).agg({
@@ -51,3 +57,4 @@ def construct_choropleth():
     )
 
     return fig.to_json()
+
