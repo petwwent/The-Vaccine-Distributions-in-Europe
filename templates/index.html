@@ -34,10 +34,9 @@
 
 
     <div class="container">
-        
         <div class="search-container">
             <input type="text" id="location" placeholder="Enter location">
-            <input type="date" id="date" placeholder="Enter date">
+            <input type="month" id="date" placeholder="Enter date (YYYY-MM)">
             <button onclick="searchData()">Search</button>
         </div>
 
@@ -51,7 +50,7 @@
             const location = document.getElementById('location').value;
             const date = document.getElementById('date').value;
 
-            // Make a request to retrieve data from data.json using Fetch API
+            // Make a request to retrieve data from FastAPI using Fetch API
             const response = await fetch('/get-search-data?location=' + location + '&date=' + date);
             const data = await response.json();
 
@@ -59,7 +58,7 @@
             const searchResultsDiv = document.getElementById('search-results');
             searchResultsDiv.innerHTML = JSON.stringify(data, null, 2);
         }
-    </script>    
+    </script>  
     <div id="choropleth-container"></div>
 
     <script>
