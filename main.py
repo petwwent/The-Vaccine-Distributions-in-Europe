@@ -43,7 +43,7 @@ async def get_search_data(location: str = Query(None), date: str = Query(None)):
         return {"error": "Please provide both location and date parameters."}
 
     try:
-        date_obj = datetime.strptime(date, "%Y-%m-%d")
+        date_obj = datetime.strptime(date, "%Y-%m")
         month_year = date_obj.strftime("%B %Y")
 
         with open(data_file_path, "r") as file:
@@ -60,11 +60,12 @@ async def get_search_data(location: str = Query(None), date: str = Query(None)):
 
     except FileNotFoundError:
         return {"error": "Data file not found."}
-    except (json.JSONDecodeError, ValueError):
-        return {"error": "Error decoding JSON or parsing date."}
+    except json.JSONDecodeError:
+        return {"error": "Error decoding JSON."}
+    except ValueError:
+        return {"error": "Error parsing date."}
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
-
 if __name__ == "__main__":
 
     uvicorn.run(app, host="0.0.0.0", port=5000)
