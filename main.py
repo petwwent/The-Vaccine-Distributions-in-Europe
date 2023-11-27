@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from visualization import create_stacked_bar_chart  # Import the function
 import os
 import uvicorn
