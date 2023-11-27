@@ -57,8 +57,9 @@ def create_stacked_bar_chart(data_path):
         yaxis_title='Location'
     )
 
-    # Display the chart for total vaccinations across all years and locations
-    return json.dumps(chart_data)
+    # Convert the Plotly figure to JSON and return it
+    chart_data = fig_all_years.to_json()
+    return chart_data
 
 # Example: Call the function with the data file path
 data_file_path = 'data.json'  # Replace with your actual file path
