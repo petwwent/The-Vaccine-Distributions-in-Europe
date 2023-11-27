@@ -60,5 +60,5 @@ def create_stacked_bar_chart(data_path):
     fig_all_years.show()
 
 # Example: Call the function with the data file path
-data_file_path = 'converted_data.json'  # Replace with your actual file path
+data_file_path = 'data.json'  # Replace with your actual file path
 create_stacked_bar_chart(data_file_path)
