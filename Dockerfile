@@ -2,7 +2,7 @@
 FROM alpine:3.15.3
 
 # Install necessary system dependencies
-RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
+RUN apk add --no-cache python3 py3-pip
 
 # Install a specific version of pip (example: 21.3.1)
 RUN pip3 install --no-cache-dir 'pip==21.3.1'
