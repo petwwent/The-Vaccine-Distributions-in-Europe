@@ -13,14 +13,11 @@ RUN pip3 install --no-cache-dir 'pip==21.3.1'
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy just the requirements file into the container
-COPY requirements.txt .
-
-# Install necessary Python packages
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-# Copy the FastAPI app code into the container
+# Copy the application code including requirements.txt
 COPY . .
+
+# Install necessary Python packages including the requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Expose the port that the FastAPI app will run on
 EXPOSE 5000
