@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse, FileResponse
-from visualization import construct_choropleth  # Import the function
-from typing import Optional
+from fastapi.responses import JSONResponse
+from visualization import create_stacked_bar_chart  # Import the function
 import os
 import uvicorn
 
@@ -14,10 +13,12 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 async def index():
     return FileResponse(os.path.join(dir_path, "templates/index.html"))
 
-@app.get("/get-choropleth-data")
-async def get_choropleth_data(location: Optional[str] = Query(None), year_month: Optional[str] = Query(None)):
-    choropleth_data = construct_choropleth(location=location, year_month=year_month)
-    return JSONResponse(content=choropleth_data)
+@app.get("/get-stacked-bar-chart")
+async def get_stacked_bar_chart(year: int = Query(2021), month: int = Query(1)):
+    # Construct the file path or use your specific data loading process
+    data_file_path = 'converted_data.json'  # Replace with your actual file path
+    stacked_bar_chart = create_stacked_bar_chart(data_file_path, year, month)
+    return JSONResponse(content=stacked_bar_chart)
 
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
