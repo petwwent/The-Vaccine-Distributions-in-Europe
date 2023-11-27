@@ -14,7 +14,7 @@ RUN pip3 install --no-cache-dir 'pip==21.3.1'
 WORKDIR /app
 
 # Copy just the requirements file into the container
-COPY ./requirements.txt .
+COPY .requirements.txt .
 
 # Install necessary Python packages
 RUN pip3 install --no-cache-dir -r requirements.txt
