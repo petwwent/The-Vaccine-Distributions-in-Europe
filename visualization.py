@@ -57,7 +57,7 @@ def create_stacked_bar_chart(data_path):
     )
 
     # Display the chart for total vaccinations across all years and locations
-    fig_all_years.show()
+    return json.dumps(chart_data)
 
 # Example: Call the function with the data file path
 data_file_path = 'data.json'  # Replace with your actual file path
