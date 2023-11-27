@@ -1,17 +1,24 @@
 {
-  "name": "Python Codespace",
-  "dockerFile": "./Dockerfile",
-  "context": ".",
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "zsh"
-      },
-      "extensions": [
-        "ms-python.python",
-        "ms-toolsai.jupyter"
-      ]
-    }
-  },
-  "forwardPorts": [5000]
+    "name": "Python Dev Container",
+    "image": "python:3.10", // Change the Python version if needed
+
+    // Use the Dockerfile in this folder for building the container.
+    "dockerFile": "Dockerfile",
+
+    // Add extensions to install inside the container.
+    "extensions": [
+        "ms-python.python" // Python extension for VS Code
+        // Add more extensions as needed
+    ],
+
+    // Use the non-root user by default inside the container.
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash" // Change the shell if needed
+    },
+
+    // Set up port forwarding.
+    "forwardPorts": [5000],
+
+    // Command to run after the container is created (optional).
+    "postCreateCommand": "pip install -r requirements.txt && echo 'Post create command executed'"
 }
