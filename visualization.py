@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 import plotly.express as px
 
 def create_stacked_bar_chart(data_path):
