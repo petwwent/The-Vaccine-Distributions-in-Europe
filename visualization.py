@@ -1,59 +1,64 @@
 import pandas as pd
 import plotly.express as px
-import json
 
-def construct_choropleth(location=None, year_month=None):
-    # Load your JSON data into a DataFrame, replace 'your_json_file.json' with the correct file path
-    df = pd.read_json('data.json')
+def create_stacked_bar_chart(data_path):
+    # Load your JSON data into a DataFrame
+    df = pd.read_json(data_path)
 
-    # Convert the 'date' column to datetime if it's not already
+    # Convert the 'date' column to datetime
     df['date'] = pd.to_datetime(df['date'])
 
-    # Extract year and month from the date
-    df['year_month'] = df['date'].dt.to_period('M').astype(str)
+    # Extract year from the date
+    df['year'] = df['date'].dt.year
 
-    # Filter data based on the provided location or year_month
-    if location:
-        df = df[df['location'] == location]
-    if year_month:
-        df = df[df['year_month'] == year_month]
+    # Filter data for the years 2021 to 2023 (inclusive)
+    filtered_data = df[df['year'].between(2021, 2023)]
 
-    # Group by location and year_month, aggregating total vaccinations
-    grouped_df = df.groupby(['location', 'year_month'], as_index=False).agg({
-        'iso_code': 'first',
-        'continent': 'first',
-        'date': 'first',
-        'total_cases': 'sum',
-        'population': 'first',
+    # Group by location for the specified year range, calculating the sum of total vaccinations and using population for colors
+    grouped_data = filtered_data.groupby(['location'], as_index=False).agg({
         'total_vaccinations': 'sum',
-        'people_vaccinated': 'sum',
-        'people_fully_vaccinated': 'sum',
-        'total_vaccinations_per_hundred': 'sum',
-        'people_vaccinated_per_hundred': 'sum',
-        'people_fully_vaccinated_per_hundred': 'sum'
+        'population': 'first',
+        'total_cases': 'first',
+        'people_vaccinated': 'first',
+        'people_fully_vaccinated': 'first',
+        'total_vaccinations_per_hundred': 'first',
+        'people_vaccinated_per_hundred': 'first',
+        'people_fully_vaccinated_per_hundred': 'first'
+        # Add more columns as needed
     })
 
-    # Create a choropleth using Plotly Express based on total vaccinations
-    fig = px.choropleth(
-        grouped_df,
-        locations='location',
-        locationmode='country names',
-        color='total_vaccinations',
-        hover_name='location',
-        hover_data=grouped_df.columns,
-        animation_frame='year_month',
-        color_continuous_scale='Viridis',
-        title="Total Vaccinations Choropleth Across Locations",
-        width=1200,
+    # Sort the data by total vaccinations in ascending order
+    grouped_data = grouped_data.sort_values('total_vaccinations', ascending=True)
+
+    # Create a stacked bar chart for total vaccinations from 2021 to 2023
+    fig_all_years = px.bar(
+        grouped_data,
+        x='total_vaccinations',
+        y='location',
+        orientation='h',
+        color='population',  # Color based on population
+        labels={'total_vaccinations': 'Total Vaccinations', 'location': 'Location'},
+        title='Total Vaccinations from 2021 to 2023 (Ascending Order)',
+        width=1000,
         height=800,
-        projection='natural earth'
+        text='total_vaccinations',  # Display total vaccinations at the tip of bars
+        hover_data=['population', 'total_cases', 'people_vaccinated', 'people_fully_vaccinated',
+                    'total_vaccinations_per_hundred', 'people_vaccinated_per_hundred',
+                    'people_fully_vaccinated_per_hundred']
+        # Add more columns as needed
     )
 
-    # Use Europe-specific projection and set the initial center and zoom
-    fig.update_geos(
-        projection_type="natural earth",
-        center=dict(lon=10, lat=50),
-        scope="europe"
+    fig_all_years.update_traces(texttemplate='%{text:.2s}', textposition='outside')  # Adjust text display
+
+    fig_all_years.update_layout(
+        yaxis={'categoryorder': 'total ascending'},
+        xaxis_title='Total Vaccinations',
+        yaxis_title='Location'
     )
 
-    return fig.to_json()
+    # Display the chart for total vaccinations across all years and locations
+    fig_all_years.show()
+
+# Example: Call the function with the data file path
+data_file_path = 'converted_data.json'  # Replace with your actual file path
+create_stacked_bar_chart(data_file_path)
