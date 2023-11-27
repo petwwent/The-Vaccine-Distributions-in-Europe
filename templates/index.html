@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The-Vaccine-Distributions-in-Europe From 2021-2023</title>
+    <title>Stacked Bar Chart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="#">The-Vaccine-Distributions-in-Europe From 2021-2023</a>
+            <a class="navbar-brand" href="#">Stacked Bar Chart</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -33,44 +33,49 @@
                 </ul>
             </div>
         </nav>
-    </header> 
-    <nav class="navbar navbar-expand-lg">
-        <!-- Your Navbar content -->
-    </nav>
+    </header>
 
     <div>
-        <label for="location">Location:</label>
-        <input type="text" id="location" placeholder="Enter location">
+        <label for="year">Select Year:</label>
+        <select id="year">
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+        </select>
 
-        <label for="yearMonth">Year-Month:</label>
-        <input type="text" id="yearMonth" placeholder="Enter year-month (e.g., 2022-05)">
+        <label for="month">Select Month:</label>
+        <select id="month">
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <!-- Add other months -->
+        </select>
 
-        <button onclick="updateChoropleth()">Update Map</button>
+        <button onclick="updateStackedBarChart()">Update Chart</button>
     </div>
 
-    <div id="choroplethMap"></div>
+    <div id="stackedBarChart"></div>
 
     <script>
-        function updateChoropleth() {
-            var locationInput = document.getElementById("location").value;
-            var yearMonthInput = document.getElementById("yearMonth").value;
+        function updateStackedBarChart() {
+            var selectedYear = document.getElementById("year").value;
+            var selectedMonth = document.getElementById("month").value;
 
-            // Make a request to the server with the input values
-            fetch(`/get-choropleth-data?location=${locationInput}&year_month=${yearMonthInput}`)
+            // Make a request to the server with the selected year and month
+            fetch(`/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Update or redraw the choropleth map using the retrieved data
-                    Plotly.newPlot('choroplethMap', JSON.parse(data));
+                    // Update or redraw the stacked bar chart using the retrieved data
+                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
                 })
                 .catch(error => console.error('Error:', error));
         }
 
-        // Fetch initial choropleth data from the backend and render the map
-        fetch('/get-choropleth-data')
+        // Fetch initial stacked bar chart data from the backend and render the chart
+        fetch('/get-stacked-bar-chart')
             .then(response => response.json())
             .then(data => {
-                // Create and render the choropleth map using Plotly
-                Plotly.newPlot('choroplethMap', JSON.parse(data));
+                // Create and render the stacked bar chart using Plotly
+                Plotly.newPlot('stackedBarChart', JSON.parse(data));
             })
             .catch(error => console.error('Error:', error));
     </script>
