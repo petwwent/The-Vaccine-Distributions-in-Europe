@@ -1,12 +1,25 @@
-// .devcontainer/devcontainer.json
 {
   "name": "Python Codespace",
-  "dockerFile": "./Dockerfile",
-  "image": "python:3.9",
-  "extensions": [
-    "ms-python.python"
-  ],
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
-  }
+  "dockerFile": "../Dockerfile",
+  "context": ".",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+        // Add other extensions if needed
+      ]
+    }
+  },
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Application",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000"
 }
