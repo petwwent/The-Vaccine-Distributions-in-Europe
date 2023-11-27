@@ -1,6 +1,6 @@
 {
   "name": "Python Codespace",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python",
+  "dockerFile": "Dockerfile",
   "settings": {
     "terminal.integrated.defaultProfile.linux": "zsh"
   },
