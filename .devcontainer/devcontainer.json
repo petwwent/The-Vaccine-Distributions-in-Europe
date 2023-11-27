@@ -1,25 +1,15 @@
 {
-  // disable command overriding and updating remote user ID
-  "overrideCommand": false,
-  "userEnvProbe": "loginShell",
-  "updateRemoteUserUID": false,
-
-  // build development environment on creation, make sure you already have shell.nix
-  "onCreateCommand": "nix-shell --command 'echo done building nix dev environment'",
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "arrterian.nix-env-selector",
-        "fsevenm.run-it-on",
-        "jnoortheen.nix-ide",
-        "ms-python.python"
-      ]
-    }
+  "name": "Python Codespace",
+  "image": "mcr.microsoft.com/vscode/devcontainers/python",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh"
   },
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    // Add other extensions if needed
+  ],
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [5000],
   "portsAttributes": {
     "5000": {
@@ -28,6 +18,5 @@
     }
   },
 
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "nix-shell --run 'uvicorn main:app --host 0.0.0.0 --port 5000'"
+  "postCreateCommand": "pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000"
 }
