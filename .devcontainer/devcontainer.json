@@ -1,6 +1,6 @@
 {
   "name": "Python Codespace",
-  "dockerFile": "Dockerfile",
+  "dockerFile": "./Dockerfile",
   "settings": {
     "terminal.integrated.defaultProfile.linux": "zsh"
   },
