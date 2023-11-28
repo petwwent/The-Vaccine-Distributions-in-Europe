@@ -7,11 +7,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
-    <!-- Include Plotly JavaScript library -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-
-<body>
+<body onload="fetchAndDisplayTotalVaccinations()">
     <header>
         <nav class="navbar navbar-expand-lg">
             <a class="navbar-brand" href="#">Stacked Bar Chart</a>
@@ -35,49 +33,73 @@
         </nav>
     </header>
 
-    <div>
-        <label for="year">Select Year:</label>
-        <select id="year">
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-        </select>
-
-        <label for="month">Select Month:</label>
-        <select id="month">
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <!-- Add other months -->
-        </select>
-
-        <button onclick="updateStackedBarChart()">Update Chart</button>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="year">Select Year:</label>
+                <select id="year" class="form-control">
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="month">Select Month:</label>
+                <select id="month" class="form-control">
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                   
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>&nbsp;</label>
+                <button onclick="updateStackedBarChart()" class="btn btn-primary btn-block">Update Chart</button>
+            </div>
+        </div>
     </div>
 
-    <div id="stackedBarChart"></div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="stackedBarChart"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        function updateStackedBarChart() {
-            var selectedYear = document.getElementById("year").value;
-            var selectedMonth = document.getElementById("month").value;
-
-            // Make a request to the server with the selected year and month
-            fetch(`/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`)
+        function fetchAndDisplayTotalVaccinations() {
+            fetch('/get-stacked-bar-chart')
                 .then(response => response.json())
                 .then(data => {
-                    // Update or redraw the stacked bar chart using the retrieved data
                     Plotly.newPlot('stackedBarChart', JSON.parse(data));
                 })
                 .catch(error => console.error('Error:', error));
         }
 
-        // Fetch initial stacked bar chart data from the backend and render the chart
-        fetch('/get-stacked-bar-chart')
-            .then(response => response.json())
-            .then(data => {
-                // Create and render the stacked bar chart using Plotly
-                Plotly.newPlot('stackedBarChart', JSON.parse(data));
-            })
-            .catch(error => console.error('Error:', error));
+        function updateStackedBarChart() {
+            var selectedYear = document.getElementById("year").value;
+            var selectedMonth = document.getElementById("month").value;
+
+            fetch(`/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`)
+                .then(response => response.json())
+                .then(data => {
+                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Trigger the chart update function when the page loads
+        fetchAndDisplayTotalVaccinations();
     </script>
 </body>
 </html>
