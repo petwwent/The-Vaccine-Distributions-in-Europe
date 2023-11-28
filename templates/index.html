@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <script>
+     <script>
         function fetchAndDisplayTotalVaccinations() {
             fetch('/get-stacked-bar-chart')
                 .then(response => response.json())
@@ -85,21 +85,6 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
-
-        function updateStackedBarChart() {
-            var selectedYear = document.getElementById("year").value;
-            var selectedMonth = document.getElementById("month").value;
-
-            fetch(`/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`)
-                .then(response => response.json())
-                .then(data => {
-                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Trigger the chart update function when the page loads
-        fetchAndDisplayTotalVaccinations();
     </script>
 </body>
 </html>
