@@ -77,14 +77,27 @@
     </div>
 
      <script>
-        function fetchAndDisplayTotalVaccinations() {
-            fetch('/get-stacked-bar-chart')
-                .then(response => response.json())
-                .then(data => {
-                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
+    function fetchAndDisplayTotalVaccinations() {
+        fetch('/get-stacked-bar-chart')
+            .then(response => response.json())
+            .then(data => {
+                Plotly.newPlot('stackedBarChart', JSON.parse(data));
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateStackedBarChart() {
+        const selectedYear = document.getElementById('year').value;
+        const selectedMonth = document.getElementById('month').value;
+
+        const url = `/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                Plotly.newPlot('stackedBarChart', JSON.parse(data));
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 </body>
 </html>
