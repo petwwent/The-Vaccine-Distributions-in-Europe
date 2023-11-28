@@ -87,17 +87,22 @@
     }
 
     function updateStackedBarChart() {
-        const selectedYear = document.getElementById('year').value;
-        const selectedMonth = document.getElementById('month').value;
+    const year = document.getElementById('year').value;
+    const month = document.getElementById('month').value;
 
-        const url = `/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                Plotly.newPlot('stackedBarChart', data);
-            })
-            .catch(error => console.error('Error:', error));
-    }
+    fetch(`/get-stacked-bar-chart?year=${year}&month=${month}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Updated Data:', data); // Log the updated data received
+            Plotly.newPlot('stackedBarChart', JSON.parse(data));
+        })
+        .catch(error => console.error('Error:', error));
+}
 </script>
 </body>
 </html>
