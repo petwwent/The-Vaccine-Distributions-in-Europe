@@ -16,7 +16,7 @@ async def index():
 @app.get("/get-stacked-bar-chart")
 async def get_stacked_bar_chart(year: int = Query(2021), month: int = Query(1)):
     # Construct the file path or use your specific data loading process
-    data_file_path = 'converted_data.json'  # Replace with your actual file path
+    data_file_path = 'data.json'  # Replace with your actual file path
     stacked_bar_chart = create_stacked_bar_chart(data_file_path, year, month)
     return JSONResponse(content=stacked_bar_chart)
 
