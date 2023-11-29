@@ -15,6 +15,12 @@ body {
     height: 100%;
 }
 
+.container mt-4 {
+   
+    align-items: center;
+    
+}
+
 .container {
     display: flex;
     flex-direction: column;
