@@ -18,10 +18,6 @@ async def get_stacked_bar_chart():
     chart = create_stacked_bar_chart('converted_data.json')  # Replace with your data path
     return chart.to_html()
 
-@app.get("/search", response_class=FileResponse)
-async def search():
-    return FileResponse(os.path.join(dir_path, "templates/search.html"))
-
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
     return FileResponse(os.path.join(dir_path, "templates/aboutus.html"))
