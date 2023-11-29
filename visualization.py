@@ -13,9 +13,8 @@ def create_stacked_bar_chart(data_path, selected_year=None, selected_month=None)
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month_name()
 
-        
     # Group by location for the specified year range, calculating the sum of total vaccinations and using population for colors
-    grouped_data = filtered_data.groupby(['location'], as_index=False).agg({
+    grouped_data = df.groupby(['location'], as_index=False).agg({
         'total_vaccinations': 'sum',
         'population': 'first',
         'total_cases': 'first',
@@ -59,4 +58,3 @@ def create_stacked_bar_chart(data_path, selected_year=None, selected_month=None)
     # Convert the Plotly figure to JSON and return it
     chart_data = fig_all_years.to_json()
     return chart_data
-
