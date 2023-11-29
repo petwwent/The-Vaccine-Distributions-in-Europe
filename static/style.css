@@ -1,8 +1,11 @@
 
 
-#stackedBarChart {
+.col-md-12 {
     width: 100%; /* Occupy full width */
     margin: 0 auto; /* Horizontally center within its parent container */
 }
-
+.container mt-4 {
+    width: 100%; /* Occupy full width */
+    margin: 0 auto; /* Horizontally center within its parent container */
+}
 
