@@ -16,19 +16,11 @@ body {
 }
 
 #stackedBarChart {
-    margin: 0 auto !important; /* Horizontally center */
-    width: 100%; /* Adjust the width as needed */
-    /* Other styles you want to apply */
+    width: 100%; /* Occupy full width */
+    margin: 0 auto; /* Horizontally center within its parent container */
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 70vh;
-    width: 1000px !important;
-}
+
 
 .Us-container{
     margin-top: 20px;
