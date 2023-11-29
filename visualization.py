@@ -1,20 +1,15 @@
 import pandas as pd
-import json
 import plotly.express as px
 
-def create_stacked_bar_chart(data_path, selected_year=None, selected_month=None):
+def create_stacked_bar_chart(data_path):
     # Load your JSON data into a DataFrame
     df = pd.read_json(data_path)
 
     # Convert the 'date' column to datetime
     df['date'] = pd.to_datetime(df['date'])
 
-    # Extract year and month from the date
-    df['year'] = df['date'].dt.year
-    df['month'] = df['date'].dt.month_name()
-
-    # Group by location for the specified year range, calculating the sum of total vaccinations and using population for colors
-    grouped_data = df.groupby(['location'], as_index=False).agg({
+    # Group by location and date, calculating the sum of total vaccinations and other aggregated columns
+    grouped_data = df.groupby(['location', 'date'], as_index=False).agg({
         'total_vaccinations': 'sum',
         'population': 'first',
         'total_cases': 'first',
@@ -22,40 +17,51 @@ def create_stacked_bar_chart(data_path, selected_year=None, selected_month=None)
         'people_fully_vaccinated': 'first',
         'total_vaccinations_per_hundred': 'first',
         'people_vaccinated_per_hundred': 'first',
-        'people_fully_vaccinated_per_hundred': 'first'
+        'people_fully_vaccinated_per_hundred': 'first',
         # Add more columns as needed
     })
 
-    # Sort the data by total vaccinations in ascending order
-    grouped_data = grouped_data.sort_values('total_vaccinations', ascending=True)
-
-    # Create a stacked bar chart for total vaccinations from 2021 to 2023
-    fig_all_years = px.bar(
+    # Create a stacked bar chart for total vaccinations by location with animation_frame
+    fig = px.bar(
         grouped_data,
         x='total_vaccinations',
         y='location',
         orientation='h',
         color='population',  # Color based on population
         labels={'total_vaccinations': 'Total Vaccinations', 'location': 'Location'},
-        title='Total Vaccinations from 2021 to 2023 (Ascending Order)',
+        title='Total Vaccinations by Location',
         width=1000,
         height=800,
         text='total_vaccinations',  # Display total vaccinations at the tip of bars
         hover_data=['population', 'total_cases', 'people_vaccinated', 'people_fully_vaccinated',
                     'total_vaccinations_per_hundred', 'people_vaccinated_per_hundred',
-                    'people_fully_vaccinated_per_hundred']
-        # Add more columns as needed
+                    'people_fully_vaccinated_per_hundred'],
+        animation_frame='date',  # Use date as animation frame
+        range_x=[0, grouped_data['total_vaccinations'].max()]  # Set x-axis range
     )
 
-    fig_all_years.update_traces(texttemplate='%{text:.2s}', textposition='outside')  # Adjust text display
+    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')  # Adjust text display
 
-    fig_all_years.update_layout(
+    fig.update_layout(
         yaxis={'categoryorder': 'total ascending'},
         xaxis_title='Total Vaccinations',
-        yaxis_title='Location'
+        yaxis_title='Location',
+        updatemenus=[dict(type='buttons',
+                          buttons=[dict(label='Play', method='animate', args=[None, {'frame': {'duration': 200}}]),
+                                   dict(label='Pause', method='animate', args=[[None], {'frame': {'duration': 0}, 'mode': 'immediate'}])])],
+        sliders=[dict(currentvalue={'prefix': 'Date: '}, steps=[])]  # Empty steps for slider initialization
     )
 
-    # Convert the Plotly figure to JSON and return it
-    chart_data = fig_all_years.to_json()
-    return chart_data
+    frames = [dict(data=[dict(type='bar',
+                               x=df[df['date'] == date]['total_vaccinations'],
+                               y=df[df['date'] == date]['location'],
+                               orientation='h',
+                               text=df[df['date'] == date]['total_vaccinations'],
+                               hoverinfo='text',
+                               marker={'color': df[df['date'] == date]['population']})],
+                   name=str(date)) for date in df['date'].sort_values().unique()]
+
+    fig.frames = frames  # Assign frames for animation
+
+    return fig
 
