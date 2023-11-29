@@ -58,3 +58,4 @@ def create_stacked_bar_chart(data_path, selected_year=None, selected_month=None)
     # Convert the Plotly figure to JSON and return it
     chart_data = fig_all_years.to_json()
     return chart_data
+
