@@ -64,4 +64,6 @@ def create_stacked_bar_chart(data_path):
     fig.frames = frames  # Assign frames for animation
 
     return fig
+data_file_path = 'data.json'
+
 
