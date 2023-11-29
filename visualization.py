@@ -3,7 +3,7 @@ import json
 import plotly.express as px
 
 def create_stacked_bar_chart(data_path, year=None, month=None):
-   # Load your JSON data into a DataFrame
+    # Load your JSON data into a DataFrame
     df = pd.read_json(data_path)
 
     # Convert the 'date' column to datetime
@@ -12,8 +12,8 @@ def create_stacked_bar_chart(data_path, year=None, month=None):
     # Extract year from the date
     df['year'] = df['date'].dt.year
 
-    # Filter data for the years 2021 to 2023 (inclusive)
-    filtered_data = df[df['year'].between(2021, 2023)]
+    # Filter data for the specified year and month
+    filtered_data = df[(df['year'] == year) & (df['date'].dt.month == month)]
         
     # Group by location for the specified year range, calculating the sum of total vaccinations and using population for colors
     grouped_data = filtered_data.groupby(['location'], as_index=False).agg({
