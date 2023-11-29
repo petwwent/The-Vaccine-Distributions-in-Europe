@@ -13,14 +13,10 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 async def index():
     return FileResponse(os.path.join(dir_path, "templates/index.html"))
 
-@app.get("/get-stacked-bar-chart")
-async def get_stacked_bar_chart(year: int = Query(None), month: int = Query(None)):
-    # Construct the file path or use your specific data loading process
-    data_file_path = 'data.json'  # Replace with your actual file path
-    
-    chart_data = create_stacked_bar_chart(data_file_path, selected_year=year, selected_month=month)
-
-    return JSONResponse(content=chart_data)
+@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
+async def get_stacked_bar_chart():
+    chart = create_stacked_bar_chart('converted_data.json')  # Replace with your data path
+    return chart.to_html()
 
 @app.get("/search", response_class=FileResponse)
 async def search():
