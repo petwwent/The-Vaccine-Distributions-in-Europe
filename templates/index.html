@@ -86,10 +86,14 @@
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                Plotly.newPlot('stackedBarChart', JSON.parse(data));
+                Plotly.react('stackedBarChart', JSON.parse(data));
             })
             .catch(error => console.error('Error:', error));
     }
+
+    // Call updateStackedBarChart function when the year or month dropdowns change
+    document.getElementById('year').addEventListener('change', updateStackedBarChart);
+    document.getElementById('month').addEventListener('change', updateStackedBarChart);
 </script>
 
 </body>
