@@ -64,22 +64,33 @@
     </div>
 
     <script>
-        function updateStackedBarChart() {
-            const selectedYear = document.getElementById('year').value;
-            const selectedMonth = document.getElementById('month').value;
+    window.onload = function() {
+        fetchAndDisplayTotalVaccinations();
+    };
 
-            // Construct the URL for fetching data based on year and month
-            const url = `/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`;
+    function fetchAndDisplayTotalVaccinations() {
+        fetch('/get-stacked-bar-chart')
+            .then(response => response.json())
+            .then(data => {
+                Plotly.newPlot('stackedBarChart', JSON.parse(data));
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
-            // Fetch data from the Flask route that connects to the Dash app
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Update the Plotly chart with new data
-                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
+    function updateStackedBarChart() {
+        const selectedYear = document.getElementById('year').value;
+        const selectedMonth = document.getElementById('month').value;
+
+        const url = `/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                Plotly.newPlot('stackedBarChart', JSON.parse(data));
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
 </body>
 </html>
