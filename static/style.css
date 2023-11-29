@@ -18,6 +18,8 @@ body {
 /* Center the chart div */
 #stackedBarChart {
     width: 100%; /* Occupy full width */
+    margin-left: 50px;
+    margin-top: 20px;
     display: block;
     margin: 0 auto; /* Horizontally center within its parent container */
 }
