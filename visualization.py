@@ -1,7 +1,7 @@
 import pandas as pd
 import plotly.express as px
 
-def create_stacked_bar_chart(data_path):
+def create_stacked_bar_chart(data_path, selected_year=None, selected_month=None):
     # Load your JSON data into a DataFrame
     df = pd.read_json(data_path)
 
