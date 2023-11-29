@@ -30,9 +30,11 @@
     <script>
         function fetchAndDisplayStackedBarChart() {
             fetch('/get-stacked-bar-chart')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('stackedBarChart').innerHTML = html;
+                .then(response => response.json())
+                .then(data => {
+                    // Create Plotly chart using fetched data
+                    const chartDiv = document.getElementById('stackedBarChart');
+                    Plotly.newPlot(chartDiv, data);
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -40,6 +42,5 @@
         // Call fetchAndDisplayStackedBarChart on page load
         window.onload = fetchAndDisplayStackedBarChart;
     </script>
-
 </body>
 </html>
