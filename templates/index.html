@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stacked Bar Chart</title>
+    <title>Total Vaccinations chart 2021-2023</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
@@ -13,46 +13,10 @@
     <header>
         <nav class="navbar navbar-expand-lg">
             <a class="navbar-brand" href="/">Home</a>
-            <a class="navbar-brand" href="/search">Search</a> <!-- Link to the search functionality -->
             <a class="navbar-brand" href="aboutus">About Us</a>
             <a class="navbar-brand" href="aboutapp">About App</a>
         </nav>
     </header>
-
-    <!-- Your container for search -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="year">Select Year:</label>
-                <select id="year" class="form-control">
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="month">Select Month:</label>
-                <select id="month" class="form-control">
-                    <option value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label>&nbsp;</label>
-                <button onclick="updateStackedBarChart()" class="btn btn-primary btn-block">Update Chart</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Container for the visualization -->
     <div class="container mt-4">
@@ -64,37 +28,18 @@
     </div>
 
     <script>
-    window.onload = function() {
-        fetchAndDisplayTotalVaccinations();
-    };
+        function fetchAndDisplayStackedBarChart() {
+            fetch('/get-stacked-bar-chart')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('stackedBarChart').innerHTML = html;
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-    function fetchAndDisplayTotalVaccinations() {
-        fetch('/get-stacked-bar-chart')
-            .then(response => response.json())
-            .then(data => {
-                Plotly.newPlot('stackedBarChart', JSON.parse(data));
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    function updateStackedBarChart() {
-        const selectedYear = document.getElementById('year').value;
-        const selectedMonth = document.getElementById('month').value;
-
-        const url = `/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                Plotly.react('stackedBarChart', JSON.parse(data));
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    // Call updateStackedBarChart function when the year or month dropdowns change
-    document.getElementById('year').addEventListener('change', updateStackedBarChart);
-    document.getElementById('month').addEventListener('change', updateStackedBarChart);
-</script>
+        // Call fetchAndDisplayStackedBarChart on page load
+        window.onload = fetchAndDisplayStackedBarChart;
+    </script>
 
 </body>
 </html>
