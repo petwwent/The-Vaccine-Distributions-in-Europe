@@ -15,7 +15,7 @@ async def index():
 
 @app.get("/get-stacked-bar-chart", response_class=FileResponse)
 async def get_stacked_bar_chart():
-    chart = create_stacked_bar_chart('converted_data.json')  # Replace with your data path
+    chart = create_stacked_bar_chart('data.json')  # Replace with your data path
     return chart.to_html()
 
 @app.get("/aboutus", response_class=FileResponse)
