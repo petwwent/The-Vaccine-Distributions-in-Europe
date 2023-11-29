@@ -17,15 +17,21 @@ async def index():
 async def get_stacked_bar_chart(year: int = Query(2021), month: int = Query(1)):
     # Construct the file path or use your specific data loading process
     data_file_path = 'data.json'  # Replace with your actual file path
-    stacked_bar_chart = create_stacked_bar_chart(data_file_path, year, month)
-    return JSONResponse(content=stacked_bar_chart)
+    create_stacked_bar_chart(data_file_path, selected_year=year, selected_month=month)
+    # Return a success message or desired JSON response
+    return JSONResponse(content={"message": "Stacked bar chart created for the selected year and month."})
+
+@app.get("/search", response_class=FileResponse)
+async def search():
+    return FileResponse(os.path.join(dir_path, "templates/search.html"))
 
 @app.get("/update-stacked-bar-chart")
 async def update_stacked_bar_chart(year: int = Query(2021), month: int = Query(1)):
     # Construct the file path or use your specific data loading process
     data_file_path = 'updated_data.json'  # Replace with your updated data file path
-    stacked_bar_chart = create_stacked_bar_chart(data_file_path, year, month)
-    return JSONResponse(content=stacked_bar_chart)
+    create_stacked_bar_chart(data_file_path, selected_year=year, selected_month=month)
+    # Return a success message or desired JSON response
+    return JSONResponse(content={"message": "Stacked bar chart updated for the selected year and month."})
 
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
