@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Total Vaccinations chart 2021-2023</title>
+    <title>Total Vaccinations Chart 2021-2023</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
@@ -22,19 +22,20 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-12">
-                <div id="stackedBarChart"></div>
+                <div id="stackedBarChart">
+                    <!-- Plotly chart will be displayed here -->
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- JavaScript to load the chart -->
     <script>
         function fetchAndDisplayStackedBarChart() {
             fetch('/get-stacked-bar-chart')
-                .then(response => response.json())
-                .then(data => {
-                    // Create Plotly chart using fetched data
-                    const chartDiv = document.getElementById('stackedBarChart');
-                    Plotly.newPlot(chartDiv, data);
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('stackedBarChart').innerHTML = html;
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -42,5 +43,6 @@
         // Call fetchAndDisplayStackedBarChart on page load
         window.onload = fetchAndDisplayStackedBarChart;
     </script>
+
 </body>
 </html>
