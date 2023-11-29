@@ -18,12 +18,7 @@ async def get_stacked_bar_chart(year: int = Query(None), month: int = Query(None
     # Construct the file path or use your specific data loading process
     data_file_path = 'data.json'  # Replace with your actual file path
     
-    if year is None or month is None:
-        # Fetch total vaccination chart without specific filtering
-        chart_data = create_stacked_bar_chart(data_file_path)
-    else:
-        # Fetch total vaccination chart for the selected year and month
-        chart_data = create_stacked_bar_chart(data_file_path, selected_year=year, selected_month=month)
+    chart_data = create_stacked_bar_chart(data_file_path, selected_year=year, selected_month=month)
 
     return JSONResponse(content=chart_data)
 
