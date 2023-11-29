@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-<body onload="fetchAndDisplayTotalVaccinations()">
+<body>
     <header>
         <nav class="navbar navbar-expand-lg">
             <a class="navbar-brand" href="/">Home</a>
@@ -64,15 +64,6 @@
     </div>
 
     <script>
-        function fetchAndDisplayTotalVaccinations() {
-            fetch('/get-stacked-bar-chart')
-                .then(response => response.json())
-                .then(data => {
-                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
         function updateStackedBarChart() {
             const selectedYear = document.getElementById('year').value;
             const selectedMonth = document.getElementById('month').value;
@@ -80,12 +71,12 @@
             // Construct the URL for fetching data based on year and month
             const url = `/get-stacked-bar-chart?year=${selectedYear}&month=${selectedMonth}`;
 
-            // Fetch data from the Flask route that connects to Dash app
+            // Fetch data from the Flask route that connects to the Dash app
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     // Update the Plotly chart with new data
-                    Plotly.react('stackedBarChart', JSON.parse(data));
+                    Plotly.newPlot('stackedBarChart', JSON.parse(data));
                 })
                 .catch(error => console.error('Error:', error));
         }
