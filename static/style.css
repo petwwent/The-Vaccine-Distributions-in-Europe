@@ -16,7 +16,7 @@ body {
 }
 
 #stackedBarChart {
-    margin: 0 auto; /* Horizontally center */
+    margin: 0 auto !important; /* Horizontally center */
     width: 100%; /* Adjust the width as needed */
     /* Other styles you want to apply */
 }
