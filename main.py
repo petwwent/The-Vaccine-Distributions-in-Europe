@@ -8,22 +8,16 @@ app = FastAPI()
 
 # Get the path to the current file directory
 dir_path = os.path.dirname(os.path.realpath(__file__))
+data_file_path = 'data.json' 
 
-@app.get("/", response_class=FileResponse)
+@app.get("/", response_class=HTMLResponse)
 async def index():
-    return FileResponse(os.path.join(dir_path, "templates/index.html"))
+    chart = create_stacked_bar_chart(data_file_path)  # Call the function to generate the chart
+    
+    # Convert the figure to HTML and return it as the response
+    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
+    return HTMLResponse(content=chart_html)
 
-@app.get("/get-stacked-bar-chart", response_class=FileResponse)
-async def get_stacked_bar_chart():
-    # Use your specific data loading process
-    data_file_path = 'data.json'  # Replace with your actual file path
-    
-    # Generate the Plotly chart and get its HTML representation
-    chart_data = create_stacked_bar_chart(data_file_path)  # Modify parameters if needed
-    chart_html = chart_data.to_html(full_html=False, include_plotlyjs='cdn')
-    
-    # Return the HTML content as a FileResponse
-    return FileResponse(path=chart_html, media_type='text/html')
 
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
