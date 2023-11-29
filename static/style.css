@@ -15,10 +15,10 @@ body {
     height: 100%;
 }
 
-.container mt-4 {
-   
-    align-items: center;
-    
+#stackedBarChart {
+    margin: 0 auto; /* Horizontally center */
+    width: 100%; /* Adjust the width as needed */
+    /* Other styles you want to apply */
 }
 
 .container {
