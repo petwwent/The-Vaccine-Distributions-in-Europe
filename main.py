@@ -18,11 +18,18 @@ async def get_stacked_bar_chart(year: int = Query(None), month: int = Query(None
     # Construct the file path or use your specific data loading process
     data_file_path = 'data.json'  # Replace with your actual file path
     
-    # Generate the chart data
     chart_data = create_stacked_bar_chart(data_file_path, selected_year=year, selected_month=month)
     
-    # Return the chart data as a JSON response
-    return JSONResponse(content=chart_data, status_code=200)
+    # Convert Plotly figure to HTML content
+    chart_html = chart_data.to_html(full_html=False, include_plotlyjs='cdn')
+    
+    # Save HTML content to a file
+    html_file_path = 'chart.html'
+    with open(html_file_path, 'w') as file:
+        file.write(chart_html)
+    
+    # Return the file as a FileResponse
+    return FileResponse(path=html_file_path, media_type='text/html', filename='stacked_bar_chart.html')
 
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
