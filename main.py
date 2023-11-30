@@ -12,21 +12,17 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
-
-@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
-async def get_stacked_bar_chart(request: Request):
     chart = create_stacked_bar_chart(data_file_path)
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
-    return templates.TemplateResponse("stacked_bar_chart.html", {"request": request, "chart_html": chart_html})
+    return templates.TemplateResponse("index.html", {"request": request, "chart_html": chart_html})
 
-@app.get("/aboutus", response_class=FileResponse)
-async def aboutus():
-    return FileResponse(os.path.join(dir_path, "templates/aboutus.html"))
+@app.get("/aboutus", response_class=HTMLResponse)
+async def aboutus(request: Request):
+    return templates.TemplateResponse("aboutus.html", {"request": request})
 
-@app.get("/aboutapp", response_class=FileResponse)
-async def aboutapp():
-    return FileResponse(os.path.join(dir_path, "templates/aboutapp.html"))
+@app.get("/aboutapp", response_class=HTMLResponse)
+async def aboutapp(request: Request):
+    return templates.TemplateResponse("aboutapp.html", {"request": request})
 
 @app.get("/static/{file_path:path}", response_class=FileResponse)
 async def serve_static(file_path: str):
