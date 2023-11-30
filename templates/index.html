@@ -19,7 +19,7 @@
     </header>
     <!-- Container for the visualization -->
     <div id="stackedBarChart">
-        <!-- Plotly chart will be displayed here -->
+        {{ chart_html | safe }}
     </div>
     <!-- JavaScript to load the chart -->
     <script>
