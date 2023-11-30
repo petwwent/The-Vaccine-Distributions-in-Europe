@@ -15,6 +15,12 @@ async def index(request: Request):
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return templates.TemplateResponse("index.html", {"request": request, "chart_html": chart_html})
 
+@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
+async def get_stacked_bar_chart(request: Request):
+    chart = create_stacked_bar_chart(data_file_path)
+    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
+    return templates.TemplateResponse("stacked_bar_chart.html", {"request": request, "chart_html": chart_html})
+
 @app.get("/aboutus", response_class=HTMLResponse)
 async def aboutus(request: Request):
     return templates.TemplateResponse("aboutus.html", {"request": request})
@@ -23,11 +29,11 @@ async def aboutus(request: Request):
 async def aboutapp(request: Request):
     return templates.TemplateResponse("aboutapp.html", {"request": request})
 
-@app.get("/static/{file_path:path}", response_class=FileResponse)
-async def serve_static(file_path: str):
+@app.get("/static/{file_path:path}", response_class=HTMLResponse)
+async def serve_static(file_path: str, request: Request):
     static_file_path = os.path.join(dir_path, "static", file_path)
     if os.path.exists(static_file_path):
-        return FileResponse(static_file_path)
+        return templates.TemplateResponse(static_file_path, {"request": request})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
