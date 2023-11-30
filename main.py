@@ -27,8 +27,6 @@ async def aboutapp(request: Request):
 async def serve_static(file_path: str, request: Request):
     static_file_path = os.path.join(dir_path, "static", file_path)
     if os.path.exists(static_file_path):
-        return FileResponse(static_file_path, media_type="text/css")  # Adjust the media type if needed
-    else:
-        return HTMLResponse(status_code=404, content="Not Found")
+        return templates.TemplateResponse(static_file_path, {"request": request})
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
