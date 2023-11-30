@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from visualization import create_stacked_bar_chart  # Import the function from visualization.py
 import os
