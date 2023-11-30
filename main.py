@@ -1,31 +1,36 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
 from visualization import create_stacked_bar_chart  # Import the function from visualization.py
 import os
 import uvicorn
 
 app = FastAPI()
-
-# Get the path to the current file directory
+templates = Jinja2Templates(directory="templates")
+data_file_path = 'data.json'
 dir_path = os.path.dirname(os.path.realpath(__file__))
-data_file_path = 'data.json' 
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
-    chart = create_stacked_bar_chart(data_file_path)  # Call the function to generate the chart
-    
-    # Convert the figure to HTML and return it as the response
+    chart = create_stacked_bar_chart(data_file_path)
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
-    return HTMLResponse(content=chart_html)
 
+    # Read the content of index.html
+    with open(os.path.join(dir_path, "templates/index.html"), "r") as file:
+        html_content = file.read()
 
-@app.get("/aboutus", response_class=FileResponse)
+    # Inject the chart HTML into the index.html content
+    html_content_with_chart = html_content.replace("{{ chart_here }}", chart_html)
+    return HTMLResponse(content=html_content_with_chart)
+
+@app.get("/aboutus", response_class=HTMLResponse)
 async def aboutus():
-    return FileResponse(os.path.join(dir_path, "templates/aboutus.html"))
+    return templates.TemplateResponse("aboutus.html")
 
-@app.get("/aboutapp", response_class=FileResponse)
+@app.get("/aboutapp", response_class=HTMLResponse)
 async def aboutapp():
-    return FileResponse(os.path.join(dir_path, "templates/aboutapp.html"))
+    return templates.TemplateResponse("aboutapp.html")
+
 
 @app.get("/static/{file_path:path}", response_class=FileResponse)
 async def serve_static(file_path: str):
