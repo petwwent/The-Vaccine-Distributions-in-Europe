@@ -17,6 +17,25 @@
             <a class="navbar-brand" href="/aboutapp">About App</a>
         </nav>
     </header>
+    <!-- Container for the visualization -->
+    <div id="stackedBarChart">
+        <!-- Plotly chart will be displayed here -->
+    </div>
+    <!-- JavaScript to load the chart -->
+    <script>
+        function fetchAndDisplayStackedBarChart() {
+            fetch('/get-stacked-bar-chart')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('stackedBarChart').innerHTML = html;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Call fetchAndDisplayStackedBarChart on page load
+        window.onload = fetchAndDisplayStackedBarChart;
+    </script>
+
 
     
 </body>
