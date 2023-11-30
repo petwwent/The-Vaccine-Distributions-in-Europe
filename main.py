@@ -11,13 +11,9 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
-
-@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
-async def get_stacked_bar_chart(request: Request):
-    chart = create_stacked_bar_chart(data_file_path)  # Assuming create_stacked_bar_chart function exists
+    chart = create_stacked_bar_chart(data_file_path)
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
-    return chart_html
+    return templates.TemplateResponse("index.html", {"request": request, "chart_html": chart_html})
 
 @app.get("/aboutus", response_class=HTMLResponse)
 async def aboutus(request: Request):
