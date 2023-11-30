@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from visualization import create_stacked_bar_chart
-import uvicorn
 import os
 
 app = FastAPI()
