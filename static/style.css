@@ -1,128 +1,60 @@
-
+/* Body styles */
 body {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* Center the chart div */
+/* Navbar styles */
+.navbar {
+    background-color: #333; /* Navbar background color */
+    color: #fff; /* Navbar text color */
+    padding: 15px 20px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+.navbar a:hover {
+    color: #f0f0f0;
+}
+
+/* Container styles */
+.container {
+    margin-top: 20px;
+}
+
+/* Chart container styles */
 #stackedBarChart {
     width: 100%; /* Occupy full width */
-    margin-left: 50px;
-    margin-top: 20px;
-    display: block;
     margin: 0 auto; /* Horizontally center within its parent container */
 }
 
-
-
-.Us-container{
-    margin-top: 20px;
-}    
-
-
-p {
-    font-size: 18px; /* Adjust the font size as needed */
-    color: black;
-}
-
-
-.note {
-    display: flex;
-    align-items: center;
-    margin-top: 15px;
-    font-size: 16px; /* Adjust the font size as needed */
-}
-
-.note i {
-    margin-right: 10px; /* Add spacing between the icon and text */
-    margin-top: -15px;
-    color: red;
-}
-
-.note-text {
-    display: flex;
-    align-items: center;
-    font-size: 16px; /* Adjust the font size as needed */
-}
-
-.note-text i {
-    margin-right: 10px; /* Add spacing between the icon and text */
-}
-
-
-
-/* Navbar Styles */
-.navbar {
-    background-color: transparent; /* Set the background to transparent */
-    box-shadow: none; /* Remove any box shadow */
-}
-
-.navbar-brand {
-    font-size: 2em;
-    color: rgb(106, 168, 248);
-}
-
-.nav-link {
-    position: relative;
-    font-size: 1.1em;
-    color: blue;
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 80px;
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -6px;
-    width: 100%;
-    height: 3px;
-    background: white;
-    border-radius: 5px;
-    transform-origin: right;
-    transform: scaleX(0);
-    transition: transform .2s;
-}
-.nav-link:hover::after {
-    transform-origin: left;
-    transform: scaleX(1);
-}
-
-.custom-link {
-    color: #f3f7ea; /* Change this color to the one you prefer */
-    text-decoration: none; /* Remove underline */
-    margin-top: 15px;
-}
-
-.fas {
-    color: #007BFF;
-}
-
-
-
-
-/* Page Header Styles */
+/* Page Header styles */
 h1 {
-    color: rgb(106, 168, 248);
-    font-size: 40px;
-    position: relative;
-    margin-top: 100px;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-bottom: 30px;
-    align-items: center;
-    
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
 }
 
-h3 {
-   color: black; 
-}    
-    
+/* Month and Year selection styles */
+.col-md-4 {
+    margin-bottom: 10px;
+}
 
-.Us-container {
-    margin-left: 50px;
-    margin-right: 50px;
+/* Button styles */
+.btn-primary {
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Button hover background color */
 }
