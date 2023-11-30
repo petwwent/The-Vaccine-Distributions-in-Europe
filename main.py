@@ -1,28 +1,23 @@
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse, HTMLResponse
 from visualization import create_stacked_bar_chart  # Import the function from visualization.py
 import os
 import uvicorn
 
 app = FastAPI()
-data_file_path = 'data.json'
+
+# Get the path to the current file directory
 dir_path = os.path.dirname(os.path.realpath(__file__))
-
-def get_index_with_chart(chart_html: str) -> str:
-    # Read the content of index.html
-    with open(os.path.join(dir_path, "templates/index.html"), "r") as file:
-        html_content = file.read()
-
-    # Inject the chart HTML into the index.html content
-    html_content_with_chart = html_content.replace("{{ chart_here }}", chart_html)
-    return html_content_with_chart
+data_file_path = 'data.json' 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    chart = create_stacked_bar_chart(data_file_path)
+async def index():
+    chart = create_stacked_bar_chart(data_file_path)  # Call the function to generate the chart
+    
+    # Convert the figure to HTML and return it as the response
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
+    return HTMLResponse(content=chart_html)
 
-    return HTMLResponse(content=get_index_with_chart(chart_html), status_code=200)
 
 @app.get("/aboutus", response_class=FileResponse)
 async def aboutus():
@@ -40,4 +35,3 @@ async def serve_static(file_path: str):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
-
