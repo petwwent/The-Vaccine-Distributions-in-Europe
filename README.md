@@ -5,10 +5,12 @@
 
 This repository contains Python code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format using the pandas library specifically, select the continent relevant to my project which is Europe and save it in a different json file, then select the columns that would be relevant to my visualization also with the pandas library and handled missing data using pandas functions to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a stacked bar chart created with Plotly Express, providing an interactive and dynamic representation of the vaccination distributions across European countries and over time.
 
-![chart-video](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/6b1d7898-82bd-42f8-aa64-6c67b090eba8)
-![newplot (2)](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/7697c5df-3928-4bc3-bea4-ae044cb6aec5)
-![Screenshot 2023-12-06 194511](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/bfcead94-de45-46a2-946c-a51ee64470f0)
-![Screenshot 2023-12-06 194600](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/35c4a1af-7e7d-48d4-ae89-34e92b61c939)
+
+https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/cab34f81-bd2d-44ea-9eaa-a8b5cd8b7aff
+
+
+
+
 
 
 
