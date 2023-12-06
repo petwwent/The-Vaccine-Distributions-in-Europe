@@ -34,23 +34,26 @@
         </nav>
     </header>
     <!-- Container for the visualization -->
-    <div id="stackedBarChart">
-        <!-- INSERT_CHART -->
-    </div>
-    <!-- JavaScript to load the chart -->
-    <script>
-        function fetchAndDisplayStackedBarChart() {
-            fetch('/get-stacked-bar-chart')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('stackedBarChart').innerHTML = html;
-                })
-                .catch(error => console.error('Error:', error));
-        }
+<div id="stackedBarChart">
+    <!-- INSERT_CHART -->
+</div>
 
-        // Call fetchAndDisplayStackedBarChart on page load
-        window.onload = fetchAndDisplayStackedBarChart;
-    </script>
+<!-- JavaScript to load the chart -->
+<script>
+    function fetchAndDisplayStackedBarChart() {
+        fetch('/get-stacked-bar-chart')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('stackedBarChart').innerHTML = html;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Ensure the chart is fetched only once, not on every page load
+    if (!document.getElementById('stackedBarChart').innerHTML) {
+        fetchAndDisplayStackedBarChart();
+    }
+</script>
 
 
     
