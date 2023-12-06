@@ -13,7 +13,7 @@ def generate_chart_html():
     return chart_html
 
 # Endpoint to serve index.html with the embedded visualization
-@app.get("/index", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def index():
     chart_html = generate_chart_html()
     # Read the content of index.html and embed the chart HTML into it
