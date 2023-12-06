@@ -8,7 +8,8 @@ This repository contains Python code for visualizing the distribution of vaccine
 
 https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/cab34f81-bd2d-44ea-9eaa-a8b5cd8b7aff
 
-![newplot (2)](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/7697c5df-3928-4bc3-bea4-ae044cb6aec5)
+![Screenshot 2023-12-06 203756](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/1d3f467c-ce0e-4de8-af8c-38a57f0711d9)
+
 ![Screenshot 2023-12-06 194511](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/bfcead94-de45-46a2-946c-a51ee64470f0)
 
 
@@ -16,11 +17,11 @@ https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/1
 **The Director of European Centre for Disease Prevention and Control:** The Director of ECDC is responsible for leading the ECDC’s work in strengthening Europe’s defence against infectious disease.
 
 ## A Problem the The Director of ECDC Encouters
-To compare the distribution of (2021-2023) without going through the database or raw data.
+To specifically compare the distribution of covid-19 vaccinations of all the European countries between 2021-2023 in order to determine how the next distribution would be made without going through the database or raw data.
 
 ## My Solution
 
-This project is the solution to this problem, The Director of ECDC can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for the Director of ECDC to identify the following: 
+This app is the solution to this problem, The Director of ECDC can use this choropleth map to easily understand the distribution of vaccines across different European countries within the specified period of time, due to the data i selected for this visualization, it is easier for the Director of ECDC to identify the following: 
     countries,
     date,
     total_cases,
