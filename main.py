@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTMLResponse, FileResponse
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse, FileResponse
 from visualization import create_stacked_bar_chart
 import os
 import uvicorn
