@@ -9,6 +9,12 @@ This repository contains Python code for visualizing the distribution of vaccine
 https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/cab34f81-bd2d-44ea-9eaa-a8b5cd8b7aff
 
 
+![newplot (2)](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/7697c5df-3928-4bc3-bea4-ae044cb6aec5)
+![Screenshot 2023-12-06 194511](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/bfcead94-de45-46a2-946c-a51ee64470f0)
+![Screenshot 2023-12-06 194600](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/35c4a1af-7e7d-48d4-ae89-34e92b61c939)
+
+
+
 
 
 
