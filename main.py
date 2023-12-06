@@ -8,7 +8,7 @@ app = FastAPI()
 
 # Get the path to the current file directory
 dir_path = os.path.dirname(os.path.realpath(__file__))
-
+data_file_path = 'data.json' 
 # Function to generate the stacked bar chart HTML
 def generate_chart_html():
     # Replace this function with your actual logic to generate the chart HTML
