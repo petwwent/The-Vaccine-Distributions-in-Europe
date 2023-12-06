@@ -24,7 +24,7 @@
     <!-- JavaScript to load the chart -->
     <script>
         function fetchAndDisplayStackedBarChart() {
-            fetch('/get-stacked-bar-chart')
+            fetch('/create-stacked-bar-chart')
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById('stackedBarChart').innerHTML = html;
