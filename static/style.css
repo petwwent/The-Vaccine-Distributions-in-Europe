@@ -5,59 +5,10 @@ body {
     padding: 0;
 }
 
-/* Navbar styles */
+/* Navbar Styles */
 .navbar {
-    background-color: #333; /* Navbar background color */
-    color: #fff; /* Navbar text color */
-    padding: 15px 20px;
-}
-
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    margin-right: 20px;
-    font-size: 18px;
-}
-
-.navbar a:hover {
-    color: #f0f0f0;
-}
-
-/* Container styles */
-.container {
-    margin-top: 20px;
-}
-
-/* Chart container styles */
-#stackedBarChart {
-    width: 80%; /* Occupy full width */
-    margin: 0 auto; /* Horizontally center within its parent container */
-    margin-top: 30px
-}
-
-/* Page Header styles */
-h1 {
-    color: #333;
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-/* Month and Year selection styles */
-.col-md-4 {
-    margin-bottom: 10px;
-}
-
-/* Button styles */
-.btn-primary {
-    background-color: #007bff; /* Button background color */
-    color: #fff; /* Button text color */
-    border: none;
-    padding: 8px 20px;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3; /* Button hover background color */
+    background-color: transparent; /* Set the background to transparent */
+    box-shadow: none; /* Remove any box shadow */
 }
 
 .navbar-brand {
@@ -91,3 +42,23 @@ h1 {
     transform-origin: left;
     transform: scaleX(1);
 }
+
+.custom-link {
+    color: #f3f7ea; /* Change this color to the one you prefer */
+    text-decoration: none; /* Remove underline */
+    margin-top: 15px;
+}
+/* Chart container styles */
+#stackedBarChart {
+    width: 80%; /* Occupy full width */
+    margin: 0 auto; /* Horizontally center within its parent container */
+    margin-top: 30px
+}
+
+/* Page Header styles */
+h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
