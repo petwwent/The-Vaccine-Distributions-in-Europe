@@ -28,9 +28,14 @@ async def get_stacked_bar_chart():
 async def index():
     chart = create_stacked_bar_chart(data_file_path)  # Call the function to generate the chart
     
-    # Convert the figure to HTML and return it as the response
+    # Convert the figure to HTML
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
-    return HTMLResponse(content=chart_html)
+    
+    # Read the content of index.html
+    with open("templates/index.html", "r") as file:
+        content = file.read().replace("<!-- INSERT_CHART -->", chart_html)
+    
+    return HTMLResponse(content=content)
 
 # Endpoint for aboutus
 @app.get("/aboutus", response_class=HTMLResponse)
