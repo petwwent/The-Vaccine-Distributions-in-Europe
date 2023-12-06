@@ -30,8 +30,9 @@ body {
 
 /* Chart container styles */
 #stackedBarChart {
-    width: 100%; /* Occupy full width */
+    width: 80%; /* Occupy full width */
     margin: 0 auto; /* Horizontally center within its parent container */
+    margin-top: 20px
 }
 
 /* Page Header styles */
