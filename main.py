@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File
+from fastapi import FastAPI, File, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from visualization import create_stacked_bar_chart
 import os
