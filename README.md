@@ -3,10 +3,15 @@
 
 ### Description:
 
-This repository contains Python code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format using the pandas library specifically, select the continent relevant to my project which is Europe and save it in a different json file, then select the columns that would be relevant to my visualization also with the pandas library and handled missing data using pandas functions to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a choropleth map created with Plotly Express, providing an interactive and dynamic representation of the pandemic's spread, i also implemented a heatmap to show the distribution and intensity of cases across countries and over time.
+This repository contains Python code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format using the pandas library specifically, select the continent relevant to my project which is Europe and save it in a different json file, then select the columns that would be relevant to my visualization also with the pandas library and handled missing data using pandas functions to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a stacked bar chart created with Plotly Express, providing an interactive and dynamic representation of the vaccination distributions across European countries and over time.
 
 
-https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/6f9dd2c8-e7ce-40cf-b2f5-3620606fc1e9
+
+https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/37919148-5611-4d36-93c6-d8a642f28ce5
+![Screenshot 2023-12-06 194600](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/26d79381-1e67-4862-b9b9-5d4b5bdd256a)
+![Screenshot 2023-12-06 194511](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/bfcead94-de45-46a2-946c-a51ee64470f0)
+![Screenshot 2023-12-06 194600](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/35c4a1af-7e7d-48d4-ae89-34e92b61c939)
+
 
 
 
@@ -17,7 +22,7 @@ https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/1
 
 ## A Problem the The Director of ECDC Encouters
 
-The Director of ECDC would want an easy understanding overview in the disparities in vaccine distribution among various European countries comparing the total vaccinations in each European country to the poplation and total covid cases between the past two years (2021-2023) without going through the database or raw data.
+To compare the distribution of (2021-2023) without going through the database or raw data.
 
 ## My Solution
 
