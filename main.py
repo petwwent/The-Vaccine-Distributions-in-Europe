@@ -11,8 +11,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 data_file_path = 'data.json' 
 
 # Function to generate the stacked bar chart HTML
-def generate_chart_html():
-    chart = create_stacked_bar_chart(data_file_path)
+def generate_chart_html(location1: str = None, location2: str = None, date: str = None):
+    chart = create_stacked_bar_chart(data_file_path, selected_year=date, selected_month=None)
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return chart_html
 
