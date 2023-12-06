@@ -18,8 +18,10 @@ def generate_chart_html():
 
 # Endpoint to serve the stacked bar chart
 @app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
-async def get_stacked_bar_chart():
-    chart_html = generate_chart_html()
+async def get_stacked_bar_chart(location1: str = Query(None), location2: str = Query(None), date: str = Query(None)):
+    # Use the provided location1, location2, and date to generate the chart
+    chart_html = generate_chart_html(location1, location2, date)
+    
     return HTMLResponse(content=chart_html)
 
 # Endpoint for the main index page
