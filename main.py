@@ -25,10 +25,12 @@ async def get_stacked_bar_chart():
 
 # Endpoint for the main index page
 @app.get("/", response_class=HTMLResponse)
-async def read_main():
-    with open(os.path.join(dir_path, "templates/index.html"), "r") as file:
-        content = file.read()
-    return HTMLResponse(content=content)
+async def index():
+    chart = create_stacked_bar_chart(data_file_path)  # Call the function to generate the chart
+    
+    # Convert the figure to HTML and return it as the response
+    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
+    return HTMLResponse(content=chart_html)
 
 # Endpoint for aboutus
 @app.get("/aboutus", response_class=HTMLResponse)
