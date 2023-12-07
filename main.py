@@ -36,12 +36,7 @@ async def get_stacked_bar_chart(location1: str = None, location2: str = None, da
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return HTMLResponse(content=chart_html)
     
-# Endpoint to serve the stacked bar chart
-@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
-async def get_stacked_bar_chart():
-    chart_html = generate_default_chart_html()
-    return HTMLResponse(content=chart_html)
-    
+
 # Endpoint for the aboutus page
 @app.get("/aboutus", response_class=HTMLResponse)
 async def aboutus():
