@@ -1,6 +1,8 @@
 from fastapi import FastAPI, File, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from visualization import create_stacked_bar_chart
+from search import compare_stacked_bar_chart 
+import os
 import os
 import uvicorn
 
@@ -11,33 +13,32 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 data_file_path = 'data.json' 
 
 # Function to generate the stacked bar chart HTML
-def generate_chart_html(location1=None, location2=None, date=None):
-    args = []
-    if location1:
-        args.append(location1)
-    if location2:
-        args.append(location2)
-    if date:
-        args.append(date)
-
-    chart = create_stacked_bar_chart(data_file_path, *args)
-    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
-    return chart_html
-
-# Endpoint to serve the stacked bar chart
-@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
-async def get_stacked_bar_chart(location1: str = None, location2: str = None, date: str = None):
-    chart_html = generate_chart_html(location1, location2, date)
-    return HTMLResponse(content=chart_html)
+def generate_default_chart_html():
+    default_chart = create_stacked_bar_chart(data_file_path)
+    default_chart_html = default_chart.to_html(full_html=False, include_plotlyjs='cdn')
+    return default_chart_html
 
 # Endpoint for the main index page
 @app.get("/", response_class=HTMLResponse)
 async def index():
-    chart_html = generate_chart_html()  # Generate default chart HTML on initial load
+    chart_html = generate_default_chart_html()  # Display default chart HTML on initial load
     with open("templates/index.html", "r") as file:
         content = file.read().replace("<!-- INSERT_CHART -->", chart_html)
     return HTMLResponse(content=content)
 
+# Endpoint to serve the stacked bar chart for comparison
+@app.get("/compare-stacked-bar-chart", response_class=HTMLResponse)
+async def compare_stacked_bar_chart_endpoint(location1: str = None, location2: str = None, date: str = None):
+    chart = compare_stacked_bar_chart(data_file_path, location1, location2, date)
+    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
+    return HTMLResponse(content=chart_html)
+    
+# Endpoint to serve the stacked bar chart
+@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
+async def get_stacked_bar_chart():
+    chart_html = generate_chart_html()
+    return HTMLResponse(content=chart_html)
+    
 # Endpoint for the aboutus page
 @app.get("/aboutus", response_class=HTMLResponse)
 async def aboutus():
