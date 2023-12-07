@@ -29,7 +29,16 @@ async def index():
 # Endpoint to serve the stacked bar chart for comparison
 @app.get("/compare-stacked-bar-chart", response_class=HTMLResponse)
 async def compare_stacked_bar_chart_endpoint(location1: str = None, location2: str = None, date: str = None):
+    # Debugging: Print received parameters
+    print(f"Received parameters - location1: {location1}, location2: {location2}, date: {date}")
+
+    # Call compare_stacked_bar_chart function
     chart = compare_stacked_bar_chart(data_file_path, location1, location2, date)
+
+    # Debugging: Check the content of the chart object
+    print(f"Chart object: {chart}")
+
+    # Convert chart to HTML
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return HTMLResponse(content=chart_html)
     
