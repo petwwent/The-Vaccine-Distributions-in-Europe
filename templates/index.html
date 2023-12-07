@@ -73,7 +73,7 @@
             console.log(`Date: ${date}`);
 
             // Fetch the stacked bar chart based on selected locations and date
-            fetch(`/get-stacked-bar-chart?location1=${location1}&location2=${location2}&date=${date}`)
+            fetch(`/compare_stacked_bar_chart?location1=${location1}&location2=${location2}&date=${date}`)
                 .then(response => response.text())
                 .then(html => {
                     // Log received HTML content for debugging
