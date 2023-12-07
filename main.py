@@ -16,9 +16,6 @@ def create_stacked_bar_chart(data_path, location1=None, location2=None, date=Non
     # Mock implementation: Create a simple HTML string as an example
     chart_html = f"<div>Stacked Bar Chart for Location1: {location1}, Location2: {location2}, Date: {date}</div>"
 
-    # In a real application, you might use a library like Plotly, Matplotlib, or another tool
-    # to generate an actual chart based on the provided parameters and return its HTML representation.
-
     return chart_html
 
 # Function to generate the stacked bar chart HTML
@@ -27,7 +24,9 @@ def generate_chart_html(location1=None, location2=None, date=None):
         chart = create_stacked_bar_chart(data_file_path, location1, location2, date)
     else:
         chart = create_stacked_bar_chart(data_file_path)  # Generate default chart
-    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
+
+    # Assuming chart is a Plotly object, use appropriate method to convert it to HTML
+    chart_html = f"<div>{chart}</div>"
     return chart_html
 
 # Endpoint to serve the stacked bar chart
