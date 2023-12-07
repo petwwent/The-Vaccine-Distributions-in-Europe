@@ -11,9 +11,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 data_file_path = 'data.json' 
 
 # Function to generate the stacked bar chart HTML
-def generate_chart_html(location1, location2, date):
-    # Your logic to generate the chart based on the given locations and date
-    # Example:
+def generate_chart_html(location1: str, location2: str, date: str):
+    # Replace this with your logic to generate the chart based on the locations and date
     chart = create_stacked_bar_chart(data_file_path, location1, location2, date)
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return chart_html
@@ -27,8 +26,8 @@ async def get_stacked_bar_chart(location1: str, location2: str, date: str):
 
 # Endpoint for the main index page
 @app.get("/", response_class=HTMLResponse)
-async def index():
-    chart_html = generate_chart_html()
+async def index(location1: str = Query(...), location2: str = Query(...), date: str = Query(...)):
+    chart_html = generate_chart_html(location1, location2, date)
     with open("templates/index.html", "r") as file:
         content = file.read().replace("<!-- INSERT_CHART -->", chart_html)
     return HTMLResponse(content=content)
