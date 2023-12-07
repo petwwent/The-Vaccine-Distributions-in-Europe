@@ -36,7 +36,7 @@ async def compare_stacked_bar_chart_endpoint(location1: str = None, location2: s
 # Endpoint to serve the stacked bar chart
 @app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
 async def get_stacked_bar_chart():
-    chart_html = generate_chart_html()
+    chart_html = generate_default_chart_html()
     return HTMLResponse(content=chart_html)
     
 # Endpoint for the aboutus page
