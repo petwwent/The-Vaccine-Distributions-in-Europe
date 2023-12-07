@@ -27,7 +27,7 @@ async def index():
     return HTMLResponse(content=content)
 
 # Endpoint to serve the stacked bar chart for comparison or default
-@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
+@app.get("/compare_stacked_bar_chart", response_class=HTMLResponse)
 async def get_stacked_bar_chart(location1: str = None, location2: str = None, date: str = None):
     if location1 and location2 and date:
         chart = compare_stacked_bar_chart(data_file_path, location1, location2, date)
