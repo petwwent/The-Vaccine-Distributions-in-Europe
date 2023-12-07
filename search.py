@@ -40,4 +40,4 @@ def compare_stacked_bar_chart(data_path, selected_location1=None, selected_locat
     )
 
     return fig
-data_file_path = 'data.json'
+
