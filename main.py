@@ -26,10 +26,13 @@ async def index():
         content = file.read().replace("<!-- INSERT_CHART -->", chart_html)
     return HTMLResponse(content=content)
 
-# Endpoint to serve the stacked bar chart for comparison
-@app.get("/compare-stacked-bar-chart", response_class=HTMLResponse)
-async def compare_stacked_bar_chart_endpoint(location1: str = None, location2: str = None, date: str = None):
-    chart = compare_stacked_bar_chart(data_file_path, location1, location2, date)
+# Endpoint to serve the stacked bar chart for comparison or default
+@app.get("/get-stacked-bar-chart", response_class=HTMLResponse)
+async def get_stacked_bar_chart(location1: str = None, location2: str = None, date: str = None):
+    if location1 and location2 and date:
+        chart = compare_stacked_bar_chart(data_file_path, location1, location2, date)
+    else:
+        chart = create_stacked_bar_chart(data_file_path)  # Default chart without parameters
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return HTMLResponse(content=chart_html)
     
