@@ -62,31 +62,19 @@
 
     <!-- JavaScript to load the chart -->
     <script>
-        function fetchAndDisplayStackedBarChart() {
-            const location1 = document.getElementById('location1').value;
-            const location2 = document.getElementById('location2').value;
-            const date = document.getElementById('date').value;
+    function fetchAndDisplayStackedBarChart() {
+        fetch(`/compare_stacked_bar_chart`) // Fetch chart data from the endpoint
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('stackedBarChart').innerHTML = html; // Set the received HTML as content of the container
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
-            // Log values for debugging
-            console.log(`Location 1: ${location1}`);
-            console.log(`Location 2: ${location2}`);
-            console.log(`Date: ${date}`);
-
-            // Fetch the stacked bar chart based on selected locations and date
-            fetch(`/compare_stacked_bar_chart?location1=${location1}&location2=${location2}&date=${date}`)
-                .then(response => response.text())
-                .then(html => {
-                    // Log received HTML content for debugging
-                    console.log(`Received HTML: ${html}`);
-                    document.getElementById('stackedBarChart').innerHTML = html;
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Fetch the chart on page load if the container is empty
-        if (!document.getElementById('stackedBarChart').innerHTML.trim()) {
-            fetchAndDisplayStackedBarChart();
-        }
+    // Fetch the chart on page load if the container is empty
+    if (!document.getElementById('stackedBarChart').innerHTML.trim()) {
+        fetchAndDisplayStackedBarChart();
+    }
     </script>
 </body>
 </html>
