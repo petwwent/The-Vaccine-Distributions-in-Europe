@@ -12,15 +12,15 @@ data_file_path = 'data.json'
 
 # Function to generate the stacked bar chart HTML
 def generate_chart_html(location1=None, location2=None, date=None):
-    if location1 and location2 and date:
-        chart = create_stacked_bar_chart(data_file_path, location1, location2, date)
-    elif location1 and location2:
-        chart = create_stacked_bar_chart(data_file_path, location1, location2)
-    elif date:
-        chart = create_stacked_bar_chart(data_file_path, date)
-    else:
-        chart = create_stacked_bar_chart(data_file_path)  # Generate default chart
-    
+    args = []
+    if location1:
+        args.append(location1)
+    if location2:
+        args.append(location2)
+    if date:
+        args.append(date)
+
+    chart = create_stacked_bar_chart(data_file_path, *args)
     chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return chart_html
 
@@ -29,7 +29,6 @@ def generate_chart_html(location1=None, location2=None, date=None):
 async def get_stacked_bar_chart(location1: str = None, location2: str = None, date: str = None):
     chart_html = generate_chart_html(location1, location2, date)
     return HTMLResponse(content=chart_html)
-
 
 # Endpoint for the main index page
 @app.get("/", response_class=HTMLResponse)
