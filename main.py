@@ -1,7 +1,6 @@
 from fastapi import FastAPI, File, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from visualization import create_stacked_bar_chart
-from datetime import datetime
 import os
 import uvicorn
 
@@ -11,22 +10,13 @@ app = FastAPI()
 dir_path = os.path.dirname(os.path.realpath(__file__))
 data_file_path = 'data.json' 
 
-# Example function to create a stacked bar chart (using a mock implementation)
-def create_stacked_bar_chart(data_path, location1=None, location2=None, date=None):
-    # Mock implementation: Create a simple HTML string as an example
-    chart_html = f"<div>Stacked Bar Chart for Location1: {location1}, Location2: {location2}, Date: {date}</div>"
-
-    return chart_html
-
 # Function to generate the stacked bar chart HTML
 def generate_chart_html(location1=None, location2=None, date=None):
     if location1 and location2 and date:
         chart = create_stacked_bar_chart(data_file_path, location1, location2, date)
     else:
         chart = create_stacked_bar_chart(data_file_path)  # Generate default chart
-
-    # Assuming chart is a Plotly object, use appropriate method to convert it to HTML
-    chart_html = f"<div>{chart}</div>"
+    chart_html = chart.to_html(full_html=False, include_plotlyjs='cdn')
     return chart_html
 
 # Endpoint to serve the stacked bar chart
