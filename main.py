@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from visualization import create_stacked_bar_chart
+from datetime import datetime
 import os
 import uvicorn
 
@@ -9,6 +10,16 @@ app = FastAPI()
 # Get the path to the current file directory
 dir_path = os.path.dirname(os.path.realpath(__file__))
 data_file_path = 'data.json' 
+
+# Example function to create a stacked bar chart (using a mock implementation)
+def create_stacked_bar_chart(data_path, location1=None, location2=None, date=None):
+    # Mock implementation: Create a simple HTML string as an example
+    chart_html = f"<div>Stacked Bar Chart for Location1: {location1}, Location2: {location2}, Date: {date}</div>"
+
+    # In a real application, you might use a library like Plotly, Matplotlib, or another tool
+    # to generate an actual chart based on the provided parameters and return its HTML representation.
+
+    return chart_html
 
 # Function to generate the stacked bar chart HTML
 def generate_chart_html(location1=None, location2=None, date=None):
