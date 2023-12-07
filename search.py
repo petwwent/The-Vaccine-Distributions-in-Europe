@@ -5,6 +5,10 @@ def compare_stacked_bar_chart(data_path, selected_location1=None, selected_locat
     # Load your JSON data into a DataFrame
     df = pd.read_json(data_path)
 
+    
+    # Convert the 'date' column to datetime
+    df['date'] = pd.to_datetime(df['date'])
+
     # Your logic for processing data and creating the stacked bar chart for comparison...
     # Here's an example implementation (customize as needed):
 
