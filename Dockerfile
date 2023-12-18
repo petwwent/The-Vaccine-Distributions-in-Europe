@@ -4,12 +4,14 @@ FROM alpine:3.15.3
 # Install Python 3.9 and pip
 RUN apk add --no-cache python3~=3.9 py3-pip
 
+# Install necessary build tools
+RUN apk add --no-cache build-base libffi-dev musl-dev python3-dev
+
 # Set the working directory in the container
 WORKDIR /app
 
 # Install specific versions of Python packages without using a requirements.txt file
-RUN apk add --no-cache build-base libffi-dev && \
-    pip install --no-cache-dir \
+RUN pip install --no-cache-dir \
     fastapi==0.104.1 \
     numpy==1.26.2 \
     uvicorn==0.15.0 \
