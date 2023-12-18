@@ -10,11 +10,14 @@ RUN apk add --no-cache python${PYTHON_VERSION} py3-pip
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy just the requirements file into the container
-COPY requirements.txt .
-
-# Install necessary Python packages
-RUN pip3 install --no-cache-dir -r requirements.txt
+# Install specific versions of Python packages without using a requirements.txt file
+RUN apk add --no-cache build-base libffi-dev && \
+    pip install --no-cache-dir \
+    fastapi==0.104.1 \
+    numpy==1.26.2 \
+    uvicorn==0.15.0 \
+    pandas==1.3.3 \
+    plotly==5.3.1
 
 # Copy the rest of the files into the container
 COPY . .
