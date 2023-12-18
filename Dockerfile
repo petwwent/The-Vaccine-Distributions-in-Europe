@@ -1,11 +1,9 @@
 # Use a specific version of Alpine Linux as the base image
 FROM alpine:3.15.3
 
-# Install Python 3.9 and pip
-RUN apk add --no-cache python3~=3.9 py3-pip
-
-# Install necessary build tools
-RUN apk add --no-cache build-base libffi-dev musl-dev python3-dev
+# Update packages and install necessary tools
+RUN apk update && apk upgrade && \
+    apk add --no-cache python3~=3.9 py3-pip build-base libffi-dev musl-dev python3-dev cmake
 
 # Set the working directory in the container
 WORKDIR /app
