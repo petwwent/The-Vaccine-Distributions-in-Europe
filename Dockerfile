@@ -1,30 +1,29 @@
-# Use Alpine Linux as the base image
+# Use an official Python runtime as a base image
 FROM python:3.9-alpine
 
-# Install necessary build tools and dependencies
-RUN apk update && \
-    apk add --no-cache \
-    build-base \
-    autoconf \
-    automake \
-    libtool \
-    cmake \
-    ninja
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-# Install required Python packages, including 'numpy==1.26.2', and other packages
-RUN pip install --no-cache-dir \
-    fastapi==0.104.1 \
-    numpy==1.26.2 \
-    uvicorn==0.15.0 \
-    pandas==1.3.3 \
-    plotly==5.3.1
+# Set the working directory in the container
+WORKDIR /app
 
+# Copy only requirements to cache them in Docker layer
+COPY ./requirements.txt /app/requirements.txt
 
-# Copy the rest of the files into the container
-COPY . .
+# Install any needed packages specified in requirements.txt
+RUN apk add --no-cache --virtual .build-deps \
+        gcc \
+        libc-dev \
+        linux-headers && \
+    pip install --no-cache-dir -r requirements.txt && \
+    apk del .build-deps gcc libc-dev linux-headers
 
-# Expose the port that the FastAPI app will run on
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Command to run the FastAPI app using uvicorn
-CMD ["python3", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+# Run the app with uvicorn server
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
