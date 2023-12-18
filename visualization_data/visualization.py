@@ -6,17 +6,22 @@ def load_data(file_path):
         data = json.load(file)
     return data
 
+def process_data(data):
+    """Process loaded JSON data."""
+    for item in data:
+        # Perform operations on each item (JSON object)
+        # Example: Print each item
+        print(item)
+
 def main():
-    # File path to data.json
+    # Path to data.json
     input_file = 'visualization_data/data.json'
 
     # Load data from JSON file
-    raw_data = load_data(input_file)
+    data = load_data(input_file)
 
-    # Processed data ready for visualization (if no additional processing is required)
-    processed_data = raw_data  # Placeholder for the same data (no modifications)
-
-    return processed_data
+    # Process loaded data
+    process_data(data)
 
 if __name__ == "__main__":
-    processed_data = main()
+    main()
