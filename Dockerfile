@@ -1,20 +1,24 @@
-# Use a specific version of Alpine Linux as the base image
-FROM alpine:3.15.3
+# Use Alpine Linux as the base image
+FROM python:3.9-alpine
 
-# Update packages and install necessary tools
-RUN apk update && apk upgrade && \
-    apk add --no-cache python3~=3.9 py3-pip build-base libffi-dev musl-dev python3-dev cmake
+# Install necessary build tools and dependencies
+RUN apk update && \
+    apk add --no-cache \
+    build-base \
+    autoconf \
+    automake \
+    libtool \
+    cmake \
+    ninja
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Install specific versions of Python packages without using a requirements.txt file
+# Install required Python packages, including 'numpy==1.26.2', and other packages
 RUN pip install --no-cache-dir \
     fastapi==0.104.1 \
     numpy==1.26.2 \
     uvicorn==0.15.0 \
     pandas==1.3.3 \
     plotly==5.3.1
+
 
 # Copy the rest of the files into the container
 COPY . .
