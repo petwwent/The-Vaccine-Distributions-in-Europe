@@ -1,6 +1,6 @@
 {
   "name": "Python Codespace",
-  "dockerFile": "..Docker/Dockerfile",
+  "dockerFile": "Docker/Dockerfile",
   "context": ".",
   "customizations": {
     "vscode": {
@@ -21,5 +21,5 @@
       "onAutoForward": "openBrowser"
     }
   },
-  "postCreateCommand": "pip install -r ../.Docker/requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000"
+  "postCreateCommand": "pip install -r Docker/requirements.txt && uvicorn main:app --host 0.0.0.0 --port 5000"
 }
