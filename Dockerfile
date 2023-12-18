@@ -14,5 +14,8 @@ RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev && \
 # Copy the entire project to the working directory
 COPY . .
 
+# Expose the port the app runs on
+EXPOSE 5000
+
 # Command to run the Python application using Uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
