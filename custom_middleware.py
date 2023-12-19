@@ -17,8 +17,9 @@ class CustomMiddleware:
                 await send({
                     'type': 'http.response.body',
                     'body': response['body'],
+                    'more_body': False  # This tells Uvicorn there is no more body to send
                 })
 
-            return await self.app(scope, receive, wrapped_send)
+            await self.app(scope, receive, wrapped_send)
         else:
-            return await self.app(scope, receive, send)
+            await self.app(scope, receive, send)
