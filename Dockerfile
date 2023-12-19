@@ -4,12 +4,9 @@ FROM python:3.9-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the Python dependencies file to the working directory
-COPY requirements.txt .
-
-# Install Python dependencies
+# Install Flask directly in the Dockerfile
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir Flask==2.0.1
 
 # Copy the entire project to the working directory
 COPY . .
