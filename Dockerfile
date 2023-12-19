@@ -4,16 +4,9 @@ FROM python:3.9-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Install required packages (including Git)
-RUN apk add --no-cache \
-    gcc \
-    musl-dev \
-    libffi-dev \
-    openssl-dev \
-    git \
-    && pip install --no-cache-dir \
-    Flask==2.0.1 \
-    uvicorn
+# Install the latest Flask version
+RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev && \
+    pip install --no-cache-dir Flask Werkzeug==2.0.3 uvicorn git
 
 # Copy the entire project to the working directory
 COPY . .
