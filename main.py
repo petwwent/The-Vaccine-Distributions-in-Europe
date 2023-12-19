@@ -1,7 +1,14 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify
 import json
 
 app = Flask(__name__)
+
+# Custom Middleware to add response headers
+@app.after_request
+def add_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'  # Adjust as needed for CORS policy
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
 
 # Sample data serving routes
 @app.route('/defaultChartData')
