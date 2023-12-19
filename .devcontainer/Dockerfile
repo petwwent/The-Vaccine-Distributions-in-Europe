@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install Flask directly in the Dockerfile
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev && \
-    pip install --no-cache-dir Flask==2.0.1 uvicorn
+    pip install --no-cache-dir Flask==2.0.1 uvicorn==0.15.0
 
 # Copy the entire project to the working directory
 COPY . .
