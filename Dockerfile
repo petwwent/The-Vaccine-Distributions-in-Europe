@@ -4,9 +4,16 @@ FROM python:3.9-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Install Flask directly in the Dockerfile
-RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev && \
-    pip install --no-cache-dir Flask==2.0.1 Werkzeug==2.0.3 uvicorn==0.24.0
+# Install required packages (including Git)
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    git \
+    && pip install --no-cache-dir \
+    Flask==2.0.1 \
+    uvicorn
 
 # Copy the entire project to the working directory
 COPY . .
