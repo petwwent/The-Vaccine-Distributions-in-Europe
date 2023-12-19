@@ -1,15 +1,8 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template, jsonify
 import json
-from custom_middleware import CustomMiddleware  # Import the middleware
+import uvicorn
 
 app = Flask(__name__)
-
-# Custom Middleware to add response headers
-@app.after_request
-def add_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'  # Adjust as needed for CORS policy
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    return response
 
 # Sample data serving routes
 @app.route('/defaultChartData')
@@ -38,10 +31,7 @@ def default_chart_data():
     
     return jsonify(sorted_data)
 
-if __name__ == '__main__':
-    # Create an instance of the CustomMiddleware
-    custom_middleware = CustomMiddleware(app)
+# Your other routes and logic go here...
 
-    # Run the Flask app with the custom middleware
-    from uvicorn import run
-    run(app=custom_middleware, host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    uvicorn.run(app, host="0.0.0.0", port=5000)
