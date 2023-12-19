@@ -8,11 +8,13 @@
 </head>
 <body>
     <!-- HTML structure for comparison chart with search boxes -->
-    <form action="/comparison" method="GET">
+    <form id="comparisonForm">
         <label for="location1">Location 1:</label>
         <input type="text" id="location1" name="location1">
         <label for="location2">Location 2:</label>
         <input type="text" id="location2" name="location2">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
         <input type="submit" value="Compare">
     </form>
     <div id="comparisonChart"></div>
