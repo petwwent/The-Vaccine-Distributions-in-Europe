@@ -50,8 +50,15 @@ d3.json("data.json").then(function(data) {
     .displayFormat(formatTooltipDate)
     .handle(d3.symbol().type(d3.symbolCircle).size(200)())
     .on("onchange", function(val) {
-      d3.select(".tick text").attr("opacity", "1");
+      // Update the label text to include month and year
       d3.select("p#value-time").text(formatTooltipDate(val));
+      
+      // Get the new start and end dates based on the slider value
+      const newStartDate = new Date(val);
+      const newEndDate = new Date(val); // You might adjust this based on your logic
+
+      // Update the chart with new start and end dates
+      updateChart(newStartDate, newEndDate, data); // Call the updateChart function with new dates and data
     });
 
   // Append the slider to a group
@@ -179,7 +186,7 @@ d3.json("data.json").then(function(data) {
     .attr('y', -margin.left + 15)
     .text('Total Vaccinations');
 
-  // Create bars based on the sorted data
+    // Update or redraw the bars in the chart based on the new data
   svg.selectAll('.bar')
   .data(filteredData)
   .enter()
