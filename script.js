@@ -1,78 +1,123 @@
-// Load data using d3.json
-d3.json('data.json').then(data => {
+// Define your variable declarations and constants here
+var margin = { top: 50, right: 50, bottom: 0, left: 50 },
+  width = 960 - margin.left - margin.right,
+  height = 500 - margin.top - margin.bottom;
+
+var formatTickDate = d3.timeFormat("%b %Y"); // Format for ticks (e.g., Jan 2023)
+var formatTooltipDate = d3.timeFormat("%A %e %B, %Y - %H:%M"); // Include month and year in the tooltip
+
+var moving = false;
+var targetValue = width;
+var timer;
+
+// Declare sliderTime variable
+var sliderTime;
+
+// Load the data from data.json
+d3.json("data.json").then(function(data) {
   // Convert 'date' to a JavaScript Date object and 'total_vaccinations' to numbers
   data.forEach(d => {
     d.date = new Date(d.date);
     d.total_vaccinations = +d.total_vaccinations || 0;
   });
 
-  // Obtain min and max dates from the dataset
-  const minDate = d3.min(data, d => d.date);
-  const maxDate = d3.max(data, d => d.date);
+  // Extract dates from the loaded data
+  const dates = data.map(item => new Date(item.date));
 
-  // Initialize variables for slider and play/pause functionality
-  let isPlaying = false;
-  let playInterval;
+  // Filter dates to January and July
+  const filteredDates = dates.filter(date => {
+    const month = date.getMonth();
+    return date.getDate() === 1 && (month === 0 || month === 6);
+  });
 
-  // Create a date slider
-  $("#slider").slider({
-    range: true,
-    min: minDate.getTime(),
-    max: maxDate.getTime(),
-    step: 24 * 60 * 60 * 1000,
-    values: [minDate.getTime(), maxDate.getTime()],
-    slide: function(event, ui) {
-      const startDate = new Date(ui.values[0]);
-      const endDate = new Date(ui.values[1]);
+  // Set startDate and endDate based on the loaded data
+  const startDate = filteredDates[0]; // First filtered date
+  const endDate = filteredDates[filteredDates.length - 1]; // Last filtered date
 
-      $('#startLabel').text(startDate.toDateString());
-      $('#endLabel').text(endDate.toDateString());
+  // Calculate the duration for 1 month in milliseconds
+  const oneMonthDuration = 1000 * 60 * 60 * 24 * 2; // Changed to milliseconds in a month
 
-      if (!isPlaying) {
-        updateChart(startDate, endDate, data);
-      }
+  // Create or modify sliderTime with new data
+  sliderTime = d3
+    .sliderBottom()
+    .min(startDate.getTime())
+    .max(endDate.getTime())
+    .tickValues(filteredDates.map(date => date.getTime()))
+    .default(startDate.getTime())
+    .width(width + margin.left + margin.right - 20)
+    .tickFormat(d3.timeFormat("%b %Y")) // Display ticks as Month Year
+    .fill('#2196f3')
+    .displayFormat(formatTooltipDate)
+    .handle(d3.symbol().type(d3.symbolCircle).size(200)())
+    .on("onchange", function(val) {
+      d3.select(".tick text").attr("opacity", "1");
+      d3.select("p#value-time").text(formatTooltipDate(val));
+    });
+
+  // Append the slider to a group
+  var gTime = d3
+    .select("div#slider-time")
+    .append("svg")
+    .attr("width", 1000)
+    .attr("height", 100)
+    .append("g")
+    .attr("transform", "translate(30,30)");
+
+  gTime.call(sliderTime);
+
+  // Apply custom styles to month and year labels on the slider ticks
+  d3.selectAll(".tick text")
+    .style("font-weight", function(d) {
+      // Check if the tick value corresponds to the beginning of the month (Jan 1st or July 1st)
+      var tickDate = new Date(d);
+      return tickDate.getDate() === 1 ? "bold" : "normal";
+    })
+    .style("fill", function(d) {
+      // Check if the tick value corresponds to the beginning of the month (Jan 1st or July 1st)
+      var tickDate = new Date(d);
+      return tickDate.getDate() === 1 ? "black" : "#aaa"; // Change to black for Jan 1st and July 1st, grey for other ticks
+    });
+
+  // Initialize value-time paragraph
+  d3.select("p#value-time").text(formatTooltipDate(sliderTime.value()));
+  d3.select(".parameter-value text").attr("y", "-29");
+  d3.selectAll(".tick text").style("text-anchor", "start");
+  document.querySelector(".parameter-value path").removeAttribute("tabindex");
+
+  var playButton = d3.select("#play-button");
+
+  playButton.on("click", function() {
+    var button = d3.select(this);
+    if (button.text() == "Pause") {
+      resetTimer();
+    } else {
+      moving = true;
+      timer = setInterval(update, 10); // Move by a month every 2 seconds
+      button.text("Pause");
     }
   });
 
-  // Initialize chart with default date range using full dataset
-  updateChart(minDate, maxDate, data);
-
-  // Play button click event
-  $('#playButton').on('click', function() {
-    if (!isPlaying) {
-      isPlaying = true;
-      playInterval = setInterval(() => {
-        const sliderValues = $("#slider").slider('option', 'values');
-        const currentEndDate = new Date(sliderValues[1]);
-        const nextEndDate = new Date(currentEndDate.getTime() + 24 * 60 * 60 * 1000);
-
-        if (nextEndDate <= maxDate) {
-          const startDate = new Date(sliderValues[0]);
-          $("#slider").slider('values', [startDate.getTime(), nextEndDate.getTime()]);
-          updateChart(startDate, nextEndDate, data);
-        } else {
-          stopSlider();
-        }
-      }, 1000);
+  function update() {
+    var offset = sliderTime.value().valueOf() + oneMonthDuration; // Move by a month
+    sliderTime.value(offset);
+    if (offset >= endDate.getTime()) {
+      resetTimer();
     }
-  });
+    // Update the label text to include month and year
+    d3.select("p#value-time").text(formatTooltipDate(sliderTime.value()));
+  }
 
-  // Pause button click event
-  $('#pauseButton').on('click', stopSlider);
-
-  // Function to stop the slider
-  function stopSlider() {
-    clearInterval(playInterval);
-    isPlaying = false;
+  function resetTimer() {
+    moving = false;
+    clearInterval(timer);
+    playButton.text("Play");
   }
 
   // Function to update the chart based on filtered data
   function updateChart(startDate, endDate, data) {
-    const filteredData = data.filter(d => d.date >= startDate && d.date <= endDate);
-
-    // Sort the filteredData by total_vaccinations in descending order
-    filteredData.sort((a, b) => b.total_vaccinations - a.total_vaccinations);
-
+    const filteredData = data.filter(
+      d => d.date >= startDate && d.date <= endDate
+    );
 
     // Remove existing chart
     d3.select('#chart').selectAll('*').remove();
@@ -82,61 +127,63 @@ d3.json('data.json').then(data => {
     const width = 1000 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
 
-    const svg = d3.select('#chart')
+    const svg = d3
+      .select('#chart')
       .append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Create scales
-    const x = d3.scaleBand()
-      .domain(filteredData.map(d => d.location))
-      .range([0, width])
-      .padding(0.2);
+  // Create scales
+  const x = d3.scaleBand()
+    .domain(filteredData.map(d => d.location))
+    .range([0, width])
+    .padding(0.2);
 
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(filteredData, d => d.total_vaccinations)])
-      .nice()
-      .range([height, 0]);
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(filteredData, d => d.total_vaccinations)])
+    .nice()
+    .range([height, 0]);
 
-    // Create axes
-    const xAxis = d3.axisBottom(x);
-    const yAxis = d3.axisLeft(y).ticks(10);
+  // Create axes
+  const xAxis = d3.axisBottom(x);
+  const yAxis = d3.axisLeft(y).ticks(10);
 
-    // Append axes to SVG
-    svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', `translate(0, ${height})`)
-      .call(xAxis)
-      .selectAll('text')
-      .attr('transform', 'rotate(-45)')
-      .style('text-anchor', 'end');
+  // Append axes to SVG
+  svg.append('g')
+    .attr('class', 'x axis')
+    .attr('transform', `translate(0, ${height})`)
+    .call(xAxis)
+    .selectAll('text')
+    .attr('transform', 'rotate(-45)')
+    .style('text-anchor', 'end');
 
-    svg.append('g')
-      .attr('class', 'y axis')
-      .call(yAxis);
+  svg.append('g')
+    .attr('class', 'y axis')
+    .call(yAxis);
 
-    // Add axis labels
-    svg.append('text')
-      .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
-      .attr('x', width / 2)
-      .attr('y', height + margin.bottom / 2)
-      .text('Location');
+  // Add axis labels
+  svg.append('text')
+    .attr('class', 'axis-label')
+    .attr('text-anchor', 'middle')
+    .attr('x', width / 2)
+    .attr('y', height + margin.bottom / 2)
+    .text('Location');
 
-    svg.append('text')
-      .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2)
-      .attr('y', -margin.left + 15)
-      .text('Total Vaccinations');
+  svg.append('text')
+    .attr('class', 'axis-label')
+    .attr('text-anchor', 'middle')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -height / 2)
+    .attr('y', -margin.left + 15)
+    .text('Total Vaccinations');
 
-    // Create bars based on the sorted data
+  // Create bars based on the sorted data
   svg.selectAll('.bar')
   .data(filteredData)
-  .enter().append('rect')
+  .enter()
+  .append('rect')
   .attr('class', 'bar')
   .attr('x', d => x(d.location))
   .attr('width', x.bandwidth())
@@ -145,5 +192,8 @@ d3.json('data.json').then(data => {
   .attr('fill', 'steelblue')
   .append('title')
   .text(d => `${d.location}: ${d.total_vaccinations} vaccinations`);
- }
+}
+
+// Usage of the updateChart function
+updateChart(startDate, endDate, data); // Call this function with appropriate startDate, endDate, and the loaded data
 });
