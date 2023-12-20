@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bar Chart with D3.js</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <title>Horizontal Bar Chart</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link your CSS file here -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 </head>
+
 <body>
   <h1>Total Vaccinations by Location</h1> <!-- Heading added -->
-  <svg id="chart" width="600" height="400"></svg> <!-- Define width and height for the SVG -->
-  <script src="script.js"></script> <!-- Include your JavaScript file here -->
+  <div id="chart-container">
+    <svg id="chart" width="1000" height="600"></svg> <!-- Define width and height for the SVG -->
+  </div>
+  
+  <div id="slider"></div>
+  <!-- Date labels -->
+  <p>Start Date: <span id="startLabel"></span></p>
+  <p id="endLabel">End Date: <span></span></p> 
+
+  <button id="playButton">Play</button>
+  <button id="pauseButton">Pause</button>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
+
