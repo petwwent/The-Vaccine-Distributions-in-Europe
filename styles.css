@@ -1,0 +1,17 @@
+/* styles.css */
+.axis-label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  
+  #chart-container {
+    text-align: center; /* Aligns content within the container */
+  }
+
+  #endLabel {
+    position: absolute;
+    right: 20px;
+    margin-top: -30px;
+  }
+ 
