@@ -9,16 +9,27 @@
 <body>
   <h1>Total Vaccinations by Location</h1> <!-- Heading added -->
 
+  <!-- Checkboxes for selecting locations -->
+  <div class="checkboxes" id="location-checkboxes"></div>
+
   <div id="legend"></div>
+
+  <!-- Dropdown for selecting dates -->
+  <div class="dropdown">
+    <label for="date-dropdown">Select Date: </label>
+    <select id="date-dropdown"></select>
+  </div>
 
   <div id="chart-container">
     <svg id="chart" width="1000" height="600"></svg> <!-- Define width and height for the SVG -->
   </div>
   
+  
   <!-- Container for slider -->
 
   <button id="play-button">Play</button>
   <div id="slider-time"></div>
+
 
  
 
