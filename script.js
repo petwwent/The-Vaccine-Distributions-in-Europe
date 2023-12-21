@@ -99,7 +99,7 @@ d3.json("data.json").then(function(data) {
       resetTimer();
     } else {
       moving = true;
-      timer = setInterval(update, 10); // Move by a month every 2 seconds
+      timer = setInterval(update, 100); // Move by a month every 2 seconds
       button.text("Pause");
     }
   });
@@ -121,13 +121,22 @@ d3.json("data.json").then(function(data) {
   }
 
   // Function to update the chart based on filtered data
-  function updateChart(startDate, endDate, data) {
-    const filteredData = data.filter(
-      d => d.date >= startDate && d.date <= endDate
-    );
+function updateChart(startDate, endDate, data) {
+  const filteredData = data.filter(
+    d => d.date >= startDate && d.date <= endDate
+  );
 
-    // Remove existing chart
-    d3.select('#chart').selectAll('*').remove();
+  // Sort data in descending order of total_vaccinations
+  filteredData.sort((a, b) => b.total_vaccinations - a.total_vaccinations);
+
+  // Create a color scale based on population values
+  const colorScale = d3.scaleOrdinal()
+    .domain(filteredData.map(d => d.population))
+    .range(d3.schemeCategory10); // You can use any color scheme you prefer
+
+  // Remove existing chart and legend
+  d3.select('#chart').selectAll('*').remove();
+  d3.select('#legend').selectAll('*').remove();
 
     // Chart dimensions and other elements setup
     const margin = { top: 50, right: 50, bottom: 100, left: 150 };
@@ -186,8 +195,8 @@ d3.json("data.json").then(function(data) {
     .attr('y', -margin.left + 15)
     .text('Total Vaccinations');
 
-    // Update or redraw the bars in the chart based on the new data
-  svg.selectAll('.bar')
+    // Create bars based on the sorted data (in descending order) with different colors based on population
+  const bars = svg.selectAll('.bar')
   .data(filteredData)
   .enter()
   .append('rect')
@@ -196,11 +205,40 @@ d3.json("data.json").then(function(data) {
   .attr('width', x.bandwidth())
   .attr('y', d => y(d.total_vaccinations))
   .attr('height', d => height - y(d.total_vaccinations))
-  .attr('fill', 'steelblue')
+  .attr('fill', d => colorScale(d.population))
   .append('title')
   .text(d => `${d.location}: ${d.total_vaccinations} vaccinations`);
-}
+
+// Legend
+const legend = d3.select('#legend')
+  .append('svg')
+  .attr('width', 150)
+  .attr('height', 150)
+  .append('g')
+  .attr('transform', 'translate(0,20)');
+
+const legendColors = legend.selectAll('.legend-color')
+  .data(filteredData.map(d => d.population))
+  .enter().append('g')
+  .attr('class', 'legend-color')
+  .attr('transform', (d, i) => `translate(0,${i * 20})`);
+
+legendColors.append('rect')
+  .attr('width', 15)
+  .attr('height', 15)
+  .attr('fill', colorScale);
+
+legendColors.append('text')
+  .attr('x', 20)
+  .attr('y', 10)
+  .text(d => `Population: ${d}`);
 
 // Usage of the updateChart function
+// ... (Call this function with appropriate startDate, endDate, and the loaded data)
+}
+// Usage of the updateChart function
 updateChart(startDate, endDate, data); // Call this function with appropriate startDate, endDate, and the loaded data
+
+// Start the slide play by default when the page loads
+d3.select("#play-button").dispatch("click");
 });
