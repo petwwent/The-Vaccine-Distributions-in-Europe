@@ -134,21 +134,51 @@ d3.json("data.json").then(function(data) {
     .attr("value", d => d)
     .on("change", updateSelectedLocations); // Call the function to update selected locations on change
 
-  // Add options to the dropdown for selecting dates
-  const dateDropdown = d3.select("#date-dropdown");
-  dateDropdown.selectAll("option")
-    .data(filteredDates)
-    .enter()
-    .append("option")
-    .text(d => d.toLocaleDateString("en-US", { month: "short", year: "numeric" }))
-    .attr("value", d => d.getTime())
-    .property("selected", d => d === startDate) // Set the start date as the default selected value
-    .on("change", function () {
-      const selectedDate = new Date(+this.value);
-      // Update the chart with the selected date
-      updateChart(selectedDate, selectedDate, data);
-    });
+  // Assuming 'data' is the loaded dataset from data.json
+const uniqueDates = Array.from(new Set(data.map(d => d.date))); // Extract unique dates
 
+// Filter dates within the specified range (from Jan 2021 to Dec 2023)
+const filteredDropdownDates = uniqueDates.filter(date => {
+  const year = date.getFullYear();
+  return year >= 2021 && year <= 2023; // Filter dates from 2021 to 2023
+});
+
+// Create an array to hold all months from Jan to Dec
+const allMonths = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// Generate dropdown options for each month and year
+const dropdownOptions = [];
+for (let year = 2021; year <= 2023; year++) {
+  for (let month = 0; month < 12; month++) {
+    const currentDate = new Date(year, month, 1);
+    const formattedDate = currentDate.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    if (filteredDropdownDates.find(date => date.getMonth() === month && date.getFullYear() === year)) {
+      dropdownOptions.push({
+        date: currentDate,
+        label: formattedDate,
+        value: currentDate.getTime()
+      });
+    }
+  }
+}
+
+// Update the dropdown with sorted options
+const dateDropdown = d3.select("#date-dropdown");
+dateDropdown.selectAll("option")
+  .data(dropdownOptions)
+  .enter()
+  .append("option")
+  .text(d => d.label)
+  .attr("value", d => d.value)
+  .property("selected", d => d.date === startDate) // Set the default selected value based on startDate
+  .on("change", function () {
+    const selectedDate = new Date(+this.value);
+    // Update the chart with the selected date
+    updateChart(selectedDate, selectedDate, data);
+  });
   // Function to update the chart based on selected locations
   function updateSelectedLocations() {
     const selectedLocations = locationCheckboxes.filter(":checked").nodes().map(node => node.value);
