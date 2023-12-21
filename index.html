@@ -8,19 +8,22 @@
 
 <body>
   <h1>Total Vaccinations by Location</h1> <!-- Heading added -->
+
+  <div id="legend"></div>
+
   <div id="chart-container">
     <svg id="chart" width="1000" height="600"></svg> <!-- Define width and height for the SVG -->
   </div>
   
-  <div id="slider"></div>
-  <!-- Date labels -->
-  <p>Start Date: <span id="startLabel"></span></p>
-  <p id="endLabel">End Date: <span></span></p> 
+  <!-- Container for slider -->
 
-  <button id="playButton">Play</button>
-  <button id="pauseButton">Pause</button>
+  <button id="play-button">Play</button>
+  <div id="slider-time"></div>
+
+ 
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/d3-simple-slider"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script src="script.js"></script>
