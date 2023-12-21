@@ -120,6 +120,45 @@ d3.json("data.json").then(function(data) {
     playButton.text("Play");
   }
 
+
+  // Add checkboxes for selecting locations
+  const locations = Array.from(new Set(data.map(d => d.location))); // Get unique locations
+  const locationCheckboxes = d3.select("#location-checkboxes")
+    .selectAll("label")
+    .data(locations)
+    .enter()
+    .append("label")
+    .text(d => d)
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("value", d => d)
+    .on("change", updateSelectedLocations); // Call the function to update selected locations on change
+
+  // Add options to the dropdown for selecting dates
+  const dateDropdown = d3.select("#date-dropdown");
+  dateDropdown.selectAll("option")
+    .data(filteredDates)
+    .enter()
+    .append("option")
+    .text(d => d.toLocaleDateString("en-US", { month: "short", year: "numeric" }))
+    .attr("value", d => d.getTime())
+    .property("selected", d => d === startDate) // Set the start date as the default selected value
+    .on("change", function () {
+      const selectedDate = new Date(+this.value);
+      // Update the chart with the selected date
+      updateChart(selectedDate, selectedDate, data);
+    });
+
+  // Function to update the chart based on selected locations
+  function updateSelectedLocations() {
+    const selectedLocations = locationCheckboxes.filter(":checked").nodes().map(node => node.value);
+    // Filter data based on selected locations
+    const filteredData = data.filter(d => selectedLocations.includes(d.location));
+    // Update the chart with filtered data
+    updateChart(startDate, endDate, filteredData);
+  }
+
+
   // Function to update the chart based on filtered data
 function updateChart(startDate, endDate, data) {
   const filteredData = data.filter(
