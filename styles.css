@@ -1,17 +1,89 @@
 /* styles.css */
-.axis-label {
-    font-size: 14px;
-    font-weight: bold;
-  }
-  
   
   #chart-container {
     text-align: center; /* Aligns content within the container */
+    margin-top: -150px;
   }
 
-  #endLabel {
-    position: absolute;
-    right: 20px;
-    margin-top: -30px;
+
+  #legend {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid, white;
+    border-radius: 5px;
+    background-color: white;
+    font-family: Arial, sans-serif;
   }
- 
+
+  /* Style for legend color rectangles */
+  .legend-color rect {
+    width: 15px;
+    height: 15px;
+    fill-opacity: 0.7;
+  }
+
+  /* Style for legend text */
+  .legend-color text {
+    font-size: 12px;
+    fill: #333;
+  }
+
+
+  /* Apply specific styles to the slider SVG */
+  #slider-time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -50px; /* Adjust as needed */
+    width: 100%; /* Ensure the container takes the full width */
+  }
+  #slider-time svg {
+    border: none; /* Remove any border */
+    margin: 0 auto;
+    display: block;
+    width: auto;
+  }
+
+  #slider-time {
+    border: none; /* Remove any border */
+  }
+
+  .slider text {
+    font-size: 12px;
+    border: none;
+  }
+  
+  .slider {
+    cursor: pointer;
+  }
+  
+  .parameter-value path {
+    fill: #0f8243;
+  }
+  
+  
+  #play-button {
+    background: #f08080;
+    padding-right: 26px;
+    border-radius: 3px;
+    border: none;
+    color: white;
+    margin: 0;
+    padding: 0 12px;
+    width: 60px;
+    cursor: pointer;
+    height: 30px;
+  }
+  
+  #play-button:hover {
+    background-color: #696969;
+  }
+
+  #value-time {
+    /* Other existing styles */
+    width: auto; /* Increase width as needed to accommodate the entire date and time */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Show ellipsis (...) for truncated content */
+    border: none;
+}
