@@ -134,6 +134,16 @@ d3.json("data.json").then(function(data) {
     .attr("value", d => d)
     .on("change", updateSelectedLocations); // Call the function to update selected locations on change
 
+  // Add functionality for the "Select All" checkbox
+  d3.select("#select-all-checkbox").on("change", function() {
+    const isChecked = this.checked;
+
+    // Check or uncheck all location checkboxes based on the "Select All" checkbox state
+    d3.selectAll("#location-checkboxes input[type=checkbox]")
+      .property("checked", isChecked)
+      .dispatch("change"); // Trigger the change event for selected locations
+  });  
+
   // Assuming 'data' is the loaded dataset from data.json
 const uniqueDates = Array.from(new Set(data.map(d => d.date))); // Extract unique dates
 
@@ -165,20 +175,14 @@ for (let year = 2021; year <= 2023; year++) {
   }
 }
 
-// Update the dropdown with sorted options
-const dateDropdown = d3.select("#date-dropdown");
-dateDropdown.selectAll("option")
-  .data(dropdownOptions)
-  .enter()
-  .append("option")
-  .text(d => d.label)
-  .attr("value", d => d.value)
-  .property("selected", d => d.date === startDate) // Set the default selected value based on startDate
-  .on("change", function () {
-    const selectedDate = new Date(+this.value);
-    // Update the chart with the selected date
-    updateChart(selectedDate, selectedDate, data);
-  });
+// Add an event listener to the search button
+d3.select("#search-button").on("click", function() {
+  // Get the entered date value from the input field
+  const enteredDate = new Date(d3.select("#search-date").property("value"));
+
+  // Update the chart based on the entered date
+  updateChart(enteredDate, enteredDate, data);
+});
   // Function to update the chart based on selected locations
   function updateSelectedLocations() {
     const selectedLocations = locationCheckboxes.filter(":checked").nodes().map(node => node.value);
@@ -191,9 +195,14 @@ dateDropdown.selectAll("option")
 
   // Function to update the chart based on filtered data
 function updateChart(startDate, endDate, data) {
-  const filteredData = data.filter(
-    d => d.date >= startDate && d.date <= endDate
-  );
+  let filteredData = data.filter(d => d.date >= startDate && d.date <= endDate);
+
+  const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
+  
+  if (selectedLocations.length > 0) {
+    // If locations are selected, filter data based on selected locations
+    filteredData = filteredData.filter(d => selectedLocations.includes(d.location));
+  }
 
   // Sort data in descending order of total_vaccinations
   filteredData.sort((a, b) => b.total_vaccinations - a.total_vaccinations);
@@ -303,10 +312,14 @@ legendColors.append('text')
   .text(d => `Population: ${d}`);
 
 // Usage of the updateChart function
-// ... (Call this function with appropriate startDate, endDate, and the loaded data)
 }
 // Usage of the updateChart function
 updateChart(startDate, endDate, data); // Call this function with appropriate startDate, endDate, and the loaded data
+
+// Function to update selected locations
+function updateSelectedLocations() {
+  const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
+}
 
 // Start the slide play by default when the page loads
 d3.select("#play-button").dispatch("click");
