@@ -175,3 +175,20 @@ body {
     text-overflow: ellipsis; /* Show ellipsis (...) for truncated content */
     border: none;
 }
+
+/* CSS to style the summary table */
+#summary-table-container {
+  margin-right: 50px;
+}
+
+.summary-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 10px; /* Adjust the padding value as needed */
+  border: 1px solid #ddd; /* Adding border for better cell separation */
+  text-align: center;
+}
