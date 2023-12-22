@@ -1,12 +1,19 @@
 /* styles.css */
+
+body {
+  background-color: #ebe4e4;
+}
   
   #chart-container {
     text-align: center; /* Aligns content within the container */
     margin-top: -80px;
   }
 
-
- /* styles.css */
+  p {
+    font-size: 20px;
+    color: #b60d97;
+    font-weight: 30px;
+  }
 
 /* Update legend styles */
 #legend {
@@ -68,6 +75,41 @@
   margin-top: -150px;
   margin-right: 20px;
 }
+
+
+/* Style for the search button */
+#search-button {
+  background-color: #2196f3; /* Change background color */
+  color: white; /* Text color */
+  border: none;
+  border-radius: 3px;
+  padding: 8px 15px; /* Adjust padding */
+  font-size: 16px; /* Adjust font size */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Add a smooth transition for color change */
+}
+
+#search-button:hover {
+  background-color: #0f6ab4; /* Change background color on hover */
+}
+
+/* Style for the date input box */
+#search-date {
+  padding: 8px; /* Adjust padding */
+  font-size: 16px; /* Adjust font size */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 5px; /* Add border radius */
+}
+
+/* Increase height of the date input box */
+#search-date::-webkit-calendar-picker-indicator {
+  padding: 5px; /* Adjust padding */
+  height: 30px; /* Adjust height */
+  width: 30px; /* Adjust width */
+  color: #2196f3; /* Change color */
+  cursor: pointer;
+}
+
 
 
   /* Apply specific styles to the slider SVG */
