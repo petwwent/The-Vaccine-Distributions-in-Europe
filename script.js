@@ -24,6 +24,71 @@ d3.json("data.json").then(function(data) {
   // Extract dates from the loaded data
   const dates = data.map(item => new Date(item.date));
 
+  function createSummaryTable(data) {
+    const columns = [
+      { key: 'total_cases', label: 'Total-Cases' },
+      { key: 'population', label: 'Population' },
+      { key: 'total_vaccinations', label: 'Total-vaccinations' },
+      { key: 'people_vaccinated', label: 'vaccinated' },
+      { key: 'people_fully_vaccinated', label: 'fully_vaccinated' },
+      { key: 'total_vaccinations_per_hundred', label: 'Total_v_per_100' },
+      { key: 'people_vaccinated_per_hundred', label: 'vaccinated_per_100' },
+      { key: 'people_fully_vaccinated_per_hundred', label: 'fully_vaccinated_per100' }
+    ];
+  
+    const locations = Array.from(new Set(data.map(d => d.location)));
+
+  const startDate = new Date(data[0].date);
+  const endDate = new Date(data[data.length - 1].date);
+
+  const dateRange = `${startDate.toLocaleString('default', { month: 'short', year: 'numeric' })} - ${endDate.toLocaleString('default', { month: 'short', year: 'numeric' })}`;
+
+  const table = document.createElement('table');
+  table.classList.add('summary-table'); // Add a class to the table
+
+  const headerRow = table.insertRow();
+  let cell = headerRow.insertCell();
+  cell.textContent = 'Location';
+  cell.style.fontWeight = 'bold';
+
+  columns.forEach(column => {
+    cell = headerRow.insertCell();
+    cell.textContent = column.label;
+    cell.style.fontWeight = 'bold';
+    cell.classList.add('summary-table-cell'); // Add a class to the table cells
+  });
+
+  let dateCell = headerRow.insertCell();
+  dateCell.textContent = 'Date Range';
+  dateCell.style.fontWeight = 'bold';
+  dateCell.classList.add('summary-table-cell'); // Add a class to the table cells
+
+  locations.forEach(location => {
+    const locationData = data.filter(d => d.location === location);
+    const row = table.insertRow();
+    let cell = row.insertCell();
+    cell.textContent = location;
+
+    columns.forEach(column => {
+      cell = row.insertCell();
+      const columnData = locationData.map(d => +d[column.key] || 0);
+      const total = d3.sum(columnData);
+      cell.textContent = total;
+      cell.classList.add('summary-table-cell'); // Add a class to the table cells
+    });
+
+    let dateCell = row.insertCell();
+    dateCell.textContent = dateRange;
+    dateCell.classList.add('summary-table-cell'); // Add a class to the table cells
+  });
+
+  document.getElementById('summary-table').appendChild(table);
+}
+
+// Call the function to create the summary table using the loaded data
+createSummaryTable(data); // 'data' is assumed to be the loaded dataset from data.json
+  
+
   // Filter dates to January and July
   const filteredDates = dates.filter(date => {
     const month = date.getMonth();
@@ -206,6 +271,7 @@ d3.select("#search-button").on("click", function() {
   // Function to update selected locations
 function updateSelectedLocations() {
   const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
+
   
   const selectedDate = new Date(d3.select("#search-date").property("value"));
 
