@@ -10,6 +10,17 @@
   <h1>Total Vaccinations by Location</h1> <!-- Heading added -->
   <p>select locations and use the search button to compare data</p>
 
+  <!-- Search for selecting start and end dates -->
+<div class="search-container">
+  <label for="start-date">Start Date: </label>
+  <input type="date" id="start-date" min="2021-01-01" max="2023-09-30" />
+  
+  <label for="end-date">End Date: </label>
+  <input type="date" id="end-date" min="2021-01-01" max="2023-09-30" />
+  
+  <button id="search-button">Search</button>
+</div>
+
   <!-- Checkboxes for selecting locations -->
   <div class="checkboxes" id="location-checkboxes"></div>
 
@@ -22,14 +33,6 @@
   <div id="legend"></div>
 
 
-  <!-- search for selecting dates -->
-  <!-- Search for selecting dates -->
-  <div class="search-container">
-    <label for="search-date">Search Date: </label>
-    <input type="date" id="search-date" />
-    <button id="search-button">Search</button>
-  </div>
-
   <div id="chart-container">
     <svg id="chart" width="1000" height="600"></svg> <!-- Define width and height for the SVG -->
   </div>
@@ -39,6 +42,22 @@
 
   <button id="play-button">Play</button>
   <div id="slider-time"></div>
+
+
+  <!-- HTML structure for the table -->
+<div>
+  <h2>Totals for Selected Range and Locations</h2>
+  <table id="totals-table">
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
   
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/d3-simple-slider"></script>
@@ -47,4 +66,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
