@@ -12,27 +12,31 @@
   <!-- Checkboxes for selecting locations -->
   <div class="checkboxes" id="location-checkboxes"></div>
 
+  <div class="checkboxes" id="location-checkboxes">
+    <label>
+      <input type="checkbox" id="select-all-checkbox"> <b>Select All Locations</b>
+    </label>
+  </div>
+
   <div id="legend"></div>
 
-  <!-- Dropdown for selecting dates -->
-  <div class="dropdown">
-    <label for="date-dropdown">Select Date: </label>
-    <select id="date-dropdown"></select>
+
+  <!-- search for selecting dates -->
+  <div class="search-container">
+    <label for="search-date">Search Date: </label>
+    <input type="date" id="search-date" />
+    <button id="search-button">Search</button>
   </div>
 
   <div id="chart-container">
     <svg id="chart" width="1000" height="600"></svg> <!-- Define width and height for the SVG -->
   </div>
   
-  
   <!-- Container for slider -->
 
   <button id="play-button">Play</button>
   <div id="slider-time"></div>
-
-
- 
-
+  
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/d3-simple-slider"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
