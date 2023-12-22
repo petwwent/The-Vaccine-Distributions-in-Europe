@@ -102,6 +102,15 @@ createSummaryTable(data); // 'data' is assumed to be the loaded dataset from dat
   // Calculate the duration for 1 month in milliseconds
   const oneMonthDuration = 1000 * 60 * 60 * 24 * 2; // Changed to milliseconds in a month
 
+  // Function to update the summary table based on selected dates
+function updateSummaryTable(startDate, endDate, data) {
+  // Clear existing table content
+  document.getElementById('summary-table').innerHTML = '';
+
+  // Create or modify the summary table with new data based on date range
+  createSummaryTable(data.filter(d => d.date >= startDate && d.date <= endDate));
+}
+
   // Create or modify sliderTime with new data
   sliderTime = d3
     .sliderBottom()
@@ -120,10 +129,13 @@ createSummaryTable(data); // 'data' is assumed to be the loaded dataset from dat
       
       // Get the new start and end dates based on the slider value
       const newStartDate = new Date(val);
-      const newEndDate = new Date(val); // You might adjust this based on your logic
-
+      const newEndDate = new Date(val); // Adjust logic as needed
+  
       // Update the chart with new start and end dates
       updateChart(newStartDate, newEndDate, data); // Call the updateChart function with new dates and data
+  
+      // Update the summary table with new start and end dates
+      updateSummaryTable(newStartDate, newEndDate, data);
     });
 
   // Append the slider to a group
