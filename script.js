@@ -46,14 +46,26 @@ d3.json("data.json").then(function(data) {
   const table = document.createElement('table');
   table.classList.add('summary-table'); // Add a class to the table
 
+  // Create a heading element
+  const heading = document.createElement('h1');
+  heading.textContent = 'Table of Statistics For Distributions';
+  heading.classList.add('table-heading'); 
+
+  // Append the heading to the container
+  const summaryTableContainer = document.getElementById('summary-table');
+  summaryTableContainer.innerHTML = ''; // Clear existing content
+  summaryTableContainer.appendChild(heading);
+
   const headerRow = table.insertRow();
   let cell = headerRow.insertCell();
   cell.textContent = 'Location';
+  cell.classList.add('column-header');
   cell.style.fontWeight = 'bold';
 
   columns.forEach(column => {
     cell = headerRow.insertCell();
     cell.textContent = column.label;
+    cell.classList.add('column-header');
     cell.style.fontWeight = 'bold';
     cell.classList.add('summary-table-cell'); // Add a class to the table cells
   });
