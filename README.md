@@ -8,9 +8,12 @@ This repository contains Python code for visualizing the distribution of vaccine
 
 https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/cab34f81-bd2d-44ea-9eaa-a8b5cd8b7aff
 
-![Screenshot 2023-12-06 203756](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/1d3f467c-ce0e-4de8-af8c-38a57f0711d9)
+![Screenshot 2023-12-22 145626](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/89527986-105b-490d-bf78-38ac2e46eb67)
 
-![Screenshot 2023-12-06 194511](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/bfcead94-de45-46a2-946c-a51ee64470f0)
+![Screenshot 2023-12-22 145723](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/850deadc-a9de-4ecd-a779-b23200c195d4)
+
+![Screenshot 2023-12-22 145800](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/ac354bae-053c-4f90-a896-9071ad334145)
+
 
 
 ## Key User Group
@@ -33,15 +36,9 @@ This app is the solution to this problem, The Director of ECDC can use this chor
     people_vaccinated_per_hundred, and
     people_fully_vaccinated_per_hundred for each and every European countries.
 
-| iso_code | continent | location |       date      | total_cases | population | total_vaccinations | people_vaccinated | fully_vaccinated | Total_v_per_100 | vaccinated_per_100 | fully_vaccinated_per100|
-|----------|-----------|----------|-----------------|--------------|------------|---------------------|-------------------|-------------------|-----------------|--------------------|---------------------|
-|   ALB    |  Europe   | Albania  | 1578009600000   |     NaN      |  2842318   |        NaN          |        NaN        |        NaN        |       NaN       |        NaN         |           NaN       |
-|   ALB    |  Europe   | Albania  | 1578096000000   |     NaN      |  2842318   |        NaN          |        NaN        |        NaN        |       NaN       |        NaN         |           NaN       |
-|   ALB    |  Europe   | Albania  | 1578182400000   |     NaN      |  2842318   |        NaN          |        NaN        |        NaN        |       NaN       |        NaN         |           NaN       |
-|   ALB    |  Europe   | Albania  | 1578268800000   |     NaN      |  2842318   |        NaN          |        NaN        |        NaN        |       NaN       |        NaN         |           NaN       |
-|   ALB    |  Europe   | Albania  | 1578355200000   |     NaN      |  2842318   |        NaN          |        NaN        |        NaN        |       NaN       |        NaN         |           NaN       |
+https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/6748dafa-39a0-423a-b5a4-37172ab6343d
 
-
+https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/1939016c-32cf-4425-a06a-62e6f3957f72
 
 
 ## User Objectives
