@@ -17,5 +17,11 @@ def get_data():
 def get_script():
     return send_file('script.js')
 
+# Route for serving the styles.css file
+@app.route('/styles.css')
+def get_styles():
+    return send_file('styles.css')
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
