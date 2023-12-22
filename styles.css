@@ -55,17 +55,19 @@
   margin-right: 15px; /* Add space between checkboxes */
 }
 
+
+/* style for 'Select All' checkbox */
+#select-all-checkbox {
+  font-weight: bold;
+  float: right;
+}
   
 
-.dropdown {
+.search-container {
   text-align: right;
   margin-top: -150px;
   margin-right: 20px;
 }
-
-
- 
-
 
 
   /* Apply specific styles to the slider SVG */
