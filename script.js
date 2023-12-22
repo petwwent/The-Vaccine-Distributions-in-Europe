@@ -175,22 +175,32 @@ for (let year = 2021; year <= 2023; year++) {
   }
 }
 
-// Add an event listener to the search button
+// Event listener for the search button
 d3.select("#search-button").on("click", function() {
-  // Get the entered date value from the input field
   const enteredDate = new Date(d3.select("#search-date").property("value"));
 
-  // Update the chart based on the entered date
+  // Stop the chart from playing if it's in a playing state
+  if (moving) {
+    resetTimer();
+  }
+
+  // Update the slider position to the selected date
+  sliderTime.value(enteredDate.getTime());
+
+  // Update the chart with the selected date
   updateChart(enteredDate, enteredDate, data);
 });
-  // Function to update the chart based on selected locations
-  function updateSelectedLocations() {
-    const selectedLocations = locationCheckboxes.filter(":checked").nodes().map(node => node.value);
-    // Filter data based on selected locations
-    const filteredData = data.filter(d => selectedLocations.includes(d.location));
-    // Update the chart with filtered data
-    updateChart(startDate, endDate, filteredData);
-  }
+
+  // Function to update selected locations
+function updateSelectedLocations() {
+  const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
+  
+  const selectedDate = new Date(d3.select("#search-date").property("value"));
+
+  // Update chart based on selected locations and date
+  updateChart(selectedDate, selectedDate, data.filter(d => selectedLocations.includes(d.location)));
+}
+
 
 
   // Function to update the chart based on filtered data
