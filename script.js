@@ -175,20 +175,32 @@ for (let year = 2021; year <= 2023; year++) {
   }
 }
 
-// Event listener for the search button
+// Add an event listener to the search button
 d3.select("#search-button").on("click", function() {
-  const enteredDate = new Date(d3.select("#search-date").property("value"));
+  const startDate = new Date(document.getElementById("start-date").value);
+  const endDate = new Date(document.getElementById("end-date").value);
 
-  // Stop the chart from playing if it's in a playing state
-  if (moving) {
-    resetTimer();
+  // Check if the entered dates are valid
+  if (startDate && endDate && startDate <= endDate) {
+    // Perform actions with the selected start and end dates
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+
+    // Stop the chart from playing if it's in a playing state
+    if (moving) {
+      resetTimer();
+    }
+
+    // Update the slider position to the selected date (if sliderTime exists)
+    if (sliderTime) {
+      sliderTime.value(startDate.getTime());
+    }
+
+    // Call a function to update the chart based on the selected date range
+    updateChart(startDate, endDate, data);
+  } else {
+    alert("Please select a valid date range.");
   }
-
-  // Update the slider position to the selected date
-  sliderTime.value(enteredDate.getTime());
-
-  // Update the chart with the selected date
-  updateChart(enteredDate, enteredDate, data);
 });
 
   // Function to update selected locations
@@ -203,16 +215,29 @@ function updateSelectedLocations() {
 
 
 
-  // Function to update the chart based on filtered data
-function updateChart(startDate, endDate, data) {
-  let filteredData = data.filter(d => d.date >= startDate && d.date <= endDate);
-
-  const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
+  /// Function to update the chart based on filtered data
+  function updateChart(startDate, endDate, data) {
+    let filteredData = data.filter(d => d.date >= startDate && d.date <= endDate);
   
-  if (selectedLocations.length > 0) {
-    // If locations are selected, filter data based on selected locations
-    filteredData = filteredData.filter(d => selectedLocations.includes(d.location));
-  }
+    const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
+    
+    if (selectedLocations.length > 0) {
+      // If locations are selected, filter data based on selected locations
+      filteredData = filteredData.filter(d => selectedLocations.includes(d.location));
+    }
+  
+    // Group the filtered data by location and aggregate total vaccinations within the date range
+    const aggregatedData = d3.rollup(
+      filteredData,
+      group => d3.sum(group, d => d.total_vaccinations),
+      d => d.location
+    );
+  
+    // Convert the aggregated data back to an array of objects for easier chart rendering
+    const aggregatedArray = Array.from(aggregatedData, ([location, total_vaccinations]) => ({
+      location,
+      total_vaccinations
+    }));
 
   // Sort data in descending order of total_vaccinations
   filteredData.sort((a, b) => b.total_vaccinations - a.total_vaccinations);
@@ -284,18 +309,19 @@ function updateChart(startDate, endDate, data) {
     .text('Total Vaccinations');
 
   // Create bars based on the sorted data (in descending order) with different colors based on population
-  const bars = svg.selectAll('.bar')
-    .data(filteredData)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar')
-    .attr('x', d => x(d.location))
-    .attr('width', x.bandwidth())
-    .attr('y', d => y(d.total_vaccinations))
-    .attr('height', d => height - y(d.total_vaccinations))
-    .attr('fill', d => colorScale(d.population))
-    .append('title') // Append tooltip to show data on hover
-    .text(d => `${d.location}\nDate: ${formatTooltipDate(d.date)}\nTotal Vaccinations: ${d.total_vaccinations}`);
+const bars = svg.selectAll('.bar')
+.data(filteredData)
+.enter()
+.append('rect')
+.attr('class', 'bar')
+.attr('x', d => x(d.location))
+.attr('width', x.bandwidth())
+.attr('y', d => y(d.total_vaccinations))
+.attr('height', d => height - y(d.total_vaccinations))
+.attr('fill', d => colorScale(d.population))
+.append('title') // Append tooltip to show data on hover
+.text(d => `${d.location}\nDate Range: ${formatTooltipDate(startDate)} - ${formatTooltipDate(endDate)}\nTotal Vaccinations: ${d.total_vaccinations}`);
+
 
 // Legend
 const legend = d3.select('#legend')
