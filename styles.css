@@ -192,3 +192,11 @@ body {
   border: 1px solid #ddd; /* Adding border for better cell separation */
   text-align: center;
 }
+
+.table-heading {
+  text-align: center; /* Center align the text */
+}
+
+.column-header {
+  color: #b60d97; /* Change to the color you prefer, e.g., red (#FF0000) */
+}
