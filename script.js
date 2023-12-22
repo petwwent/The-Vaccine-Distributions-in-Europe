@@ -396,9 +396,11 @@ const bars = svg.selectAll('.bar')
 .attr('width', x.bandwidth())
 .attr('y', d => y(d.total_vaccinations))
 .attr('height', d => height - y(d.total_vaccinations))
-.attr('fill', d => colorScale(d.population))
-.append('title') // Append tooltip to show data on hover
-.text(d => `${d.location}\nDate Range: ${formatTooltipDate(startDate)} - ${formatTooltipDate(endDate)}\nTotal Vaccinations: ${d.total_vaccinations}`);
+.attr('fill', d => colorScale(d.population));
+
+// Append tooltip to show data on hover
+bars.append('title')
+.text(d => `${d.location}\nDate Range: ${formatTooltipDate(startDate)} - ${formatTooltipDate(endDate)}\nTotal Cases: ${d.total_cases}\nPopulation: ${d.population}\nTotal Vaccinations: ${d.total_vaccinations}\nPeople Vaccinated: ${d.people_vaccinated}\nPeople Fully Vaccinated: ${d.people_fully_vaccinated}\nTotal Vaccinations Per Hundred: ${d.total_vaccinations_per_hundred}\nPeople Vaccinated Per Hundred: ${d.people_vaccinated_per_hundred}\nPeople Fully Vaccinated Per Hundred: ${d.people_fully_vaccinated_per_hundred}`); // Include existing and additional necessary data fields
 
 
 // Legend
