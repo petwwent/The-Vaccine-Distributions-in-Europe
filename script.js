@@ -283,19 +283,19 @@ function updateChart(startDate, endDate, data) {
     .attr('y', -margin.left + 15)
     .text('Total Vaccinations');
 
-    // Create bars based on the sorted data (in descending order) with different colors based on population
+  // Create bars based on the sorted data (in descending order) with different colors based on population
   const bars = svg.selectAll('.bar')
-  .data(filteredData)
-  .enter()
-  .append('rect')
-  .attr('class', 'bar')
-  .attr('x', d => x(d.location))
-  .attr('width', x.bandwidth())
-  .attr('y', d => y(d.total_vaccinations))
-  .attr('height', d => height - y(d.total_vaccinations))
-  .attr('fill', d => colorScale(d.population))
-  .append('title')
-  .text(d => `${d.location}: ${d.total_vaccinations} vaccinations`);
+    .data(filteredData)
+    .enter()
+    .append('rect')
+    .attr('class', 'bar')
+    .attr('x', d => x(d.location))
+    .attr('width', x.bandwidth())
+    .attr('y', d => y(d.total_vaccinations))
+    .attr('height', d => height - y(d.total_vaccinations))
+    .attr('fill', d => colorScale(d.population))
+    .append('title') // Append tooltip to show data on hover
+    .text(d => `${d.location}\nDate: ${formatTooltipDate(d.date)}\nTotal Vaccinations: ${d.total_vaccinations}`);
 
 // Legend
 const legend = d3.select('#legend')
