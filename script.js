@@ -1,4 +1,5 @@
-// Define your variable declarations and constants here
+// Used D3 for this project
+// Define your variable declarations, constants and time with D3 here
 var margin = { top: 50, right: 50, bottom: 0, left: 50 },
   width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
@@ -13,7 +14,7 @@ var timer;
 // Declare sliderTime variable
 var sliderTime;
 
-// Load the data from data.json
+// Load the data from data.json with D3
 d3.json("data.json").then(function(data) {
   // Convert 'date' to a JavaScript Date object and 'total_vaccinations' to numbers
   data.forEach(d => {
