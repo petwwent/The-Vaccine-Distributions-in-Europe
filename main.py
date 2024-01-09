@@ -3,22 +3,22 @@ from flask import Flask, send_file
 app = Flask(__name__)
 
 # Route for serving the index.html file
-@app.route('/')
+@app.route('/static/')
 def index():
     return send_file('index.html')
 
 # Route for serving the data.json file
-@app.route('/data.json')
+@app.route('/static/data.json')
 def get_data():
     return send_file('data.json')
 
 # Route for serving the script.js file
-@app.route('/script.js')
+@app.route('/static/script.js')
 def get_script():
     return send_file('script.js')
 
 # Route for serving the styles.css file
-@app.route('/styles.css')
+@app.route('/static/styles.css')
 def get_styles():
     return send_file('styles.css')
 
