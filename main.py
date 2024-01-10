@@ -1,6 +1,5 @@
-from flask import Flask, send_file, jsonify
+from flask import Flask, request, send_file, jsonify
 from apiflask import APIFlask
-import request
 import json
 
 app = APIFlask(__name__, spec_path='/openapi.yaml')
