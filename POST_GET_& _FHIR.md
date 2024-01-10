@@ -1,5 +1,5 @@
 **Overview**
-This program is designed to convert existing vaccination data into FHIR (Fast Healthcare Interoperability Resources) Immunization resources. The dataset utilized for this process is substantial in size and is not stored locally; instead, the data is streamed from a specified URL. The program automatically generates the URL and prints it in the terminal.
+This is designed to convert existing vaccination data into FHIR (Fast Healthcare Interoperability Resources) Immunization resources. The dataset utilized for this process is substantial in size and is not stored locally; instead, the data is streamed from a specified URL. The program automatically generates the URL and prints it in the terminal.
 
 **How It Works**
 **Data Conversion:** The program reads existing vaccination data from a file (data.json) and converts it into FHIR Immunization resources using the convert_to_fhir_vaccination() function.
