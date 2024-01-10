@@ -57,27 +57,6 @@ def convert_to_fhir_vaccination(existing_vaccination_data):
         yield fhir_immunization
 
 
-# Route for serving index.html
-@app.route('/')
-def index():
-    return send_file('static/index.html')
-
-# Route for serving script.js
-@app.route('/script.js')
-def get_script():
-    return send_file('static/script.js')
-
-# Route for serving styles.css
-@app.route('/styles.css')
-def get_styles():
-    return send_file('static/styles.css')
-
-# Route for serving data.json
-@app.route('/data.json')
-def get_data():
-    return send_file('static/data.json')
-
-
 # Route for posting vaccination data in FHIR format
 @app.route('/api/vaccinations', methods=['POST'])
 def post_vaccination_data():
