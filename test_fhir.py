@@ -69,7 +69,7 @@ example_vaccination_data = list(convert_to_fhir_vaccination(existing_vaccination
 batch_size = 100
 batches = [example_vaccination_data[i:i + batch_size] for i in range(0, len(example_vaccination_data), batch_size)]
 
-def generate_api_url(host='localhost', port=5000):
+def generate_api_url(host='localhost', port=6000):
     return f'http://{host}:{port}/api/vaccinations'
 
 # Generate API URL
