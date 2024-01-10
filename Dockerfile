@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev git
 
 # Install Flask and Gunicorn
-RUN pip install --no-cache-dir Flask==2.0.1 Werkzeug==2.0.3 gunicorn==20.1.0
+RUN pip install --no-cache-dir Flask==2.0.1 Werkzeug==2.0.3 gunicorn==20.1.0 apiflask==0.22.0
 
 # Copy the entire project to the working directory
 COPY . .
