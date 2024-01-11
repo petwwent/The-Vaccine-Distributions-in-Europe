@@ -11,48 +11,52 @@ def convert_to_fhir_vaccination(existing_vaccination_data):
         fhir_immunization = {
             "resourceType": "Immunization",
             "status": "completed",
-            "occurrenceDateTime": vaccination_record["date"],
+            "occurrenceDateTime": vaccination_record.get("date", ""),
             "vaccineCode": {
-                "text": f"COVID-19 Vaccine ({vaccination_record['total_vaccinations']})"
+                "text": f"COVID-19 Vaccine ({vaccination_record.get('total_vaccinations', 0)})"
             },
             "patient": {
-                "reference": f"Location/{vaccination_record['iso_code']}"
+                "reference": f"Location/{vaccination_record.get('iso_code', '')}"
             },
             "doseQuantity": {
-                "value": vaccination_record['total_vaccinations'],
+                "value": vaccination_record.get('total_vaccinations', 0),
                 "unit": "doses"
             },
             "note": [
-                {
-                    "text": f"Location: {vaccination_record['location']}"
-                },
-                {
-                    "text": f"Continent: {vaccination_record['continent']}"
-                },
-                {
-                    "text": f"Total Cases: {vaccination_record['total_cases']}"
-                },
-                {
-                    "text": f"Population: {vaccination_record['population']}"
-                },
-                {
-                    "text": f"People Vaccinated: {vaccination_record['people_vaccinated']}"
-                },
-                {
-                    "text": f"People Fully Vaccinated: {vaccination_record['people_fully_vaccinated']}"
-                },
-                {
-                    "text": f"Total Vaccinations Per Hundred: {vaccination_record['total_vaccinations_per_hundred']}"
-                },
-                {
-                    "text": f"People Vaccinated Per Hundred: {vaccination_record['people_vaccinated_per_hundred']}"
-                },
-                {
-                    "text": f"People Fully Vaccinated Per Hundred: {vaccination_record['people_fully_vaccinated_per_hundred']}"
-                }
+                {"text": f"Location: {vaccination_record.get('location', '')}"},
+                {"text": f"Continent: {vaccination_record.get('continent', '')}"},
+                {"text": f"Total Cases: {vaccination_record.get('total_cases', 0)}"},
+                {"text": f"Population: {vaccination_record.get('population', 0)}"},
+                {"text": f"People Vaccinated: {vaccination_record.get('people_vaccinated', 0)}"},
+                {"text": f"People Fully Vaccinated: {vaccination_record.get('people_fully_vaccinated', 0)}"},
+                {"text": f"Total Vaccinations Per Hundred: {vaccination_record.get('total_vaccinations_per_hundred', 0)}"},
+                {"text": f"People Vaccinated Per Hundred: {vaccination_record.get('people_vaccinated_per_hundred', 0)}"},
+                {"text": f"People Fully Vaccinated Per Hundred: {vaccination_record.get('people_fully_vaccinated_per_hundred', 0)}"}
+                # You can add more fields or notes from your dataset here
             ]
+            # Add more fields from your dataset as required by FHIR Immunization resource
         }
         yield fhir_immunization
+
+# Route for serving index.html
+@app.route('/')
+def index():
+    return send_file('static/index.html')
+
+# Route for serving script.js
+@app.route('/script.js')
+def get_script():
+    return send_file('static/script.js')
+
+# Route for serving styles.css
+@app.route('/styles.css')
+def get_styles():
+    return send_file('static/styles.css')
+
+# Route for serving data.json
+@app.route('/data.json')
+def get_data():
+    return send_file('static/data.json')
 
 # Route for posting vaccination data in FHIR format (POST request)
 @app.route('/api/vaccinations', methods=['POST'])
@@ -65,6 +69,7 @@ def post_vaccination_data():
         # Get the posted data from the request
         posted_data = request.get_json()
 
+        # Assuming posted_data is a list of new vaccination records
         # Convert new data to FHIR format and extend existing data
         updated_data = list(convert_to_fhir_vaccination(posted_data))
         existing_vaccination_data.extend(updated_data)
