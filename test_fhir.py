@@ -3,8 +3,14 @@ import json
 
 
 
-# Function to convert existing vaccination data to FHIR Immunization resource
-def convert_to_fhir_vaccination(existing_vaccination_data):
+
+def convert_to_fhir_bundle(existing_vaccination_data):
+    bundle = {
+        "resourceType": "Bundle",
+        "type": "transaction",  # or "collection" depending on your use case
+        "entry": []
+    }
+
     for vaccination_record in existing_vaccination_data:
         fhir_immunization = {
             "resourceType": "Immunization",
@@ -52,7 +58,17 @@ def convert_to_fhir_vaccination(existing_vaccination_data):
             ]
             # Add more fields from your dataset as required by FHIR Immunization resource
         }
-        yield fhir_immunization
+        # Add Immunization resource to the Bundle
+        bundle["entry"].append({
+            "resource": fhir_immunization,
+            "request": {
+                "method": "POST",  # or "PUT" if updating existing resources
+                "url": "Immunization"  # The FHIR resource type
+            }
+        })
+
+    yield bundle
+
 # Reading existing vaccination data from data.json
 try:
     with open('static/data.json', 'r') as file:
@@ -62,26 +78,29 @@ except FileNotFoundError:
     existing_vaccination_data = []
 
 # Example vaccination data creation (you may replace this with your actual data)
-example_vaccination_data = list(convert_to_fhir_vaccination(existing_vaccination_data))
-
-# Splitting example_vaccination_data into batches of 100 records each
-batch_size = 100
-batches = [example_vaccination_data[i:i + batch_size] for i in range(0, len(example_vaccination_data), batch_size)]
-
-# Modify generate_api_url to use a different port for the Flask app
-def generate_api_url(host='localhost', port=5000):
-    return f'http://{host}:{port}/api/vaccinations'
+example_vaccination_data = list(convert_to_fhir_bundle(existing_vaccination_data))
 
 # Generate API URL
-api_url = generate_api_url()  # Generate the URL
+api_url = 'http://localhost:5000/api/vaccinations'  # Adjust the URL based on your server setup
 print("API URL:", api_url)  # Print the generated URL to the terminal
 
-# Stream the data from the API endpoint
-response = requests.get(api_url)
+# POST request to upload FHIR Bundle
+response = requests.post(api_url, json={"entry": example_vaccination_data})
 
 # Check the response status and process the data if needed
 if response.status_code == 200:
-    streamed_data = response.json()
-    # Process the streamed data as required (or skip processing if not needed)
+    print("Data successfully uploaded")
 else:
-    print("Failed to fetch data")
+    print(f"Failed to upload data. Status code: {response.status_code}")
+
+# GET request to fetch FHIR data with streaming
+response = requests.get(api_url, stream=True)
+
+# Check the response status and process the data if needed
+if response.status_code == 200:
+    print("FHIR Data:")
+    for chunk in response.iter_content(chunk_size=1024):
+        # Process each chunk as needed (e.g., display, analyze, etc.)
+        print(chunk.decode('utf-8')[:100])  # Print only the first 100 characters of each chunk
+else:
+    print(f"Failed to fetch data. Status code: {response.status_code}")
