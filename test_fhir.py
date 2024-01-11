@@ -54,19 +54,3 @@ if response_get.status_code == 200:
         print(fhir_data)
 else:
     print(f"Failed to fetch data. Status code: {response_get.status_code}")
-
-# Example POST request
-existing_data = []  # Replace this with your actual data
-post_data = convert_to_fhir_vaccination(existing_data)
-
-response_post = requests.post(api_url, json=post_data)
-
-if response_post.status_code == 200:
-    # Handle the streamed data from the POST request
-    streamed_data_post = response_post.iter_lines()
-    for line in streamed_data_post:
-        fhir_data = json.loads(line)
-        # Process the FHIR-formatted data as needed
-        print(fhir_data)
-else:
-    print(f"Failed to post data. Status code: {response_post.status_code}")
