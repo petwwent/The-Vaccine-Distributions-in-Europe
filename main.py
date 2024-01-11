@@ -5,8 +5,13 @@ import json
 app = APIFlask(__name__, spec_path='/openapi.yaml')
 app.config['SPEC_FORMAT'] = 'yaml'
 
-# Function to convert existing vaccination data to FHIR Immunization resource
-def convert_to_fhir_vaccination(existing_vaccination_data):
+def convert_to_fhir_bundle(existing_vaccination_data):
+    bundle = {
+        "resourceType": "Bundle",
+        "type": "transaction",  # or "collection" depending on your use case
+        "entry": []
+    }
+
     for vaccination_record in existing_vaccination_data:
         fhir_immunization = {
             "resourceType": "Immunization",
@@ -54,7 +59,16 @@ def convert_to_fhir_vaccination(existing_vaccination_data):
             ]
             # Add more fields from your dataset as required by FHIR Immunization resource
         }
-        yield fhir_immunization
+        # Add Immunization resource to the Bundle
+        bundle["entry"].append({
+            "resource": fhir_immunization,
+            "request": {
+                "method": "POST",  # or "PUT" if updating existing resources
+                "url": "Immunization"  # The FHIR resource type
+            }
+        })
+
+    return bundle
 # Route for serving index.html
 @app.route('/')
 def index():
@@ -76,7 +90,6 @@ def get_data():
     return send_file('static/data.json')
 
 
-# Route for posting vaccination data in FHIR format
 @app.route('/api/vaccinations', methods=['POST'])
 def post_vaccination_data():
     try:
@@ -85,16 +98,11 @@ def post_vaccination_data():
     except FileNotFoundError:
         return jsonify({'error': 'data.json not found'}), 404
 
-    # Stream the FHIR-formatted vaccination data directly in the API response
-    def generate_fhir_vaccination_data(existing_vaccination_data):
-        for fhir_vaccination_record in convert_to_fhir_vaccination(existing_vaccination_data):
-            yield json.dumps(fhir_vaccination_record) + '\n'
+    fhir_bundle = convert_to_fhir_bundle(existing_vaccination_data)
 
-    # Return the streamed FHIR-formatted vaccination data in the API response
-    return Response(generate_fhir_vaccination_data(existing_vaccination_data), content_type='application/json'), 200
+    return jsonify(fhir_bundle), 200
 
 
-# Route for fetching vaccination data in FHIR format (GET request)
 @app.route('/api/vaccinations', methods=['GET'])
 def get_vaccination_data():
     try:
@@ -103,7 +111,7 @@ def get_vaccination_data():
     except FileNotFoundError:
         return jsonify({'error': 'data.json not found'}), 404
 
-    fhir_vaccination_data = list(convert_to_fhir_vaccination(existing_vaccination_data))
+    fhir_vaccination_data = convert_to_fhir_bundle(existing_vaccination_data)
 
     return jsonify(fhir_vaccination_data), 200
 
