@@ -34,9 +34,17 @@ def convert_to_fhir_vaccination(existing_vaccination_data):
             ]
             # Add more fields from your dataset as required by FHIR Immunization resource
         }
-        fhir_data.append(fhir_immunization)
-
+        fhir_data.append(json.dumps(fhir_immunization) + '\n')
+    
     return fhir_data
+
+# Load existing vaccination data from data.json
+try:
+    with open('data.json', 'r') as file:
+        existing_vaccination_data = json.load(file)
+except FileNotFoundError:
+    print('data.json not found')
+    existing_vaccination_data = []
 
 # Generate API URL
 api_url = 'http://localhost:5000/api/vaccinations'
@@ -49,8 +57,19 @@ if response_get.status_code == 200:
     # Handle the streamed data from the GET request
     streamed_data_get = response_get.iter_lines()
     for line in streamed_data_get:
-        fhir_data = json.loads(line)
-        # Process the FHIR-formatted data as needed
-        print(fhir_data)
+        pass  # Do not print or process the data in the terminal
 else:
     print(f"Failed to fetch data. Status code: {response_get.status_code}")
+
+# Example POST request with all data
+fhir_data_to_post = convert_to_fhir_vaccination(existing_vaccination_data)
+
+response_post = requests.post(api_url, json=fhir_data_to_post)
+
+if response_post.status_code == 200:
+    # Handle the streamed data from the POST request
+    streamed_data_post = response_post.iter_lines()
+    for line in streamed_data_post:
+        pass  # Do not print or process the data in the terminal
+else:
+    print(f"Failed to post data. Status code: {response_post.status_code}")
