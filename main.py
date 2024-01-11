@@ -1,4 +1,4 @@
-from flask import Flask, send_file, jsonify, Response
+from flask import Flask, request, send_file, jsonify, Response
 from apiflask import APIFlask
 import json
 
@@ -32,23 +32,31 @@ def convert_to_fhir_vaccination(existing_vaccination_data):
                 {"text": f"Total Vaccinations Per Hundred: {vaccination_record.get('total_vaccinations_per_hundred', 0)}"},
                 {"text": f"People Vaccinated Per Hundred: {vaccination_record.get('people_vaccinated_per_hundred', 0)}"},
                 {"text": f"People Fully Vaccinated Per Hundred: {vaccination_record.get('people_fully_vaccinated_per_hundred', 0)}"}
+                # You can add more fields or notes from your dataset here
             ]
+            # Add more fields from your dataset as required by FHIR Immunization resource
         }
-        yield json.dumps(fhir_immunization) + '\n'
+        yield fhir_immunization
 
-# Route for serving FHIR-formatted vaccination data (GET request)
-@app.route('/api/vaccinations', methods=['GET'])
-def get_vaccination_data():
-    try:
-        with open('static/data.json', 'r') as file:
-            existing_vaccination_data = json.load(file)
-    except FileNotFoundError:
-        return jsonify({'error': 'data.json not found'}), 404
+# Route for serving index.html
+@app.route('/')
+def index():
+    return send_file('static/index.html')
 
-    fhir_vaccination_data = list(convert_to_fhir_vaccination(existing_vaccination_data))
+# Route for serving script.js
+@app.route('/script.js')
+def get_script():
+    return send_file('static/script.js')
 
-    # Return the streamed FHIR-formatted vaccination data in the API response
-    return Response(fhir_vaccination_data, content_type='text/plain'), 200
+# Route for serving styles.css
+@app.route('/styles.css')
+def get_styles():
+    return send_file('static/styles.css')
+
+# Route for serving data.json
+@app.route('/data.json')
+def get_data():
+    return send_file('static/data.json')
 
 # Route for posting vaccination data in FHIR format (POST request)
 @app.route('/api/vaccinations', methods=['POST'])
@@ -72,12 +80,29 @@ def post_vaccination_data():
                 yield json.dumps(fhir_vaccination_record) + '\n'
 
         # Return the streamed FHIR-formatted vaccination data in the API response
-        return Response(generate_fhir_vaccination_data(), content_type='text/plain'), 200
+        return Response(generate_fhir_vaccination_data(), content_type='application/json'), 200
 
     except FileNotFoundError:
         return jsonify({'error': 'data.json not found'}), 404
     except Exception as e:
         return jsonify({'error': f'Error processing the request: {str(e)}'}), 500
+
+# Route for fetching vaccination data in FHIR format (GET request)
+@app.route('/api/vaccinations', methods=['GET'])
+def get_vaccination_data():
+    try:
+        with open('static/data.json', 'r') as file:
+            existing_vaccination_data = json.load(file)
+    except FileNotFoundError:
+        return jsonify({'error': 'data.json not found'}), 404
+
+    fhir_vaccination_data = list(convert_to_fhir_vaccination(existing_vaccination_data))
+
+    def generate_fhir_vaccination_data():
+        for fhir_vaccination_record in fhir_vaccination_data:
+            yield json.dumps(fhir_vaccination_record) + '\n'
+
+    return Response(generate_fhir_vaccination_data(), content_type='application/json'), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
