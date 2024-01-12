@@ -10,8 +10,7 @@ This is designed to convert existing vaccination data into FHIR Bundles of FHIR 
 ![Screenshot 2024-01-12 155334](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/de797876-4ebb-40b3-9c39-4ac7275a1642)
 
 
-**my FHIR Bundle immunization data from the url**
-**Beginning part**
+**my FHIR Bundle immunization data from the url: Beginning part**
 
 
 ![Screenshot 2024-01-12 155353](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/ac0cfc0b-d39f-42b5-a34e-b25bb9192552)
