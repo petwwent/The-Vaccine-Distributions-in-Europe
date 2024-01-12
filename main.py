@@ -1,4 +1,6 @@
 from flask import Flask, request, send_file, jsonify
+from fhir.resources.bundle import Bundle, BundleEntry
+from fhir.resources.immunization import Immunization
 from apiflask import APIFlask
 import json
 
