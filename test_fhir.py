@@ -80,27 +80,24 @@ except FileNotFoundError:
 # Example vaccination data creation (you may replace this with your actual data)
 example_vaccination_data = list(convert_to_fhir_bundle(existing_vaccination_data))
 
+# Splitting example_vaccination_data into batches of 100 records each
+batch_size = 100
+batches = [example_vaccination_data[i:i + batch_size] for i in range(0, len(example_vaccination_data), batch_size)]
+
+def generate_api_url(host='localhost', port=5000):
+    return f'http://{host}:{port}/api/vaccinations'
+
 # Generate API URL
-api_url = 'http://localhost:5000/api/vaccinations'  # Adjust the URL based on your server setup
+api_url = generate_api_url()  # Generate the URL
 print("API URL:", api_url)  # Print the generated URL to the terminal
 
-# POST request to upload FHIR Bundle
-response = requests.post(api_url, json={"entry": example_vaccination_data})
+# Stream the data from the API endpoint
+response = requests.get(api_url)
 
 # Check the response status and process the data if needed
 if response.status_code == 200:
-    print("Data successfully uploaded")
+    streamed_data = response.json()
+    # Process the streamed data as required (or skip processing if not needed)
 else:
-    print(f"Failed to upload data. Status code: {response.status_code}")
+    print("Failed to fetch data")
 
-# GET request to fetch FHIR data with streaming
-response = requests.get(api_url, stream=True)
-
-# Check the response status and process the data if needed
-if response.status_code == 200:
-    print("FHIR Data:")
-    for chunk in response.iter_content(chunk_size=1024):
-        # Process each chunk as needed (e.g., display, analyze, etc.)
-        print(chunk.decode('utf-8')[:100])  # Print only the first 100 characters of each chunk
-else:
-    print(f"Failed to fetch data. Status code: {response.status_code}")
