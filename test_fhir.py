@@ -1,8 +1,7 @@
 import requests
 import json
-
-
-
+from fhir.resources.bundle import Bundle, BundleEntry
+from fhir.resources.immunization import Immunization
 
 def convert_to_fhir_bundle(existing_vaccination_data):
     bundle = {
