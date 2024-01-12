@@ -1,11 +1,16 @@
 ### App interoperability:
-  ***Conversion of my Data.json to FHIR Bundle of Immunization structure for my App***
+   **Conversion of my Data.json to FHIR Bundle of Immunization structure for my App**
 
 **Overview**
 This is designed to convert existing vaccination data into FHIR Bundles of FHIR (Fast Healthcare Interoperability Resources) Immunization resources. The dataset utilized for this process is large in size and is not stored locally; instead, the data is streamed from a specified URL. The program automatically generates the URL and prints it in the terminal.
 
 
+**my Terminal**
+
 ![Screenshot 2024-01-12 155334](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/de797876-4ebb-40b3-9c39-4ac7275a1642)
+
+
+**my FHIR Bundle immunization data from the url**
 
 ![Screenshot 2024-01-11 225854](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/76e54da5-a13d-4b3c-bd87-9670be176947)
 
