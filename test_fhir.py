@@ -96,7 +96,17 @@ response = requests.get(api_url)
 # Check the response status and process the data if needed
 if response.status_code == 200:
     streamed_data = response.json()
-    # Process the streamed data as required (or skip processing if not needed)
+    
+    # Print the first 5 entries
+    print("Printing the first 5 entries:")
+    for entry in streamed_data.get("entry", [])[:5]:
+        print(json.dumps(entry, indent=2))
+
+    print("\n---\n")  # Add a separator between the first and last 5 entries
+
+    # Print the last 5 entries
+    print("Printing the last 5 entries:")
+    for entry in streamed_data.get("entry", [])[-5:]:
+        print(json.dumps(entry, indent=2))
 else:
     print("Failed to fetch data")
-
