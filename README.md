@@ -32,7 +32,9 @@ Due to the data i selected for this visualization, it is easier for the Director
     people_vaccinated_per_hundred, and
     people_fully_vaccinated_per_hundred for each and every European countries.
 
-https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/6748dafa-39a0-423a-b5a4-37172ab6343d
+
+## Speedup video of my App
+https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/01aaaeae-378a-4d3d-b728-2581c7b8fa6d
 
 https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/1939016c-32cf-4425-a06a-62e6f3957f72
 
