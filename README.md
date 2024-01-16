@@ -3,11 +3,9 @@
 
 ### Description:
 
-This repository contains Index.html, styles.css and script.js which contains D3.js code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format, select the continent relevant to my project which is Europe and save it in a different json file, then select the columns that would be relevant to my visualization and handled missing data to check for and manage null or NaN values, techniques such as filling missing values with zeros or using interpolation were applied. Then my visualization uses a bar chart created with **D3.js** codes, providing an interactive and dynamic representation of the vaccination distributions across European countries and over time. i also use **GUNICORN** to export my port.
+This repository contains static files like Index.html, styles.css and script.js which contains D3.js code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format and then convert it further to FHIR bundle (Immunization) which can be streamed by the user on the url generated from **test_fhir.py** but these data will not be saved because it is a very large dataset. Then my visualization uses a bar chart created with **D3.js** codes, with each country's flag on the tip of the bar providing an interactive and dynamic representation of the vaccination distributions across European countries and over time. i also use **GUNICORN** to export my port.
 
-![Screenshot 2023-12-22 145626](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/89527986-105b-490d-bf78-38ac2e46eb67)
-
-![Screenshot 2023-12-22 145723](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/850deadc-a9de-4ecd-a779-b23200c195d4)
+![Screenshot 2024-01-16 013641](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/6041a197-1079-4fb7-8bf2-7816ae6a9310)
 
 ![Screenshot 2023-12-22 145800](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/ac354bae-053c-4f90-a896-9071ad334145)
 
