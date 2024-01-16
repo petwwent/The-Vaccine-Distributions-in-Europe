@@ -91,6 +91,11 @@ def get_styles():
 def get_data():
     return send_file('static/data.json')
 
+# Route for serving flags from the root directory
+@app.route('/flags/<filename>')
+def get_flag(filename):
+    return send_file(f'flags/{filename}')
+
 
 @app.route('/api/vaccinations', methods=['POST'])
 def post_vaccination_data():
