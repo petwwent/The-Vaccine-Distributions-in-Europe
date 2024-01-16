@@ -5,7 +5,11 @@
 
 This repository contains static files like Index.html, styles.css and script.js which contains D3.js code for visualizing the distribution of vaccines across all the countries in Europe from 2021 to 2023 and it's trend. The data is sourced from [https://ourworldindata.org/covid-cases] which came in CSV format, i had to change it to json format and then convert it further to FHIR bundle (Immunization) which can be streamed by the user on the url generated from **test_fhir.py** but these data will not be saved because it is a very large dataset. Then my visualization uses a bar chart created with **D3.js** codes, with each country's flag on the tip of the bar providing an interactive and dynamic representation of the vaccination distributions across European countries and over time. i also use **GUNICORN** to export my port.
 
-![Screenshot 2024-01-16 013641](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/6041a197-1079-4fb7-8bf2-7816ae6a9310)
+![Screenshot 2024-01-16 023832](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/daf93574-d558-4d82-bc20-7960f67e493d)
+
+
+![Screenshot 2024-01-16 023922](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/9b0fa020-8957-4bad-8d26-8d8d6c0f24ad)
+
 
 ![Screenshot 2023-12-22 145800](https://github.com/PrincepaulIzuogu/The-Vaccine-Distributions-in-Europe/assets/123191250/ac354bae-053c-4f90-a896-9071ad334145)
 
