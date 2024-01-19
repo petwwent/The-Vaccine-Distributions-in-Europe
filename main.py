@@ -74,7 +74,7 @@ def convert_to_fhir_bundle(existing_vaccination_data):
 # Route for serving index.html
 @app.route('/')
 def index():
-    return send_file('static/index.html')
+    return send_file('templates/index.html')
 
 # Route for serving script.js
 @app.route('/script.js')
