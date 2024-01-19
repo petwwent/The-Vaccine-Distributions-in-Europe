@@ -14,7 +14,7 @@ var timer;
 var sliderTime;
 
 // Load the data from data.json
-d3.json("data.json").then(function(data) {
+d3.json("/static/data.json").then(function(data) {
   // Convert 'date' to a JavaScript Date object and 'total_vaccinations' to numbers
   data.forEach(d => {
     d.date = new Date(d.date);
