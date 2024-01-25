@@ -1,61 +1,112 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Horizontal Bar Chart</title>
-  <link rel="stylesheet" href="/static/styles.css"> <!-- Link your CSS file here -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://unpkg.com/d3-simple-slider@2.0.0/dist/d3-simple-slider.min.js"></script>
 </head>
-
 <body>
-  <h1>Total Vaccine Distribution In Europe</h1> <!-- Heading added -->
-  <p>select locations and use the search button to compare data</p>
+    <h1>Total Vaccine Distribution In Europe January 2021 - May 2023</h1> <!-- Heading added -->
 
-  <!-- Search for selecting start and end dates -->
-<div class="search-container">
-  <label for="start-date">Start Date: </label>
-  <input type="date" id="start-date" min="2021-01-01" max="2023-09-30" />
+    <!-- Checkboxes for selecting locations -->
+<div class="checkboxes" id="location-checkboxes">
+    <!-- Individual location checkboxes will be added dynamically here -->
+  </div>
   
-  <label for="end-date">End Date: </label>
-  <input type="date" id="end-date" min="2021-01-01" max="2023-09-30" />
-  
-  <button id="search-button">Search</button>
-</div>
-
   <!-- Checkboxes for selecting locations -->
   <div class="checkboxes" id="location-checkboxes"></div>
 
   <div class="checkboxes" id="location-checkboxes">
     <label>
-      <input type="checkbox" id="select-all-checkbox"> <b>Select All Locations</b>
+        <b>Select All Locations</b><input type="checkbox" id="select-all-checkbox"> 
     </label>
   </div>
+  
+    
+    <div id="dropdow-container">
+    <!-- Dropdown for months -->
+    <label for="month-dropdown">Select Month:</label>
+    <select id="month-dropdown">
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+    </select>
 
-  <div id="legend"></div>
+    <!-- Dropdown for years -->
+    <label for="year-dropdown">Select Year:</label>
+    <select id="year-dropdown">
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <!-- Add other years as needed -->
+    </select>
+</div>
 
+<div id="comment">
+<h3>European Vaccine Disribution Chart (Jan 2021 - May 2023)</h3></div>
+<h2> Gross Vaccination Distribution</h2>
 
-  <div id="chart-container">
-    <p>Pause the chart and place your cursor on each bar to view their location data OR scroll below the chart to view there data on the Table below</p>
-    <svg id="chart" width="1000" height="600"></svg> <!-- Define width and height for the SVG -->
+<div id="dough-contain">
+    <svg id="dough-container" width="200" height="200"></svg>
+    <!-- The chart will be rendered here -->
   </div>
   
+  <button id="toggleButton">See least locations</button>
   
-  <!-- Container for slider -->
-
-  <button id="play-button">Play</button>
-  <div id="slider-time"></div>
-
-
-  <!-- Table container for summary -->
-  <div id="summary-table"></div>
-
-
   
-
   
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://unpkg.com/d3-simple-slider"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script src="/static/script.js"></script>
+  <div class="tooltip"></div>
+    <div id="chart-container">
+      <svg id="chart" width="1000" height="1"></svg> <!-- Define width and height for the SVG -->
+    </div>
+
+    <div id="slider-container"></div> <!-- Container for slider -->
+    
+    <div id="selected-date">Selected Date: </div>
+
+    
+    
+
+    <!-- Add a div container for styling purposes -->
+<div id="statistics-table-container" style="max-width: 100%; overflow-x: auto;">
+    <!-- Center the table title -->
+    <h2 style="text-align: center;">Statistics Table For Distributon</h2>
+    <!-- Add class for styling the table -->
+    <table id="statistics-table" class="styled-table">
+      <thead>
+        <tr>
+          <th>iso_code</th>
+          <th>date</th>
+          <th>location</th>
+          <th>population</th>
+          <th>Total Cases</th>
+          <th>Total Vaccinations Distributed</th>
+          <th>People Vaccinated</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  
+    
+
+
+
+    <!-- Include the d3 library and other scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider@2.0.0/dist/d3-simple-slider.min.js"></script>
+    <!-- Include your custom script.js file -->
+    <script src="/static/script.js"></script>
+    <script src="/static/doughscript.js"></script>
 </body>
 </html>
