@@ -81,10 +81,11 @@ def index():
 def get_script():
     return send_file('static/script.js')
 
-# Route for serving script.js
+# Route for serving dough.js
 @app.route('/dough.js')
-def get_script():
+def get_dough_script():
     return send_file('static/dough.js')
+
 
 # Route for serving styles.css
 @app.route('/styles.css')
