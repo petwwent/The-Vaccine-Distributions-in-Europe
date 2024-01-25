@@ -71,15 +71,14 @@ d3.json("/static/data.json").then(data => {
 const labelContainer = svg.selectAll(".label-container")
   .data(pie(displayedData));
 
-const flagPath = d => `/flags/${d.data.location.toLowerCase()}.png`;
+const flagPath = d => `/flags/${d.data.location}.png`;  // Adjusted path for capitalization
 
 labelContainer.enter()
   .append("g")
   .attr("class", "label-container")
   .append("image")
   .attr("xlink:href", flagPath)
-  .attr("class", "flag")
-  .attr("class", "country-flag") 
+  .attr("class", "flag country-flag") 
   .attr("x", d => arc.centroid(d)[0] - 15)
   .attr("y", d => arc.centroid(d)[1] - 10)
   .attr("width", 20)
@@ -90,7 +89,7 @@ labelContainer.append("text")
   .attr("x", d => arc.centroid(d)[0] + 20)
   .attr("y", d => arc.centroid(d)[1] + 5)
   .attr("text-anchor", "start");
-
+        
 // Add percentages as separate labels
 const percentageLabels = svg.selectAll(".percentage-label")
   .data(pie(displayedData));
