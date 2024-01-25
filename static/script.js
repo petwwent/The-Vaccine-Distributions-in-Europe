@@ -1,469 +1,374 @@
-// Define your variable declarations and constants here
-var margin = { top: 50, right: 50, bottom: 0, left: 50 },
-  width = 960 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+d3.json('/static/data.json').then(function (data) {
+  var margin = { top: 20, right: 20, bottom: 100, left: 150 },
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-var formatTickDate = d3.timeFormat("%b %Y"); // Format for ticks (e.g., Jan 2023)
-var formatTooltipDate = d3.timeFormat("%A %e %B, %Y - %H:%M"); // Include month and year in the tooltip
+  var svg = d3
+    .select("#chart-container")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var moving = false;
-var targetValue = width;
-var timer;
+  var uniqueDates = [...new Set(data.map((d) => d.date))];
+  uniqueDates.sort();
 
-// Declare sliderTime variable
-var sliderTime;
+  const dates = data.map((item) => new Date(item.date));
 
-// Load the data from data.json
-d3.json("/static/data.json").then(function(data) {
-  // Convert 'date' to a JavaScript Date object and 'total_vaccinations' to numbers
-  data.forEach(d => {
-    d.date = new Date(d.date);
-    d.total_vaccinations = +d.total_vaccinations || 0;
-  });
-
-  // Extract dates from the loaded data
-  const dates = data.map(item => new Date(item.date));
-
-  function createSummaryTable(data) {
-    const columns = [
-      { key: 'total_cases', label: 'Total-Cases' },
-      { key: 'population', label: 'Population' },
-      { key: 'total_vaccinations', label: 'Total-vaccinations' },
-      { key: 'people_vaccinated', label: 'vaccinated' },
-      { key: 'people_fully_vaccinated', label: 'fully_vaccinated' },
-      { key: 'total_vaccinations_per_hundred', label: 'Total_v_per_100' },
-      { key: 'people_vaccinated_per_hundred', label: 'vaccinated_per_100' },
-      { key: 'people_fully_vaccinated_per_hundred', label: 'fully_vaccinated_per100' }
-    ];
-  
-    const locations = Array.from(new Set(data.map(d => d.location)));
-
-  const startDate = new Date(data[0].date);
-  const endDate = new Date(data[data.length - 1].date);
-
-  const dateRange = `${startDate.toLocaleString('default', { month: 'short', year: 'numeric' })} - ${endDate.toLocaleString('default', { month: 'short', year: 'numeric' })}`;
-
-  const table = document.createElement('table');
-  table.classList.add('summary-table'); // Add a class to the table
-
-  // Create a heading element
-  const heading = document.createElement('h1');
-  heading.textContent = 'Table of Statistics For Distributions';
-  heading.classList.add('table-heading'); 
-
-  // Append the heading to the container
-  const summaryTableContainer = document.getElementById('summary-table');
-  summaryTableContainer.innerHTML = ''; // Clear existing content
-  summaryTableContainer.appendChild(heading);
-
-  const headerRow = table.insertRow();
-  let cell = headerRow.insertCell();
-  cell.textContent = 'Location';
-  cell.classList.add('column-header');
-  cell.style.fontWeight = 'bold';
-
-  columns.forEach(column => {
-    cell = headerRow.insertCell();
-    cell.textContent = column.label;
-    cell.classList.add('column-header');
-    cell.style.fontWeight = 'bold';
-    cell.classList.add('summary-table-cell'); // Add a class to the table cells
-  });
-
-  let dateCell = headerRow.insertCell();
-  dateCell.textContent = 'Date Range';
-  dateCell.style.fontWeight = 'bold';
-  dateCell.classList.add('summary-table-cell'); // Add a class to the table cells
-
-  locations.forEach(location => {
-    const locationData = data.filter(d => d.location === location);
-    const row = table.insertRow();
-    let cell = row.insertCell();
-    cell.textContent = location;
-
-    columns.forEach(column => {
-      cell = row.insertCell();
-      const columnData = locationData.map(d => +d[column.key] || 0);
-      const total = d3.sum(columnData);
-      cell.textContent = total;
-      cell.classList.add('summary-table-cell'); // Add a class to the table cells
-    });
-
-    let dateCell = row.insertCell();
-    dateCell.textContent = dateRange;
-    dateCell.classList.add('summary-table-cell'); // Add a class to the table cells
-  });
-
-  document.getElementById('summary-table').appendChild(table);
-}
-
-// Call the function to create the summary table using the loaded data
-createSummaryTable(data); // 'data' is assumed to be the loaded dataset from data.json
-  
-
-  // Filter dates to January and July
-  const filteredDates = dates.filter(date => {
+  const filteredDates = dates.filter((date) => {
     const month = date.getMonth();
     return date.getDate() === 1 && (month === 0 || month === 6);
   });
 
-  // Set startDate and endDate based on the loaded data
-  const startDate = filteredDates[0]; // First filtered date
-  const endDate = filteredDates[filteredDates.length - 1]; // Last filtered date
+  const startDate = filteredDates[0];
+  const endDate = filteredDates[filteredDates.length - 1];
 
-  // Calculate the duration for 1 month in milliseconds
-  const oneMonthDuration = 1000 * 60 * 60 * 24 * 2; // Changed to milliseconds in a month
-
-  // Function to update the summary table based on selected dates
-function updateSummaryTable(startDate, endDate, data) {
-  // Clear existing table content
-  document.getElementById('summary-table').innerHTML = '';
-
-  // Create or modify the summary table with new data based on date range
-  createSummaryTable(data.filter(d => d.date >= startDate && d.date <= endDate));
-}
-
-  // Create or modify sliderTime with new data
-  sliderTime = d3
-    .sliderBottom()
-    .min(startDate.getTime())
-    .max(endDate.getTime())
-    .tickValues(filteredDates.map(date => date.getTime()))
-    .default(startDate.getTime())
-    .width(width + margin.left + margin.right - 20)
-    .tickFormat(d3.timeFormat("%b %Y")) // Display ticks as Month Year
-    .fill('#2196f3')
-    .displayFormat(formatTooltipDate)
-    .handle(d3.symbol().type(d3.symbolCircle).size(200)())
-    .on("onchange", function(val) {
-      // Update the label text to include month and year
-      d3.select("p#value-time").text(formatTooltipDate(val));
-      
-      // Get the new start and end dates based on the slider value
-      const newStartDate = new Date(val);
-      const newEndDate = new Date(val); // Adjust logic as needed
+ 
+  function updateSummaryTable(selectedDate, data) {
+    var parsedDate = new Date(selectedDate);
   
-      // Update the chart with new start and end dates
-      updateChart(newStartDate, newEndDate, data); // Call the updateChart function with new dates and data
+    // Filter data based on selected date
+    var filteredData = data.filter((d) => {
+      var currentDate = new Date(d.date);
+      return (
+        currentDate.getMonth() === parsedDate.getMonth() &&
+        currentDate.getFullYear() === parsedDate.getFullYear()
+      );
+    });
   
-      // Update the summary table with new start and end dates
-      updateSummaryTable(newStartDate, newEndDate, data);
+    // Create a map to store aggregated data for each location
+    var locationDataMap = new Map();
+  
+    // Aggregate data for each location
+    filteredData.forEach((d) => {
+      var locationKey = d.location;
+      if (!locationDataMap.has(locationKey)) {
+        locationDataMap.set(locationKey, {
+          iso_code: d.iso_code,
+          date: d.date,
+          location: d.location,
+          population: d.population,
+          total_cases: 0,
+          total_vaccinations: 0,
+          people_vaccinated: 0,
+        });
+      }
+  
+      var locationData = locationDataMap.get(locationKey);
+      locationData.total_cases += d.total_cases;
+      locationData.total_vaccinations += d.total_vaccinations;
+      locationData.people_vaccinated += d.people_vaccinated;
+    });
+  
+    var tableBody = d3.select('#statistics-table tbody');
+  
+    // Remove existing rows
+    tableBody.selectAll('tr').remove();
+  
+    // Add new rows
+    var rows = tableBody
+      .selectAll('tr')
+      .data(Array.from(locationDataMap.values()))
+      .enter()
+      .append('tr');
+  
+    rows.append('td').text((d) => d.iso_code);
+    rows.append('td').text((d) => d.date);
+    rows.append('td').text((d) => d.location);
+    rows.append('td').text((d) => d.population);
+    rows.append('td').text((d) => d.total_cases);
+    rows.append('td').text((d) => d.total_vaccinations);
+    rows.append('td').text((d) => d.people_vaccinated);
+  }
+   
+
+
+  var dateDropdown = d3.select('#date-dropdown');
+
+  dateDropdown
+    .selectAll('option')
+    .data(uniqueDates)
+    .enter()
+    .append('option')
+    .text((d) => new Date(d).toISOString().slice(0, 10))
+    .attr('value', (d) => new Date(d).toISOString().slice(0, 10));
+
+  // Initial updateChart call with all locations using the first date in the dataset
+  updateChart(uniqueDates[0]);
+
+  var dateScale = d3
+    .scaleTime()
+    .domain([new Date(d3.min(uniqueDates)), new Date(d3.max(uniqueDates))])
+    .range([0, width]);
+
+  var slider = d3
+    .sliderBottom(dateScale)
+    .step(24 * 60 * 60 * 1000)
+    .width(width)
+    .tickFormat(d3.timeFormat('%Y-%m-%d'))
+    .on('onchange', (val) => {
+      var selectedDate = d3.timeFormat('%Y-%m-%d')(val);
+      updateChart(selectedDate);
+      dateDropdown.property('value', selectedDate);
+      d3.select('#selected-date').text('Selected Date: ' + selectedDate);
+      updateSummaryTable(startDate, endDate, data);
     });
 
-  // Append the slider to a group
-  var gTime = d3
-    .select("div#slider-time")
-    .append("svg")
-    .attr("width", 1000)
-    .attr("height", 100)
-    .append("g")
-    .attr("transform", "translate(30,30)");
+  d3.select('#slider-container')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', 70)
+    .append('g')
+    .attr('transform', 'translate(' + margin.left + ',30)')
+    .call(slider);
 
-  gTime.call(sliderTime);
+  var monthDropdown = d3.select('#month-dropdown');
+  var yearDropdown = d3.select('#year-dropdown');
 
-  // Apply custom styles to month and year labels on the slider ticks
-  d3.selectAll(".tick text")
-    .style("font-weight", function(d) {
-      // Check if the tick value corresponds to the beginning of the month (Jan 1st or July 1st)
-      var tickDate = new Date(d);
-      return tickDate.getDate() === 1 ? "bold" : "normal";
-    })
-    .style("fill", function(d) {
-      // Check if the tick value corresponds to the beginning of the month (Jan 1st or July 1st)
-      var tickDate = new Date(d);
-      return tickDate.getDate() === 1 ? "black" : "#aaa"; // Change to black for Jan 1st and July 1st, grey for other ticks
+  var months = d3.range(1, 13).map((d) => d.toString().padStart(2, '0'));
+  monthDropdown
+    .selectAll('option')
+    .data(months)
+    .enter()
+    .append('option')
+    .text((d) => d)
+    .attr('value', (d) => d);
+
+  var years = [...new Set(data.map((d) => new Date(d.date).getFullYear()))];
+  yearDropdown
+    .selectAll('option')
+    .data(years)
+    .enter()
+    .append('option')
+    .text((d) => d)
+    .attr('value', (d) => d);
+
+    var locationCheckboxes = d3.select("#location-checkboxes");
+
+    // Add individual location checkboxes
+    locationCheckboxes
+      .selectAll("label")
+      .data([...new Set(data.map((d) => d.location))])
+      .enter()
+      .append("label")
+      .text((d) => d)
+      .append("input")
+      .attr("type", "checkbox")
+      .attr("class", "location-checkbox")
+      .attr("value", (d) => d);
+    
+    // Add "Select All" checkbox
+    var selectAllContainer = d3.select("#select-all-container");
+    selectAllContainer
+      .append("input")
+      .attr("type", "checkbox")
+      .attr("id", "select-all-checkbox");
+    
+    selectAllContainer.select("label").attr("for", "select-all-checkbox");
+    
+    // Add event listener to checkboxes
+    locationCheckboxes.selectAll(".location-checkbox").on("change", function () {
+      updateChart(slider.value());
+    });
+    
+    // Add functionality for the "Select All" checkbox
+    d3.select("#select-all-checkbox").on("change", function () {
+      const isChecked = this.checked;
+    
+      // Check or uncheck all location checkboxes based on the "Select All" checkbox state
+      locationCheckboxes.selectAll(".location-checkbox").property("checked", isChecked);
+    
+      // Update the chart based on the current slider value
+      updateChart(slider.value());
     });
 
-  // Initialize value-time paragraph
-  d3.select("p#value-time").text(formatTooltipDate(sliderTime.value()));
-  d3.select(".parameter-value text").attr("y", "-29");
-  d3.selectAll(".tick text").style("text-anchor", "start");
-  document.querySelector(".parameter-value path").removeAttribute("tabindex");
 
-  var playButton = d3.select("#play-button");
-
-  playButton.on("click", function() {
-    var button = d3.select(this);
-    if (button.text() == "Pause") {
-      resetTimer();
-    } else {
-      moving = true;
-      timer = setInterval(update, 100); // Move by a month every 2 seconds
-      button.text("Pause");
-    }
+  slider.on('onchange', (val) => {
+    var selectedDate = d3.timeFormat('%Y-%m-%d')(val);
+    updateChart(selectedDate);
+    dateDropdown.property('value', selectedDate);
+    d3.select('#selected-date').text('Selected Date: ' + selectedDate);
+    updateSummaryTable(startDate, endDate, data);
   });
 
-  function update() {
-    var offset = sliderTime.value().valueOf() + oneMonthDuration; // Move by a month
-    sliderTime.value(offset);
-    if (offset >= endDate.getTime()) {
-      resetTimer();
-    }
-    // Update the label text to include month and year
-    d3.select("p#value-time").text(formatTooltipDate(sliderTime.value()));
-  }
+  document.getElementById('month-dropdown').addEventListener('change', function () {
+    var selectedMonth = document.getElementById('month-dropdown').value;
+    var selectedYear = document.getElementById('year-dropdown').value;
+    var targetDate = selectedYear + '-' + selectedMonth + '-01';
+    var parsedDate = new Date(targetDate);
+    slider.value(parsedDate);
+    updateChart(targetDate);
+  });
 
-  function resetTimer() {
-    moving = false;
-    clearInterval(timer);
-    playButton.text("Play");
-  }
+  document.getElementById('year-dropdown').addEventListener('change', function () {
+    var selectedMonth = document.getElementById('month-dropdown').value;
+    var selectedYear = document.getElementById('year-dropdown').value;
+    var targetDate = selectedYear + '-' + selectedMonth + '-01';
+    var parsedDate = new Date(targetDate);
+    slider.value(parsedDate);
+    updateChart(targetDate);
+  });
 
 
-  // Add checkboxes for selecting locations
-  const locations = Array.from(new Set(data.map(d => d.location))); // Get unique locations
-  const locationCheckboxes = d3.select("#location-checkboxes")
-    .selectAll("label")
-    .data(locations)
-    .enter()
-    .append("label")
-    .text(d => d)
-    .append("input")
-    .attr("type", "checkbox")
-    .attr("value", d => d)
-    .on("change", updateSelectedLocations); // Call the function to update selected locations on change
+  function updateChart(selectedDate) {
+    svg.selectAll('.bar').remove();
+    svg.selectAll('.x.axis').remove();
+    svg.selectAll('.y.axis').remove();
+    svg.selectAll('.axis-label').remove();
 
-  // Add functionality for the "Select All" checkbox
-  d3.select("#select-all-checkbox").on("change", function() {
-    const isChecked = this.checked;
-
-    // Check or uncheck all location checkboxes based on the "Select All" checkbox state
-    d3.selectAll("#location-checkboxes input[type=checkbox]")
-      .property("checked", isChecked)
-      .dispatch("change"); // Trigger the change event for selected locations
-  });  
-
-  // Assuming 'data' is the loaded dataset from data.json
-const uniqueDates = Array.from(new Set(data.map(d => d.date))); // Extract unique dates
-
-// Filter dates within the specified range (from Jan 2021 to Dec 2023)
-const filteredDropdownDates = uniqueDates.filter(date => {
-  const year = date.getFullYear();
-  return year >= 2021 && year <= 2023; // Filter dates from 2021 to 2023
-});
-
-// Create an array to hold all months from Jan to Dec
-const allMonths = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-
-// Generate dropdown options for each month and year
-const dropdownOptions = [];
-for (let year = 2021; year <= 2023; year++) {
-  for (let month = 0; month < 12; month++) {
-    const currentDate = new Date(year, month, 1);
-    const formattedDate = currentDate.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-    if (filteredDropdownDates.find(date => date.getMonth() === month && date.getFullYear() === year)) {
-      dropdownOptions.push({
-        date: currentDate,
-        label: formattedDate,
-        value: currentDate.getTime()
-      });
-    }
-  }
-}
-
-// Add an event listener to the search button
-d3.select("#search-button").on("click", function() {
-  const startDate = new Date(document.getElementById("start-date").value);
-  const endDate = new Date(document.getElementById("end-date").value);
-
-  // Check if the entered dates are valid
-  if (startDate && endDate && startDate <= endDate) {
-    // Perform actions with the selected start and end dates
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-
-    // Stop the chart from playing if it's in a playing state
-    if (moving) {
-      resetTimer();
-    }
-
-    // Update the slider position to the selected date (if sliderTime exists)
-    if (sliderTime) {
-      sliderTime.value(startDate.getTime());
-    }
-
-    // Call a function to update the chart based on the selected date range
-    updateChart(startDate, endDate, data);
-  } else {
-    alert("Please select a valid date range.");
-  }
-});
-
-  // Function to update selected locations
-function updateSelectedLocations() {
-  const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
-
+    // Convert the selected date to a JavaScript Date object
+    var parsedDate = new Date(selectedDate);
   
-  const selectedDate = new Date(d3.select("#search-date").property("value"));
+    // If no selected date is provided, use the slider's current value
+  var parsedDate = selectedDate ? new Date(selectedDate) : slider.value();
 
-  // Update chart based on selected locations and date
-  updateChart(selectedDate, selectedDate, data.filter(d => selectedLocations.includes(d.location)));
-}
+  // Get the selected checkboxes
+  var selectedLocations = d3.selectAll('.location-checkbox:checked').nodes().map((node) => node.value);
 
-
-
-  /// Function to update the chart based on filtered data
-  function updateChart(startDate, endDate, data) {
-    let filteredData = data.filter(d => d.date >= startDate && d.date <= endDate);
-  
-    const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
-    
-    if (selectedLocations.length > 0) {
-      // If locations are selected, filter data based on selected locations
-      filteredData = filteredData.filter(d => selectedLocations.includes(d.location));
-    }
-  
-    // Group the filtered data by location and aggregate total vaccinations within the date range
-    const aggregatedData = d3.rollup(
-      filteredData,
-      group => d3.sum(group, d => d.total_vaccinations),
-      d => d.location
+  // Filter data based on selected date and locations
+  var filteredData = data.filter((d) => {
+    var currentDate = new Date(d.date);
+    return (
+      currentDate.getMonth() === parsedDate.getMonth() &&
+      currentDate.getFullYear() === parsedDate.getFullYear() &&
+      (!selectedLocations.length || selectedLocations.includes(d.location))
     );
+  });
+
+  // Add tooltip container
+  var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+
+  var sortedData = filteredData.sort((a, b) => b.total_vaccinations - a.total_vaccinations);
+
+    const x = d3
+      .scaleBand()
+      .domain(sortedData.map((d) => d.location))
+      .range([0, width])
+      .padding(0.2);
+
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(sortedData, (d) => d.total_vaccinations)])
+      .nice()
+      .range([height, 0]);
+
+    const colorScale = d3.scaleOrdinal().domain(sortedData.map((d) => d.location)).range(d3.schemeCategory10);
+
+    svg.selectAll('.bar')
+      .data(sortedData)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .attr('x', (d) => x(d.location))
+      .attr('width', x.bandwidth())
+      .attr('y', (d) => y(d.total_vaccinations))
+      .attr('height', (d) => height - y(d.total_vaccinations))
+      .attr('fill', (d) => colorScale(d.location))
+      .on('mouseover', function (event, d) {
+        tooltip.transition().duration(200).style('opacity', 0.9);
+      
+        // Calculate people vaccinated percentage
+        const percentageVaccinated = ((d.people_vaccinated / d.population) * 100).toFixed(2);
+      
+        tooltip.html(
+          `<strong>${d.location}</strong><br>
+          Date: ${d.date}<br>
+          People Vaccinated: ${percentageVaccinated}%<br>
+          Total Cases: ${d.total_cases}<br>
+          Total Vaccinations: ${d.total_vaccinations}`
+        )
+        .style('left', (event.pageX) + 'px')
+        .style('top', (event.pageY - 28) + 'px');
+      })
+      .on('mousemove', function (event) {
+        tooltip.style('left', (event.pageX) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+      })
+      .on('mouseout', function () {
+        console.log('Mouse out event triggered'); // Debugging line
+        tooltip.transition().duration(500).style('opacity', 0);
+      });
   
-    // Convert the aggregated data back to an array of objects for easier chart rendering
-    const aggregatedArray = Array.from(aggregatedData, ([location, total_vaccinations]) => ({
-      location,
-      total_vaccinations
-    }));
+      
 
-  // Sort data in descending order of total_vaccinations
-  filteredData.sort((a, b) => b.total_vaccinations - a.total_vaccinations);
+    const xAxis = d3.axisBottom(x);
+    const yAxis = d3.axisLeft(y).ticks(10);
 
-  // Create a color scale based on population values
-  const colorScale = d3.scaleOrdinal()
-    .domain(filteredData.map(d => d.population))
-    .range(d3.schemeCategory10); // You can use any color scheme you prefer
+    svg.append('g').attr('class', 'x axis').attr('transform', `translate(0, ${height})`).call(xAxis).selectAll('text').attr('transform', 'rotate(-45)').style('text-anchor', 'end');
 
-  // Remove existing chart and legend
-  d3.select('#chart').selectAll('*').remove();
-  d3.select('#legend').selectAll('*').remove();
+    svg.append('g').attr('class', 'y axis').call(yAxis);
 
-    // Chart dimensions and other elements setup
-    const margin = { top: 50, right: 50, bottom: 100, left: 150 };
-    const width = 1000 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+    svg.append('text')
+      .attr('class', 'axis-label')
+      .attr('text-anchor', 'middle')
+      .attr('x', width / 2)
+      .attr('y', height + margin.bottom / 2)
+      .text('Location');
 
-    const svg = d3
-      .select('#chart')
-      .append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
-      .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+    svg.append('text')
+      .attr('class', 'axis-label')
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2)
+      .attr('y', -margin.left + 15)
+      .text('Total Vaccinations');
 
-  // Create scales
-  const x = d3.scaleBand()
-    .domain(filteredData.map(d => d.location))
-    .range([0, width])
-    .padding(0.2);
+    // Append flags on top of each bar
+  svg.selectAll('.flag').remove();
 
-  const y = d3.scaleLinear()
-    .domain([0, d3.max(filteredData, d => d.total_vaccinations)])
-    .nice()
-    .range([height, 0]);
+  // Remove existing flags
+  svg.selectAll('.flag').remove();
 
-  // Create axes
-  const xAxis = d3.axisBottom(x);
-  const yAxis = d3.axisLeft(y).ticks(10);
+  // Create a set to store unique locations
+  const uniqueLocations = new Set();
 
-  // Append axes to SVG
-  svg.append('g')
-    .attr('class', 'x axis')
-    .attr('transform', `translate(0, ${height})`)
-    .call(xAxis)
-    .selectAll('text')
-    .attr('transform', 'rotate(-45)')
-    .style('text-anchor', 'end');
+  // Filter data for unique locations
+  const uniqueData = sortedData.filter((d) => {
+    if (!uniqueLocations.has(d.location)) {
+      uniqueLocations.add(d.location);
+      return true;
+    }
+    return false;
+  });
 
-  svg.append('g')
-    .attr('class', 'y axis')
-    .call(yAxis);
+  // Append flags for unique locations
+  const flagWidth = 10;
+  const flagHeight = 15;
 
-  // Add axis labels
-  svg.append('text')
-    .attr('class', 'axis-label')
-    .attr('text-anchor', 'middle')
-    .attr('x', width / 2)
-    .attr('y', height + margin.bottom / 2)
-    .text('Location');
-
-  svg.append('text')
-    .attr('class', 'axis-label')
-    .attr('text-anchor', 'middle')
-    .attr('transform', 'rotate(-90)')
-    .attr('x', -height / 2)
-    .attr('y', -margin.left + 15)
-    .text('Total Vaccinations');
-
-// Create bars based on the sorted data (in descending order) with different colors based on population
-const bars = svg.selectAll('.bar')
-  .data(filteredData)
-  .enter()
-  .append('rect')
-  .attr('class', 'bar')
-  .attr('x', d => x(d.location))
-  .attr('width', x.bandwidth())
-  .attr('y', d => y(d.total_vaccinations))
-  .attr('height', d => height - y(d.total_vaccinations))
-  .attr('fill', d => colorScale(d.population));
-
-// Append flags to the bars by default
-const flagWidth = 10;
-const flagHeight = 15;
-
-svg.selectAll('.bar-flag')
-  .data(filteredData)
+  // Update the flags with a slower transition duration
+  svg
+  .selectAll('.flag')
+  .data(uniqueData)
   .enter()
   .append('image')
-  .attr('x', d => x(d.location) + x.bandwidth() / 2 - flagWidth / 2)
-  .attr('y', d => y(d.total_vaccinations) - flagHeight)
+  .attr('class', 'flag')
   .attr('width', flagWidth)
   .attr('height', flagHeight)
-  .attr('xlink:href', d => `/flags/${d.location}.png`)
-  .attr('class', 'bar-flag');
+  .attr('x', (d) => x(d.location) + x.bandwidth() / 2 - flagWidth / 2)
+  .attr('y', (d) => y(d.total_vaccinations) - flagHeight)
+  .attr('xlink:href', (d) => `/flags/${d.location}.png`); 
 
-// Append tooltip to show data on hover
-bars.append('title')
-.text(d => `${d.location}\nDate Range: ${formatTooltipDate(startDate)} - ${formatTooltipDate(endDate)}\nTotal Cases: ${d.total_cases}\nPopulation: ${d.population}\nTotal Vaccinations: ${d.total_vaccinations}\nPeople Vaccinated: ${d.people_vaccinated}\nPeople Fully Vaccinated: ${d.people_fully_vaccinated}\nTotal Vaccinations Per Hundred: ${d.total_vaccinations_per_hundred}\nPeople Vaccinated Per Hundred: ${d.people_vaccinated_per_hundred}\nPeople Fully Vaccinated Per Hundred: ${d.people_fully_vaccinated_per_hundred}`); // Include existing and additional necessary data fields
+  
 
-// Legend
-const legend = d3.select('#legend')
-  .append('svg')
-  .attr('width', 150)
-  .attr('height', 150)
-  .append('g')
-  .attr('transform', 'translate(0,20)');
 
-const legendColors = legend.selectAll('.legend-color')
-  .data(filteredData.map(d => d.population))
-  .enter().append('g')
-  .attr('class', 'legend-color')
-  .attr('transform', (d, i) => `translate(0,${i * 20})`);
+// Update the flags with a slower transition duration
+svg.selectAll('.flag')
+.data(uniqueData)
+.enter()
+.append('image')
+.attr('class', 'flag')
+.attr('width', flagWidth)
+.attr('height', flagHeight)
+.attr('x', (d) => x(d.location) + x.bandwidth() / 2 - flagWidth / 2)
+.attr('y', (d) => y(d.total_vaccinations) - flagHeight)
+.attr('xlink:href', (d) => `/flags/${d.location}.png`);
 
-legendColors.append('rect')
-  .attr('width', 15)
-  .attr('height', 15)
-  .attr('fill', colorScale);
 
-legendColors.append('text')
-  .attr('x', 20)
-  .attr('y', 10)
-  .text(d => `Population: ${d}`);
-
-// Usage of the updateChart function
+// Update the statistics table
+updateSummaryTable(selectedDate, filteredData);
 }
-// Usage of the updateChart function
-updateChart(startDate, endDate, data); // Call this function with appropriate startDate, endDate, and the loaded data
-
-// Function to update selected locations
-function updateSelectedLocations() {
-  const selectedLocations = d3.selectAll("#location-checkboxes input:checked").nodes().map(node => node.value);
-}
-
-
-// Start the slide play by default when the page loads
-d3.select("#play-button").dispatch("click");
 });
