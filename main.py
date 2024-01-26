@@ -27,11 +27,15 @@ def receive_fhir_bundles():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/get_data', methods=['GET'])
-def get_data():
+def get_vaccination_data():
     try:
-        return jsonify(existing_data)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        with open('static/data.json', 'r') as file:
+            existing_vaccination_data = json.load(file)
+    except FileNotFoundError:
+        return jsonify({'error': 'data.json not found'}), 404
+
+    return jsonify(existing_vaccination_data), 200
+
 
 @app.route('/success')
 def success():
