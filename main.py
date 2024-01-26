@@ -11,9 +11,11 @@ existing_data = []
 def receive_fhir_bundles():
     try:
         fhir_bundles = request.json  # Assuming the FHIR Bundles are sent as JSON
+        print("Received FHIR Bundles:", json.dumps(fhir_bundles, indent=2))
 
         # Extract and convert FHIR Bundles to JSON
-        extracted_data = extract_and_convert(fhir_bundles)
+        extracted_data, extra_fields_data = extract_and_convert(fhir_bundles)
+        print("Extracted Data:", json.dumps(extracted_data, indent=2))
 
         # Check for duplicates and mismatch before storing
         check_for_duplicates(extracted_data)
@@ -22,8 +24,12 @@ def receive_fhir_bundles():
         # Store the extracted data in static/data.json
         save_to_data_json(extracted_data)
 
+        # Store extra fields in a separate file
+        save_extra_fields_to_file(extra_fields_data)
+
         return redirect(url_for('success'))
     except Exception as e:
+        print("Error:", str(e))
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/get_data', methods=['GET'])
@@ -43,6 +49,7 @@ def success():
 
 def extract_and_convert(fhir_bundles):
     extracted_data = []
+    extra_fields_data = []  # List to store entries with extra fields
 
     for fhir_bundle in fhir_bundles:
         entries = fhir_bundle.get("entry", [])
@@ -50,6 +57,8 @@ def extract_and_convert(fhir_bundles):
         for entry in entries:
             if "resource" in entry:
                 immunization_resource = entry["resource"]
+
+                # Extract relevant fields
                 extracted_entry = {
                     "iso_code": immunization_resource["extension"][0]["valueString"],
                     "date": immunization_resource["occurrenceDateTime"],
@@ -62,25 +71,25 @@ def extract_and_convert(fhir_bundles):
                 }
                 extracted_data.append(extracted_entry)
 
-    return extracted_data
+                # Extract extra fields
+                extra_fields_entry = {
+                    "extra_fields": {
+                        key: immunization_resource[key] for key in immunization_resource if key not in extracted_entry
+                    }
+                }
+                extra_fields_data.append(extra_fields_entry)
 
-def check_for_duplicates(new_entries):
-    for new_entry in new_entries:
-        if new_entry in existing_data:
-            raise ValueError("Duplicate entry detected. Entry already exists in the data.")
+    return extracted_data, extra_fields_data
 
-def check_for_mismatch(entries):
-    # Assuming all entries should have the same fields, you can customize this check based on your requirements
-    fields = set(entries[0].keys())
-
-    for entry in entries:
-        if set(entry.keys()) != fields:
-            raise ValueError("Field mismatch detected. Fields in the entry do not match the expected structure.")
+def save_extra_fields_to_file(extra_fields_data):
+    with open('static/extra_fields.json', 'w') as extra_fields_file:
+        json.dump(extra_fields_data, extra_fields_file, indent=2)
 
 def save_to_data_json(data):
     existing_data.extend(data)
     with open('static/data.json', 'w') as data_file:
         json.dump(existing_data, data_file, indent=2)
+
 
 # Route for serving index.html
 @app.route('/')
