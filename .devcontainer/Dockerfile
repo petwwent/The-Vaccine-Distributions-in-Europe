@@ -1,4 +1,4 @@
-add them here to install...# Use the official Python base image with Alpine Linux
+# Use the official Python base image with Alpine Linux
 FROM python:3.9-alpine
 
 # Set the working directory in the container
