@@ -10,6 +10,9 @@ RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev git
 # Install Flask and Gunicorn
 RUN pip install --no-cache-dir Flask==2.0.1 Werkzeug==2.0.3 gunicorn==20.1.0 apiflask==2.1.0 requests==2.26.0 fhir.resources==7.1.0
 
+# Install additional dependencies for apispec and marshmallow
+RUN pip install --no-cache-dir apispec==5.2.0 apispec-webframeworks==0.6.0 marshmallow==3.14.0 PyYAML==5.4.1
+
 # Copy the entire project to the working directory
 COPY . .
 
