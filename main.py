@@ -1,6 +1,4 @@
-from fhir.resources.bundle import Bundle, BundleEntry
-from fhir.resources.immunization import Immunization
-from flask import Flask, request, jsonify, redirect, url_for
+from flask import Flask, request, jsonify, send_file, redirect, url_for
 import json
 from uuid import uuid4
 
@@ -79,6 +77,7 @@ def save_to_data_json(data):
     existing_data.extend(data)
     with open('static/data.json', 'w') as data_file:
         json.dump(existing_data, data_file, indent=2)
+
 # Route for serving index.html
 @app.route('/')
 def index():
@@ -94,7 +93,6 @@ def get_script():
 def get_dough_script():
     return send_file('static/dough.js')
 
-
 # Route for serving styles.css
 @app.route('/styles.css')
 def get_styles():
@@ -105,12 +103,10 @@ def get_styles():
 def get_data():
     return send_file('static/data.json')
 
-
 # Route for serving flags from the root directory
 @app.route('/flags/<filename>')
 def get_flag(filename):
     return send_file(f'flags/{filename}')
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
