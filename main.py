@@ -120,6 +120,7 @@ def get_styles():
 def get_data():
     return send_file('static/data.json')
 
+
 # Route for serving flags from the root directory
 @app.route('/flags/<filename>')
 def get_flag(filename):
