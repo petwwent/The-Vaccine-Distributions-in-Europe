@@ -1,23 +1,10 @@
 from fhir.resources.bundle import Bundle, BundleEntry
 from fhir.resources.immunization import Immunization
 from flask import Flask, request, jsonify, redirect, url_for
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
 import json
-from flask import send_file
 from uuid import uuid4
 
 app = Flask(__name__)
-app.config['SPEC_FORMAT'] = 'yaml'
-app.config['OPENAPI_VERSION'] = '3.0.2'
-app.config['OPENAPI_URL_PREFIX'] = '/docs'
-
-spec = APISpec(
-    title="Your API",
-    version="1.0.0",
-    openapi_version=app.config['OPENAPI_VERSION'],
-    plugins=[MarshmallowPlugin()],
-)
 
 # Existing data (if any)
 existing_data = []
@@ -41,14 +28,12 @@ def receive_fhir_bundles():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Change the endpoint name for the /api/get_data route
-@app.route('/api/get_data', methods=['GET'], endpoint='get_data_endpoint')
+@app.route('/api/get_data', methods=['GET'])
 def get_data():
     try:
         return jsonify(existing_data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route('/success')
 def success():
